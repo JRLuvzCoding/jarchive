@@ -17,18 +17,49 @@
             overflow: hidden;
         }
         header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
             padding: 20px;
             border-bottom: 2px solid rgb(255, 255, 255);
             background-color: black;
         }
-        h1 {
-            font-size: 3em;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        .glitch {
             position: relative;
-            display: inline-block;
+            font-size: 3em;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .glitch::before, .glitch::after {
+            content: "JARCHIVE";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
             overflow: hidden;
+            animation: glitch 2s infinite;
+        }
+        .glitch::before {
+            color: #f00;
+            z-index: -1;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch 2s infinite;
+        }
+        .glitch::after {
+            color: #00f;
+            z-index: -2;
+            clip: rect(0, 900px, 0, 0);
+            animation: glitch 2s infinite alternate;
+        }
+        @keyframes glitch {
+            0% { clip: rect(24px, 9999px, 85px, 0); }
+            5% { clip: rect(12px, 9999px, 60px, 0); }
+            10% { clip: rect(35px, 9999px, 12px, 0); }
+            15% { clip: rect(24px, 9999px, 55px, 0); }
+            20% { clip: rect(64px, 9999px, 60px, 0); }
+            25% { clip: rect(17px, 9999px, 95px, 0); }
+            30% { clip: rect(15px, 9999px, 90px, 0); }
         }
         .content {
             padding: 20px;
@@ -49,9 +80,6 @@
             font-size: 2em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            position: relative;
-            display: inline-block;
-            overflow: hidden;
         }
         p {
             font-size: 1.2em;
@@ -68,80 +96,19 @@
         audio {
             margin-top: 20px;
         }
-        /* Glitch effect */
-        @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            25% { transform: skew(2deg); }
-            50% { transform: skew(-2deg); }
-            75% { transform: skew(1deg); }
-            100% { transform: skew(0deg); }
-        }
-
-        @keyframes glitch-translate {
-            0% { transform: translate(0, 0); }
-            25% { transform: translate(-2px, -2px); }
-            50% { transform: translate(2px, 2px); }
-            75% { transform: translate(-1px, 1px); }
-            100% { transform: translate(0, 0); }
-        }
-
-        @keyframes glitch-clip {
-            0% { clip: rect(0, 900px, 0, 0); }
-            10%, 90% { clip: rect(0, 900px, 90px, 0); }
-            20%, 80% { clip: rect(0, 900px, 70px, 0); }
-            30%, 70% { clip: rect(0, 900px, 50px, 0); }
-            40%, 60% { clip: rect(0, 900px, 40px, 0); }
-            50% { clip: rect(0, 900px, 20px, 0); }
-        }
-
-        .glitch {
-            position: relative;
-            display: inline-block;
-        }
-
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-            color: #f00;
-            opacity: 0.8;
-            z-index: -1;
-            animation: glitch-skew 3s infinite ease-in-out, glitch-translate 2s infinite ease-in-out;
-        }
-
-        .glitch::before {
-            color: #00f;
-            left: 2px;
-            top: 2px;
-            clip: rect(0, 900px, 50px, 0);
-            animation: glitch-clip 1.5s infinite linear;
-        }
-
-        .glitch::after {
-            color: rgb(255, 255, 255);
-            left: -2px;
-            top: -2px;
-            clip: rect(0, 900px, 60px, 0);
-            animation: glitch-clip 1s infinite linear reverse;
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
+        <div class="glitch">JARCHIVE</div>
     </header>
     <div class="content">
         <section class="blog-post">
-            <h2 class="glitch" data-text="Jar Blog">JR Blog</h2>
+            <h2>JR Blog</h2>
             <p>Oh Whats Up.</p>
         </section>
         <section class="music-section">
-            <h2 class="glitch" data-text="Music Section">Music Section</h2>
+            <h2>Music Section</h2>
             <p>Check out this cool track:</p>
             <audio controls>
                 <source src="audio/sample-music.mp3" type="audio/mpeg">
