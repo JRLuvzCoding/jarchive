@@ -178,35 +178,69 @@
             border: 1px solid red; /* Reduced border width */
             width: 80%; /* Set a specific width to reduce size */
             max-width: 600px; /* Optional: limit maximum width */
+            position: relative; /* For glitch effect positioning */
+        }
+
+        /* Glitch effect for audio player text */
+        .audio-player .glitch-text {
+            position: relative;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: white;
+            display: inline-block;
+            margin-right: 10px; /* Space before the audio controls */
+        }
+
+        .audio-player .glitch-text::before,
+        .audio-player .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            overflow: hidden;
+            animation: glitch-animation 3s infinite;
+        }
+
+        .audio-player .glitch-text::before {
+            color: red;
+            text-shadow: 0 0 10px red;
+            z-index: -1;
+            clip: rect(5px, 900px, 80px, 0);
+        }
+
+        .audio-player .glitch-text::after {
+            color: blue;
+            z-index: -2;
+            clip: rect(10px, 900px, 85px, 0);
+            animation: glitch-animation 3s infinite alternate;
         }
 
         .control-button {
-            background-color: #333; /* Dark grey for the button */
+            background-color: red;
             color: white;
             border: none;
-            border-radius: 0; /* Square edges */
-            padding: 10px 15px;
-            font-size: 1em;
+            padding: 10px 20px;
+            border-radius: 5px;
             cursor: pointer;
-            margin-right: 10px;
-            transition: background-color 0.3s;
-            width: 80px; /* Fixed width */
-        }
-
-        .control-button:hover {
-            background-color: #444; /* Slightly lighter on hover */
+            font-size: 1em; /* Adjust button font size */
         }
 
         .control-slider {
-            width: 150px;
-            margin-right: 10px;
-            background-color: #555; /* Darker background for slider track */
-            border: none;
+            -webkit-appearance: none; /* Remove default slider styles */
+            appearance: none; /* Remove default slider styles */
+            width: 100%; /* Full width */
+            height: 5px; /* Slider height */
+            background: white; /* Slider background */
+            border-radius: 5px; /* Rounded slider */
+            margin: 0 10px; /* Space around slider */
         }
 
         .control-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
+            -webkit-appearance: none; /* Remove default thumb styles */
+            appearance: none; /* Remove default thumb styles */
             width: 15px; /* Size of the slider thumb */
             height: 15px;
             background-color: red; /* Color of the thumb */
@@ -239,6 +273,7 @@
             <h2 class="glitch" data-text="Music Section">Music Section</h2>
             <p>Check out this cool track:</p>
             <div class="audio-player">
+                <span class="glitch-text" data-text="Audio Player">Audio Player</span>
                 <audio id="audio" src="sample_music.mp3"></audio>
                 <button id="play-pause" class="control-button">Play</button>
                 <input type="range" id="volume" class="control-slider" min="0" max="1" step="0.1" value="1">
