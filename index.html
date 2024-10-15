@@ -169,8 +169,8 @@
         /* Custom audio player styles */
         .audio-player {
             display: flex;
-            align-items: center;
-            justify-content: center;
+            flex-direction: column; /* Stack elements vertically */
+            align-items: center; /* Center elements */
             margin-top: 20px;
             background-color: black; /* Black background */
             padding: 10px; /* Padding around the controls */
@@ -178,7 +178,6 @@
             border: 1px solid red; /* Reduced border width */
             width: 80%; /* Set a specific width to reduce size */
             max-width: 600px; /* Optional: limit maximum width */
-            position: relative; /* For glitch effect positioning */
         }
 
         /* Glitch effect for audio player text */
@@ -188,7 +187,7 @@
             text-transform: uppercase;
             color: white;
             display: inline-block;
-            margin-right: 10px; /* Space before the audio controls */
+            margin-bottom: 10px; /* Space above the audio controls */
         }
 
         .audio-player .glitch-text::before,
