@@ -6,11 +6,11 @@
     <title>JARCHIVE</title>
     <style>
         body {
-            background-image: url('file-qNJ2r3YByA3LbPQnduwxrQUF.png'); /* Ensure the image is in the same directory as index.html */
+            background-image: url('file-qNJ2r3YByA3LbPQnduwxrQUF.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            color: rgb(255, 0, 0);
+            color: rgb(255, 255, 255);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
@@ -25,71 +25,60 @@
             text-align: center;
         }
 
-        /* Glitch text for the JARCHIVE.NET in the corner */
+        /* Glitch text */
         .glitch {
             position: relative;
-            font-size: 6em; /* Increased size */
             letter-spacing: 2px;
             text-transform: uppercase;
             color: white;
             display: inline-block;
         }
 
-        .glitch-effect::before, .glitch-effect::after {
+        /* Make the main title smaller and red */
+        h1.glitch {
+            font-size: 2.5em; /* Smaller size */
+            color: red; /* Change to red */
+            text-shadow: 0 0 10px red;
+        }
+
+        .glitch::before, .glitch::after {
             content: attr(data-text);
             position: absolute;
+            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: black;
             overflow: hidden;
-            clip: rect(0, 900px, 0, 0);
-            animation: glitch-animation 1s infinite;
+            animation: glitch-animation 3s infinite;
         }
 
-        .glitch-effect::before {
-            top: 2px;
+        .glitch::before {
             color: red;
-            clip: rect(0, 900px, 70px, 0);
+            text-shadow: 0 0 10px red;
+            z-index: -1;
+            clip: rect(5px, 900px, 80px, 0);
         }
 
-        .glitch-effect::after {
-            top: -2px;
+        .glitch::after {
             color: blue;
-            clip: rect(0, 900px, 50px, 0);
+            z-index: -2;
+            clip: rect(10px, 900px, 85px, 0);
+            animation: glitch-animation 3s infinite alternate;
         }
 
         @keyframes glitch-animation {
-            0% {
-                clip: rect(40px, 9999px, 100px, 0);
-                transform: skew(0.3deg);
-            }
-            25% {
-                clip: rect(20px, 9999px, 60px, 0);
-                transform: skew(-0.5deg);
-            }
-            50% {
-                clip: rect(30px, 9999px, 80px, 0);
-                transform: skew(0.5deg);
-            }
-            75% {
-                clip: rect(10px, 9999px, 40px, 0);
-                transform: skew(-0.3deg);
-            }
-            100% {
-                clip: rect(50px, 9999px, 90px, 0);
-                transform: skew(0deg);
-            }
-        }
-
-        /* Smaller and simpler headers */
-        h2 {
-            font-size: 1.5em; /* Smaller size */
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: white;
-            position: relative;
-            display: inline-block;
+            0% { clip: rect(0, 900px, 0, 0); transform: translate(0); }
+            10% { clip: rect(0, 900px, 10px, 0); transform: translate(-2px, 0); }
+            20% { clip: rect(10px, 900px, 20px, 0); transform: translate(2px, 0); }
+            30% { clip: rect(0, 900px, 30px, 0); transform: translate(-2px, 0); }
+            40% { clip: rect(20px, 900px, 40px, 0); transform: translate(2px, 0); }
+            50% { clip: rect(10px, 900px, 50px, 0); transform: translate(-2px, 0); }
+            60% { clip: rect(0, 900px, 60px, 0); transform: translate(2px, 0); }
+            70% { clip: rect(10px, 900px, 70px, 0); transform: translate(0); }
+            80% { clip: rect(0, 900px, 80px, 0); transform: translate(-2px, 0); }
+            90% { clip: rect(20px, 900px, 90px, 0); transform: translate(2px, 0); }
+            100% { clip: rect(0, 900px, 100px, 0); transform: translate(0); }
         }
 
         .content {
@@ -108,60 +97,97 @@
             width: 60%;
         }
 
+        /* Make JR Blog and Music Section smaller and red */
+        h2 {
+            font-size: 1.2em; /* Smaller size */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+            display: inline-block;
+            color: red; /* Change to red */
+            text-shadow: 0 0 10px red;
+        }
+
+        /* Make the body paragraph text larger */
         p {
-            font-size: 1.2em;
-            line-height: 1.5;
-            color: rgb(255, 255, 255);
+            font-size: 1.5em; /* Larger paragraph text */
         }
 
-        a {
-            color: rgb(255, 255, 255);
-            text-decoration: none;
+        h2::before, h2::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: black;
+            overflow: hidden;
+            animation: glitch-animation-slow 3s infinite;
         }
 
-        a:hover {
-            text-decoration: underline;
+        h2::before {
+            color: red;
+            text-shadow: 0 0 10px red;
+            z-index: -1;
+            clip: rect(5px, 900px, 80px, 0);
         }
 
-        audio {
-            margin-top: 20px;
+        h2::after {
+            color: blue;
+            z-index: -2;
+            clip: rect(10px, 900px, 85px, 0);
+            animation: glitch-animation-slow 3s infinite alternate;
         }
 
-        /* Positioning JARCHIVE.NET in the left corner */
+        @keyframes glitch-animation-slow {
+            0% { clip: rect(0, 900px, 0, 0); transform: translate(0); }
+            10% { clip: rect(0, 900px, 10px, 0); transform: translate(-1px, 0); }
+            20% { clip: rect(10px, 900px, 20px, 0); transform: translate(1px, 0); }
+            30% { clip: rect(0, 900px, 30px, 0); transform: translate(-1px, 0); }
+            40% { clip: rect(20px, 900px, 40px, 0); transform: translate(1px, 0); }
+            50% { clip: rect(10px, 900px, 50px, 0); transform: translate(-1px, 0); }
+            60% { clip: rect(0, 900px, 60px, 0); transform: translate(1px, 0); }
+            70% { clip: rect(10px, 900px, 70px, 0); transform: translate(0); }
+            80% { clip: rect(0, 900px, 80px, 0); transform: translate(-1px, 0); }
+            90% { clip: rect(20px, 900px, 90px, 0); transform: translate(1px, 0); }
+            100% { clip: rect(0, 900px, 100px, 0); transform: translate(0); }
+        }
+
         .jarchive-dot-net {
             position: absolute;
             top: 20px;
             left: 20px;
-            font-size: 4em; /* Enlarged the font size */
+            font-size: 2.5em;
             color: white;
             text-transform: uppercase;
+            text-shadow: 0 0 10px red;
             z-index: 1;
+            border: 2px solid red;
+            padding: 10px;
         }
     </style>
 </head>
 <body>
     <header>
-        <!-- The glitch effect on the left -->
-        <div class="jarchive-dot-net glitch glitch-effect" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-
-        <!-- Main centered header -->
-        <h1 class="glitch glitch-effect" data-text="JARCHIVE">JARCHIVE</h1>
+        <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
+        <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
     </header>
 
     <div class="content">
         <section class="blog-post">
-            <h2 class="glitch-effect" data-text="JR Blog">JR Blog</h2>
+            <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
             <p>Oh Whats Up.</p>
         </section>
         <section class="music-section">
-            <h2 class="glitch-effect" data-text="Music Section">Music Section</h2>
+            <h2 class="glitch" data-text="Music Section">Music Section</h2>
             <p>Check out this cool track:</p>
             <audio controls>
-                <source src="audio/sample-music.mp3" type="audio/mpeg">
+                <source src="sample-music.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
         </section>
     </div>
 </body>
 </html>
+
 
