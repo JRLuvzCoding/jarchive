@@ -3,16 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>90s Themed Blog/Music Website</title>
+    <title>jarchive.net</title>
     <style>
         body {
-            background-color: #111;
+            background-image: url('file-qNJ2r3YByA3LbPQnduwxrQUF.png'); /* Image is in the same folder */
+            background-size: cover; /* Ensure the image covers the entire background */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the background image */
             color: #0f0;
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background-image: url('https://www.transparenttextures.com/patterns/asfalt-dark.png');
         }
         header {
             text-align: center;
@@ -27,7 +29,7 @@
         }
         .content {
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
+            background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent black background for readability */
             height: 100vh;
             display: flex;
             flex-direction: column;
@@ -98,12 +100,12 @@
     </header>
     <div class="content">
         <section class="blog-post">
-            <h2 data-text="Blog Post Title">Blog Post Title</h2>
+            <h2 data-text="Jar Blog">Jar Blog</h2>
             <p>This is a sample blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
         </section>
         <section class="music-section">
             <h2 data-text="Music Section">Music Section</h2>
-            <p>Check out this cool track:</p>
+            <p>Jar Music:</p>
             <audio controls>
                 <source src="sample-music.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -112,3 +114,5 @@
     </div>
 </body>
 </html>
+
+
