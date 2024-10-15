@@ -25,55 +25,71 @@
             text-align: center;
         }
 
-        /* Glitch text */
+        /* Glitch text for the JARCHIVE.NET in the corner */
         .glitch {
             position: relative;
-            font-size: 3em;
+            font-size: 6em; /* Increased size */
             letter-spacing: 2px;
             text-transform: uppercase;
             color: white;
             display: inline-block;
         }
 
-        /* Glitch effect for the 80s style */
-        .glitch::before, .glitch::after {
-            content: attr(data-text); /* This copies the text inside the element */
+        .glitch-effect::before, .glitch-effect::after {
+            content: attr(data-text);
             position: absolute;
-            top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             background: black;
             overflow: hidden;
             clip: rect(0, 900px, 0, 0);
-            animation: glitch-animation 3s infinite; /* Slower animation */
+            animation: glitch-animation 1s infinite;
         }
 
-        .glitch::before {
+        .glitch-effect::before {
+            top: 2px;
             color: red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
+            clip: rect(0, 900px, 70px, 0);
         }
 
-        .glitch::after {
+        .glitch-effect::after {
+            top: -2px;
             color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation 3s infinite alternate; /* Slower animation */
+            clip: rect(0, 900px, 50px, 0);
         }
 
         @keyframes glitch-animation {
-            0% { clip: rect(24px, 9999px, 85px, 0); transform: translate(2px, -2px); }
-            10% { clip: rect(60px, 9999px, 40px, 0); transform: translate(-3px, 3px); }
-            20% { clip: rect(10px, 9999px, 70px, 0); transform: translate(5px, -5px); }
-            30% { clip: rect(50px, 9999px, 90px, 0); transform: translate(-5px, 5px); }
-            40% { clip: rect(80px, 9999px, 30px, 0); transform: translate(3px, -3px); }
-            50% { clip: rect(20px, 9999px, 60px, 0); transform: translate(-2px, 2px); }
-            60% { clip: rect(70px, 9999px, 50px, 0); transform: translate(5px, -5px); }
-            70% { clip: rect(40px, 9999px, 20px, 0); transform: translate(-5px, 5px); }
-            80% { clip: rect(10px, 9999px, 90px, 0); transform: translate(2px, -2px); }
-            90% { clip: rect(90px, 9999px, 40px, 0); transform: translate(-3px, 3px); }
-            100% { clip: rect(30px, 9999px, 80px, 0); transform: translate(2px, -2px); }
+            0% {
+                clip: rect(40px, 9999px, 100px, 0);
+                transform: skew(0.3deg);
+            }
+            25% {
+                clip: rect(20px, 9999px, 60px, 0);
+                transform: skew(-0.5deg);
+            }
+            50% {
+                clip: rect(30px, 9999px, 80px, 0);
+                transform: skew(0.5deg);
+            }
+            75% {
+                clip: rect(10px, 9999px, 40px, 0);
+                transform: skew(-0.3deg);
+            }
+            100% {
+                clip: rect(50px, 9999px, 90px, 0);
+                transform: skew(0deg);
+            }
+        }
+
+        /* Smaller and simpler headers */
+        h2 {
+            font-size: 1.5em; /* Smaller size */
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: white;
+            position: relative;
+            display: inline-block;
         }
 
         .content {
@@ -90,42 +106,6 @@
             margin-bottom: 60px;
             text-align: center;
             width: 60%;
-        }
-
-        h2 {
-            font-size: 2em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            display: inline-block;
-            color: white;
-        }
-
-        /* Apply glitch effect to h2 elements as well */
-        h2::before, h2::after {
-            content: attr(data-text); /* This copies the text inside the element */
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-            clip: rect(0, 900px, 0, 0);
-            animation: glitch-animation 3s infinite; /* Slower animation */
-        }
-
-        h2::before {
-            color: red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
-        }
-
-        h2::after {
-            color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation 3s infinite alternate; /* Slower animation */
         }
 
         p {
@@ -150,31 +130,31 @@
         /* Positioning JARCHIVE.NET in the left corner */
         .jarchive-dot-net {
             position: absolute;
-            top: 20px; /* Align with header padding */
-            left: 20px; /* Align with left edge */
-            font-size: 1.5em; /* Adjust size as needed */
+            top: 20px;
+            left: 20px;
+            font-size: 4em; /* Enlarged the font size */
             color: white;
             text-transform: uppercase;
-            z-index: 1; /* Ensure it appears above other elements */
+            z-index: 1;
         }
     </style>
 </head>
 <body>
     <header>
         <!-- The glitch effect on the left -->
-        <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
+        <div class="jarchive-dot-net glitch glitch-effect" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
 
         <!-- Main centered header -->
-        <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
+        <h1 class="glitch glitch-effect" data-text="JARCHIVE">JARCHIVE</h1>
     </header>
 
     <div class="content">
         <section class="blog-post">
-            <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
+            <h2 class="glitch-effect" data-text="JR Blog">JR Blog</h2>
             <p>Oh Whats Up.</p>
         </section>
         <section class="music-section">
-            <h2 class="glitch" data-text="Music Section">Music Section</h2>
+            <h2 class="glitch-effect" data-text="Music Section">Music Section</h2>
             <p>Check out this cool track:</p>
             <audio controls>
                 <source src="audio/sample-music.mp3" type="audio/mpeg">
@@ -184,3 +164,4 @@
     </div>
 </body>
 </html>
+
