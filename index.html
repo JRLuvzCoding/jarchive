@@ -175,22 +175,20 @@
             background-color: black; /* Black background */
             padding: 10px; /* Padding around the controls */
             border-radius: 5px; /* Optional: gives a slight rounded edge */
-            border: 1px solid red; /* Smaller red border */
-            background-image: url('scratcher.png'); /* Background image for scratcher effect */
-            background-size: cover; /* Cover the entire player area */
+            border: 2px solid red; /* Optional: red border */
         }
 
         .control-button {
             background-color: #333; /* Dark grey for the button */
             color: white;
             border: none;
-            border-radius: 5px; /* Slightly rounded edges for retro look */
+            border-radius: 0; /* Square edges */
             padding: 10px 15px;
             font-size: 1em;
             cursor: pointer;
-            margin: 0 5px;
+            margin-right: 10px;
             transition: background-color 0.3s;
-            width: 60px; /* Fixed width */
+            width: 80px; /* Fixed width */
         }
 
         .control-button:hover {
@@ -202,84 +200,70 @@
             margin-right: 10px;
             background-color: #555; /* Darker background for slider track */
             border: none;
-            border-radius: 5px; /* Slightly rounded edges for retro look */
         }
 
         .control-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
             appearance: none;
             width: 15px; /* Size of the slider thumb */
-            background: #888; /* Thumb color */
-            border-radius: 50%; /* Rounded thumb */
-            cursor: pointer;
+            height: 15px;
+            background-color: red; /* Color of the thumb */
+            border-radius: 50%; /* Circular thumb */
         }
 
         .control-slider::-moz-range-thumb {
             width: 15px; /* Size of the slider thumb */
-            background: #888; /* Thumb color */
-            border-radius: 50%; /* Rounded thumb */
-            cursor: pointer;
+            height: 15px;
+            background-color: red; /* Color of the thumb */
+            border-radius: 50%; /* Circular thumb */
+        }
+
+        .volume-label {
+            color: white;
+            margin-left: 5px; /* Space between the slider and label */
         }
     </style>
 </head>
 <body>
-
-<header>
-    <h1 class="glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</h1>
-</header>
-
-<div class="content">
-    <div class="blog-post">
-        <h2 data-text="JR Blog">JR Blog</h2>
-        <p>Welcome to the JR Blog section. Here you'll find interesting posts and updates!</p>
+    <header>
+        <h1 class="glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</h1>
+    </header>
+    <div class="content">
+        <section class="blog-post">
+            <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
+            <p>Welcome to the JR Blog. Stay tuned for updates!</p>
+        </section>
+        <section class="music-section">
+            <h2 class="glitch" data-text="Music Section">Music Section</h2>
+            <p>Check out this cool track:</p>
+            <div class="audio-player">
+                <audio id="audio" src="sample_music.mp3"></audio>
+                <button id="play-pause" class="control-button">Play</button>
+                <input type="range" id="volume" class="control-slider" min="0" max="1" step="0.1" value="1">
+                <label for="volume" class="volume-label">Volume</label>
+            </div>
+        </section>
     </div>
+    <div class="jarchive-dot-net">JARCHIVE.NET</div>
 
-    <div class="music-section">
-        <h2 data-text="Music Section">Music Section</h2>
-        <p>Enjoy our curated music collection!</p>
-        
-        <!-- Audio Player -->
-        <div class="audio-player">
-            <button class="control-button" onclick="rewindAudio()">⏪</button>
-            <button class="control-button" onclick="playPauseAudio()" id="playPauseButton">▶️</button>
-            <button class="control-button" onclick="fastForwardAudio()">⏩</button>
-            <input type="range" class="control-slider" id="audioSlider" value="0" min="0" max="100" step="1" onchange="setAudioVolume()">
-            <audio id="audio" src="your-audio-file.mp3" preload="auto"></audio>
-        </div>
-    </div>
-</div>
+    <script>
+        const audio = document.getElementById('audio');
+        const playPauseButton = document.getElementById('play-pause');
+        const volumeSlider = document.getElementById('volume');
 
-<script>
-    const audio = document.getElementById('audio');
-    const playPauseButton = document.getElementById('playPauseButton');
-    const audioSlider = document.getElementById('audioSlider');
+        playPauseButton.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playPauseButton.textContent = 'Pause';
+            } else {
+                audio.pause();
+                playPauseButton.textContent = 'Play';
+            }
+        });
 
-    function playPauseAudio() {
-        if (audio.paused) {
-            audio.play();
-            playPauseButton.innerHTML = '⏸️'; // Change button to pause
-        } else {
-            audio.pause();
-            playPauseButton.innerHTML = '▶️'; // Change button to play
-        }
-    }
-
-    function rewindAudio() {
-        audio.currentTime -= 10; // Rewind 10 seconds
-    }
-
-    function fastForwardAudio() {
-        audio.currentTime += 10; // Fast forward 10 seconds
-    }
-
-    function setAudioVolume() {
-        audio.volume = audioSlider.value / 100; // Set volume based on slider
-    }
-
-    audio.addEventListener('timeupdate', () => {
-        audioSlider.value = (audio.currentTime / audio.duration) * 100; // Update slider
-    });
-</script>
-
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value;
+        });
+    </script>
 </body>
 </html>
