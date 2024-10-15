@@ -166,141 +166,46 @@
             padding: 10px;
         }
 
-        /* Custom audio player styles */
-        .audio-player {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-            background-color: black; /* Black background */
-            padding: 10px; /* Padding around the controls */
-            border-radius: 5px; /* Optional: gives a slight rounded edge */
-            border: 1px solid red; /* Reduced border width */
-            width: 80%; /* Set a specific width to reduce size */
-            max-width: 600px; /* Optional: limit maximum width */
-            position: relative; /* For glitch effect positioning */
-        }
-
-        /* Glitch effect for audio player text */
-        .audio-player .glitch-text {
-            position: relative;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: white;
-            display: inline-block;
-            margin-right: 10px; /* Space before the audio controls */
-        }
-
-        .audio-player .glitch-text::before,
-        .audio-player .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Audio player custom styles */
+        audio {
             width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-            animation: glitch-animation 3s infinite;
-        }
-
-        .audio-player .glitch-text::before {
-            color: red;
-            text-shadow: 0 0 10px red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
-        }
-
-        .audio-player .glitch-text::after {
-            color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation 3s infinite alternate;
-        }
-
-        .control-button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
+            max-width: 400px;
+            margin: 20px 0;
+            background-color: black;
+            border: 1px solid red;
+            padding: 5px;
             border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em; /* Adjust button font size */
         }
 
-        .control-slider {
-            -webkit-appearance: none; /* Remove default slider styles */
-            appearance: none; /* Remove default slider styles */
-            width: 100%; /* Full width */
-            height: 5px; /* Slider height */
-            background: white; /* Slider background */
-            border-radius: 5px; /* Rounded slider */
-            margin: 0 10px; /* Space around slider */
+        audio::-webkit-media-controls-panel {
+            background-color: black;
         }
 
-        .control-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; /* Remove default thumb styles */
-            appearance: none; /* Remove default thumb styles */
-            width: 15px; /* Size of the slider thumb */
-            height: 15px;
-            background-color: red; /* Color of the thumb */
-            border-radius: 50%; /* Circular thumb */
-        }
-
-        .control-slider::-moz-range-thumb {
-            width: 15px; /* Size of the slider thumb */
-            height: 15px;
-            background-color: red; /* Color of the thumb */
-            border-radius: 50%; /* Circular thumb */
-        }
-
-        .volume-label {
-            color: white;
-            margin-left: 5px; /* Space between the slider and label */
+        audio::-webkit-media-controls-play-button,
+        audio::-webkit-media-controls-volume-slider {
+            filter: invert(1);
         }
     </style>
 </head>
 <body>
     <header>
-        <h1 class="glitch" data-text="JARCHIVE.NET">JARCHIVE</h1>
+        <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
+        <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
     </header>
+
     <div class="content">
         <section class="blog-post">
             <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
-            <p>10/15: Oh whats up</p>
+            <p>Oh Whats Up.</p>
         </section>
         <section class="music-section">
             <h2 class="glitch" data-text="Music Section">Music Section</h2>
             <p>Check out this cool track:</p>
-            <div class="audio-player">
-                <span class="glitch-text" data-text="Audio Player">Audio Player</span>
-                <audio id="audio" src="sample_music.mp3"></audio>
-                <button id="play-pause" class="control-button">Play</button>
-                <input type="range" id="volume" class="control-slider" min="0" max="1" step="0.1" value="1">
-                <label for="volume" class="volume-label">Volume</label>
-            </div>
+            <audio controls>
+                <source src="sample_music.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
         </section>
     </div>
-    <div class="jarchive-dot-net">JARCHIVE.NET</div>
-
-    <script>
-        const audio = document.getElementById('audio');
-        const playPauseButton = document.getElementById('play-pause');
-        const volumeSlider = document.getElementById('volume');
-
-        playPauseButton.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                playPauseButton.textContent = 'Pause';
-            } else {
-                audio.pause();
-                playPauseButton.textContent = 'Play';
-            }
-        });
-
-        volumeSlider.addEventListener('input', () => {
-            audio.volume = volumeSlider.value;
-        });
-    </script>
 </body>
 </html>
