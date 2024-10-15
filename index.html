@@ -169,8 +169,8 @@
         /* Custom audio player styles */
         .audio-player {
             display: flex;
-            flex-direction: column; /* Stack elements vertically */
-            align-items: center; /* Center elements */
+            align-items: center;
+            justify-content: center;
             margin-top: 20px;
             background-color: black; /* Black background */
             padding: 10px; /* Padding around the controls */
@@ -180,43 +180,50 @@
             max-width: 600px; /* Optional: limit maximum width */
         }
 
-        /* Glitch effect for audio player text */
-        .audio-player .glitch-text {
-            position: relative;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+        .control-button {
+            background-color: #333; /* Dark grey for the button */
             color: white;
-            display: inline-block;
-            margin-bottom: 10px; /* Space above the audio controls */
+            border: none;
+            border-radius: 0; /* Square edges */
+            padding: 10px 15px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+            width: 80px; /* Fixed width */
         }
 
-        .audio-player .glitch-text::before,
-        .audio-player .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-            animation: glitch-animation 3s infinite;
+        .control-button:hover {
+            background-color: #444; /* Slightly lighter on hover */
         }
 
-        .audio-player .glitch-text::before {
-            color: red;
-            text-shadow: 0 0 10px red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
+        .control-slider {
+            width: 150px;
+            margin-right: 10px;
+            background-color: #555; /* Darker background for slider track */
+            border: none;
         }
 
-        .audio-player .glitch-text::after {
-            color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation 3s infinite alternate;
+        .control-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px; /* Size of the slider thumb */
+            height: 15px;
+            background-color: red; /* Color of the thumb */
+            border-radius: 50%; /* Circular thumb */
         }
 
+        .control-slider::-moz-range-thumb {
+            width: 15px; /* Size of the slider thumb */
+            height: 15px;
+            background-color: red; /* Color of the thumb */
+            border-radius: 50%; /* Circular thumb */
+        }
+
+        .volume-label {
+            color: white;
+            margin-left: 5px; /* Space between the slider and label */
+        }
     </style>
 </head>
 <body>
@@ -224,21 +231,41 @@
         <h1 class="glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</h1>
     </header>
     <div class="content">
-        <div class="blog-post">
+        <section class="blog-post">
             <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
-            <p>This is where you can find blog posts.</p>
-        </div>
-        <div class="music-section">
+            <p>Welcome to the JR Blog. Stay tuned for updates!</p>
+        </section>
+        <section class="music-section">
             <h2 class="glitch" data-text="Music Section">Music Section</h2>
-            <p>Explore music and playlists here.</p>
+            <p>Check out this cool track:</p>
             <div class="audio-player">
-                <span class="glitch-text" data-text="Now Playing">Now Playing:</span>
-                <audio controls>
-                    <source src="your-audio-file.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
+                <audio id="audio" src="sample_music.mp3"></audio>
+                <button id="play-pause" class="control-button">Play</button>
+                <input type="range" id="volume" class="control-slider" min="0" max="1" step="0.1" value="1">
+                <label for="volume" class="volume-label">Volume</label>
             </div>
-        </div>
+        </section>
     </div>
+    <div class="jarchive-dot-net">JARCHIVE.NET</div>
+
+    <script>
+        const audio = document.getElementById('audio');
+        const playPauseButton = document.getElementById('play-pause');
+        const volumeSlider = document.getElementById('volume');
+
+        playPauseButton.addEventListener('click', () => {
+            if (audio.paused) {
+                audio.play();
+                playPauseButton.textContent = 'Pause';
+            } else {
+                audio.pause();
+                playPauseButton.textContent = 'Play';
+            }
+        });
+
+        volumeSlider.addEventListener('input', () => {
+            audio.volume = volumeSlider.value;
+        });
+    </script>
 </body>
 </html>
