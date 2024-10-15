@@ -16,21 +16,39 @@
             padding: 0;
             overflow: hidden;
         }
+
         header {
-            display: flex;
-            justify-content: space-between;
+            position: relative;
             padding: 20px;
             border-bottom: 2px solid rgb(255, 255, 255);
             background-color: black;
+            text-align: center;
         }
-        .glitch {
-            position: relative;
+
+        /* Main centered header */
+        h1 {
             font-size: 3em;
-            text-transform: uppercase;
             letter-spacing: 2px;
+            text-transform: uppercase;
+            color: white;
+            z-index: 1;
         }
-        .glitch::before, .glitch::after {
-            content: "JARCHIVE";
+
+        /* Glitch text on the left */
+        .glitch-text {
+            position: absolute;
+            left: 20px;
+            top: 20px;
+            font-size: 2em;
+            letter-spacing: 2px;
+            color: white;
+            text-transform: uppercase;
+            border: 2px solid red; /* Red outline */
+            padding: 5px;
+        }
+
+        .glitch-text::before, .glitch-text::after {
+            content: "JARCHIVE.NET";
             position: absolute;
             left: 0;
             top: 0;
@@ -38,29 +56,36 @@
             height: 100%;
             background: black;
             overflow: hidden;
-            animation: glitch 2s infinite;
+            animation: glitch 1.5s infinite;
         }
-        .glitch::before {
+
+        .glitch-text::before {
             color: #f00;
             z-index: -1;
             clip: rect(0, 900px, 0, 0);
-            animation: glitch 2s infinite;
         }
-        .glitch::after {
+
+        .glitch-text::after {
             color: #00f;
             z-index: -2;
             clip: rect(0, 900px, 0, 0);
-            animation: glitch 2s infinite alternate;
+            animation: glitch 1.5s infinite alternate;
         }
+
         @keyframes glitch {
-            0% { clip: rect(24px, 9999px, 85px, 0); }
-            5% { clip: rect(12px, 9999px, 60px, 0); }
-            10% { clip: rect(35px, 9999px, 12px, 0); }
-            15% { clip: rect(24px, 9999px, 55px, 0); }
-            20% { clip: rect(64px, 9999px, 60px, 0); }
-            25% { clip: rect(17px, 9999px, 95px, 0); }
-            30% { clip: rect(15px, 9999px, 90px, 0); }
+            0% { clip: rect(30px, 9999px, 80px, 0); transform: translate(2px, -2px); }
+            10% { clip: rect(60px, 9999px, 40px, 0); transform: translate(-3px, 3px); }
+            20% { clip: rect(10px, 9999px, 70px, 0); transform: translate(5px, -5px); }
+            30% { clip: rect(50px, 9999px, 90px, 0); transform: translate(-5px, 5px); }
+            40% { clip: rect(80px, 9999px, 30px, 0); transform: translate(3px, -3px); }
+            50% { clip: rect(20px, 9999px, 60px, 0); transform: translate(-2px, 2px); }
+            60% { clip: rect(70px, 9999px, 50px, 0); transform: translate(5px, -5px); }
+            70% { clip: rect(40px, 9999px, 20px, 0); transform: translate(-5px, 5px); }
+            80% { clip: rect(10px, 9999px, 90px, 0); transform: translate(2px, -2px); }
+            90% { clip: rect(90px, 9999px, 40px, 0); transform: translate(-3px, 3px); }
+            100% { clip: rect(30px, 9999px, 80px, 0); transform: translate(2px, -2px); }
         }
+
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8); /* Slightly transparent black background for readability */
@@ -70,29 +95,35 @@
             justify-content: center;
             align-items: center;
         }
+
         .blog-post, .music-section {
             margin-bottom: 60px;
             text-align: center;
             width: 60%;
         }
+
         h2 {
             color: #f00;
             font-size: 2em;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
+
         p {
             font-size: 1.2em;
             line-height: 1.5;
             color: rgb(255, 255, 255);
         }
+
         a {
             color: rgb(255, 255, 255);
             text-decoration: none;
         }
+
         a:hover {
             text-decoration: underline;
         }
+
         audio {
             margin-top: 20px;
         }
@@ -100,8 +131,13 @@
 </head>
 <body>
     <header>
-        <div class="glitch">JARCHIVE</div>
+        <!-- The new glitch effect on the left -->
+        <div class="glitch-text">JARCHIVE.NET</div>
+
+        <!-- Main centered header -->
+        <h1>JARCHIVE</h1>
     </header>
+
     <div class="content">
         <section class="blog-post">
             <h2>JR Blog</h2>
@@ -118,4 +154,3 @@
     </div>
 </body>
 </html>
-
