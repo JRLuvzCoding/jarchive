@@ -25,7 +25,6 @@
             text-align: center;
         }
 
-        /* Glitch text */
         .glitch {
             position: relative;
             letter-spacing: 2px;
@@ -34,10 +33,9 @@
             display: inline-block;
         }
 
-        /* Make the main title smaller and red */
         h1.glitch {
-            font-size: 2.5em; /* Smaller size */
-            color: red; /* Change to red */
+            font-size: 2.5em;
+            color: red;
             text-shadow: 0 0 10px red;
         }
 
@@ -97,60 +95,18 @@
             width: 60%;
         }
 
-        /* Make JR Blog and Music Section smaller and red */
         h2 {
-            font-size: 1.2em; /* Smaller size */
+            font-size: 1.2em;
             text-transform: uppercase;
             letter-spacing: 1px;
             position: relative;
             display: inline-block;
-            color: red; /* Change to red */
-            text-shadow: 0 0 10px red;
-        }
-
-        /* Make the body paragraph text larger */
-        p {
-            font-size: 1.5em; /* Larger paragraph text */
-        }
-
-        h2::before, h2::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-            animation: glitch-animation-slow 3s infinite;
-        }
-
-        h2::before {
             color: red;
             text-shadow: 0 0 10px red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
         }
 
-        h2::after {
-            color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation-slow 3s infinite alternate;
-        }
-
-        @keyframes glitch-animation-slow {
-            0% { clip: rect(0, 900px, 0, 0); transform: translate(0); }
-            10% { clip: rect(0, 900px, 10px, 0); transform: translate(-1px, 0); }
-            20% { clip: rect(10px, 900px, 20px, 0); transform: translate(1px, 0); }
-            30% { clip: rect(0, 900px, 30px, 0); transform: translate(-1px, 0); }
-            40% { clip: rect(20px, 900px, 40px, 0); transform: translate(1px, 0); }
-            50% { clip: rect(10px, 900px, 50px, 0); transform: translate(-1px, 0); }
-            60% { clip: rect(0, 900px, 60px, 0); transform: translate(1px, 0); }
-            70% { clip: rect(10px, 900px, 70px, 0); transform: translate(0); }
-            80% { clip: rect(0, 900px, 80px, 0); transform: translate(-1px, 0); }
-            90% { clip: rect(20px, 900px, 90px, 0); transform: translate(1px, 0); }
-            100% { clip: rect(0, 900px, 100px, 0); transform: translate(0); }
+        p {
+            font-size: 1.5em;
         }
 
         .jarchive-dot-net {
@@ -166,25 +122,57 @@
             padding: 10px;
         }
 
-        /* Audio player custom styles */
+        /* Retro-themed audio player styles */
         audio {
             width: 100%;
             max-width: 400px;
             margin: 20px 0;
             background-color: black;
             border: 1px solid red;
-            padding: 5px;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+        }
+
+        /* Retro-style controls for play and volume */
+        audio::-webkit-media-controls-panel {
+            background-color: black;
+            border: 2px solid red;
+            border-radius: 10px;
+        }
+
+        audio::-webkit-media-controls-play-button {
+            background-color: red;
+            border: 2px solid white;
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
+        }
+
+        audio::-webkit-media-controls-volume-slider {
+            background-color: white;
+            border: 2px solid red;
+            height: 10px;
             border-radius: 5px;
         }
 
-        audio::-webkit-media-controls-panel {
-            background-color: black;
+        audio::-webkit-media-controls-timeline {
+            background-color: white;
+            border: 2px solid red;
+            height: 10px;
+            border-radius: 5px;
         }
 
-        audio::-webkit-media-controls-play-button,
-        audio::-webkit-media-controls-volume-slider {
-            filter: invert(1);
+        /* Add visible retro-style knobs */
+        audio::-webkit-media-controls-mute-button,
+        audio::-webkit-media-controls-volume-up-button {
+            background-color: red;
+            border: 2px solid white;
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
         }
+
     </style>
 </head>
 <body>
