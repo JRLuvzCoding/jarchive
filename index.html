@@ -3,129 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Car JArchive</title>
+    <title>90s Themed Blog/Music Website</title>
     <style>
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #e0f7fa;
-            color: #333;
+            background-color: black;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
         }
-
-        .header {
-            background-color: #00796b;
-            color: white;
+        header {
             text-align: center;
             padding: 20px;
-            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid white;
         }
-
-        .header h1 {
-            font-size: 2.5rem;
-            margin: 0;
-        }
-
-        .header p {
-            margin: 10px 0;
-            font-size: 1.2rem;
-            font-style: italic;
-        }
-
         .content {
-            padding: 40px;
-            max-width: 900px;
-            margin: auto;
-        }
-
-        .content h2 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-        }
-
-        .content p {
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
-
-        .car-image {
-            width: 100%;
-            max-width: 500px;
-            border-radius: 10px;
-            box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.1);
-            margin: 30px 0;
-        }
-
-        .footer {
-            text-align: center;
             padding: 20px;
-            background-color: #004d40;
+        }
+        .blog-post, .music-section {
+            margin-bottom: 40px;
+        }
+        h1, h2, h3 {
             color: white;
-            font-size: 1rem;
-            position: relative;
-            bottom: 0;
-            width: 100%;
         }
-
-        .footer p {
-            margin: 0;
-        }
-
-        .chill-section {
-            background-color: #b2dfdb;
-            padding: 30px;
-            border-radius: 10px;
-            margin-top: 50px;
-            text-align: center;
-            box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .chill-section h3 {
-            font-size: 1.8rem;
-            color: #00796b;
-        }
-
-        .chill-section p {
-            font-size: 1.1rem;
-            font-style: italic;
-        }
-
         a {
-            color: #00796b;
+            color: white;
             text-decoration: none;
         }
-
         a:hover {
             text-decoration: underline;
         }
     </style>
 </head>
 <body>
-
-    <div class="header">
-        <h1>Welcome to Car JArchive</h1>
-        <p>Chillin' with the coolest rides and vibes</p>
-    </div>
-
+    <header>
+        <h1>90s Themed Blog/Music Website</h1>
+    </header>
     <div class="content">
-        <h2>What's Car JArchive?</h2>
-        <p>
-            Car JArchive is a digital place where car enthusiasts, collectors, and dreamers can explore a variety of amazing vehicles.
-            From classic muscle cars to the latest supercars, we've got a little bit of everything for the true petrolhead.
-        </p>
-
-        <img src="https://via.placeholder.com/500" alt="Car Image" class="car-image">
-
-        <div class="chill-section">
-            <h3>Take a Break & Chill</h3>
-            <p>Life's too short to rush. Enjoy the ride, take a deep breath, and appreciate the beauty around you. Whether you're cruising down the highway or admiring a classic car, every moment counts.</p>
-            <p>Find more cool stuff on our <a href="#">Instagram</a> and <a href="#">YouTube</a>.</p>
-        </div>
+        <section class="blog-post">
+            <h2>Blog Post Title</h2>
+            <p>This is a sample blog post. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+        </section>
+        <section class="music-section">
+            <h2>Music Section</h2>
+            <p>Check out this cool track:</p>
+            <audio controls>
+                <source src="sample-music.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </section>
     </div>
-
-    <div class="footer">
-        <p>&copy; 2024 Car JArchive | Stay chill, stay curious.</p>
-    </div>
-
 </body>
 </html>
