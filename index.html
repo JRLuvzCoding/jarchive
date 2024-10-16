@@ -175,6 +175,38 @@
             width: 20px;
         }
 
+        /* Style for the 'Play Next Song' button */
+        #nextTrackButton {
+            background-color: black;
+            color: red;
+            border: 1px solid red;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
+            width: 100%;
+            max-width: 400px;
+            margin: 20px 0;
+            cursor: pointer;
+            display: block;
+            text-align: center;
+            transition: background-color 0.3s;
+        }
+
+        /* Hover effect */
+        #nextTrackButton:hover {
+            background-color: red;
+            color: black;
+        }
+
+        /* Center the button */
+        .audio-controls {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
         /* Social media links */
         .social-links a {
             color: white;
@@ -235,7 +267,10 @@
                 <source id="audioSource" src="sample_music.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <button onclick="changeTrack('song2.mp3')">Play Next Song</button>
+            <!-- Centered and styled button -->
+            <div class="audio-controls">
+                <button id="nextTrackButton" onclick="changeTrack('song2.mp3')">Play Next Song</button>
+            </div>
         </section>
 
         <div class="social-links">
@@ -281,4 +316,5 @@
     </script>
 </body>
 </html>
+
 
