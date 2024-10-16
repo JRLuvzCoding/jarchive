@@ -14,7 +14,7 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-y: scroll; /* Allow vertical scrolling */
         }
 
         header {
@@ -25,7 +25,6 @@
             text-align: center;
         }
 
-        /* Glitch text */
         .glitch {
             position: relative;
             letter-spacing: 2px;
@@ -34,10 +33,9 @@
             display: inline-block;
         }
 
-        /* Make the main title smaller and red */
         h1.glitch {
-            font-size: 2.5em; /* Smaller size */
-            color: red; /* Change to red */
+            font-size: 2.5em;
+            color: red;
             text-shadow: 0 0 10px red;
         }
 
@@ -84,7 +82,7 @@
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
-            height: 100vh;
+            min-height: 100vh; /* Ensures it takes at least the full viewport */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -97,60 +95,18 @@
             width: 60%;
         }
 
-        /* Make JR Blog and Music Section smaller and red */
         h2 {
-            font-size: 1.2em; /* Smaller size */
+            font-size: 1.2em;
             text-transform: uppercase;
             letter-spacing: 1px;
             position: relative;
             display: inline-block;
-            color: red; /* Change to red */
-            text-shadow: 0 0 10px red;
-        }
-
-        /* Make the body paragraph text larger */
-        p {
-            font-size: 1.5em; /* Larger paragraph text */
-        }
-
-        h2::before, h2::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-            animation: glitch-animation-slow 3s infinite;
-        }
-
-        h2::before {
             color: red;
             text-shadow: 0 0 10px red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
         }
 
-        h2::after {
-            color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation-slow 3s infinite alternate;
-        }
-
-        @keyframes glitch-animation-slow {
-            0% { clip: rect(0, 900px, 0, 0); transform: translate(0); }
-            10% { clip: rect(0, 900px, 10px, 0); transform: translate(-1px, 0); }
-            20% { clip: rect(10px, 900px, 20px, 0); transform: translate(1px, 0); }
-            30% { clip: rect(0, 900px, 30px, 0); transform: translate(-1px, 0); }
-            40% { clip: rect(20px, 900px, 40px, 0); transform: translate(1px, 0); }
-            50% { clip: rect(10px, 900px, 50px, 0); transform: translate(-1px, 0); }
-            60% { clip: rect(0, 900px, 60px, 0); transform: translate(1px, 0); }
-            70% { clip: rect(10px, 900px, 70px, 0); transform: translate(0); }
-            80% { clip: rect(0, 900px, 80px, 0); transform: translate(-1px, 0); }
-            90% { clip: rect(20px, 900px, 90px, 0); transform: translate(1px, 0); }
-            100% { clip: rect(0, 900px, 100px, 0); transform: translate(0); }
+        p {
+            font-size: 1.5em;
         }
 
         .jarchive-dot-net {
@@ -166,106 +122,79 @@
             padding: 10px;
         }
 
-        /* Custom audio player styles */
-        .audio-player {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-top: 20px;
-            background-color: black; /* Black background */
-            padding: 10px; /* Padding around the controls */
-            border-radius: 5px; /* Optional: gives a slight rounded edge */
-            border: 1px solid red; /* Reduced border width */
-            width: 80%; /* Set a specific width to reduce size */
-            max-width: 600px; /* Optional: limit maximum width */
-            position: relative; /* For glitch effect positioning */
-        }
-
-        /* Glitch effect for audio player text */
-        .audio-player .glitch-text {
-            position: relative;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: white;
-            display: inline-block;
-            margin-right: 10px; /* Space before the audio controls */
-        }
-
-        .audio-player .glitch-text::before,
-        .audio-player .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
+        /* Retro-themed audio player styles with pixelation */
+        audio {
             width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-            animation: glitch-animation 3s infinite;
+            max-width: 400px;
+            margin: 20px 0;
+            background-color: black;
+            border: 1px solid red;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
+            image-rendering: pixelated; /* Adds pixelated look */
         }
 
-        .audio-player .glitch-text::before {
-            color: red;
-            text-shadow: 0 0 10px red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
+        audio::-webkit-media-controls-panel {
+            background-color: black;
+            border: none; /* Remove the unwanted white border */
+            border-radius: 10px;
         }
 
-        .audio-player .glitch-text::after {
-            color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation 3s infinite alternate;
+        audio::-webkit-media-controls-play-button {
+            background-color: red;
+            border: 2px solid white;
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
         }
 
-        /* Scrollbar styling for Webkit-based browsers (Chrome, Safari, Edge) */
-        ::-webkit-scrollbar {
-            width: 12px;
+        audio::-webkit-media-controls-volume-slider {
+            background-color: red;
+            border: none; /* Remove the white border */
+            height: 10px;
+            border-radius: 5px;
         }
 
-        ::-webkit-scrollbar-track {
-            background: #000; /* Scrollbar track background */
+        audio::-webkit-media-controls-timeline {
+            background-color: red;
+            border: none; /* Remove the white border */
+            height: 10px;
+            border-radius: 5px;
         }
 
-        ::-webkit-scrollbar-thumb {
-            background-color: #333; /* Scrollbar thumb color */
-            border-radius: 10px; /* Rounded corners */
-            border: 2px solid #000; /* Adds a border matching the background */
-        }
-
-        /* For Firefox, scrollbars are styled differently */
-        * {
-            scrollbar-width: thin;
-            scrollbar-color: #333 #000; /* Thumb color, Track color */
+        audio::-webkit-media-controls-mute-button,
+        audio::-webkit-media-controls-volume-up-button {
+            background-color: red;
+            border: 2px solid white;
+            border-radius: 50%;
+            height: 20px;
+            width: 20px;
         }
 
     </style>
 </head>
 <body>
     <header>
+        <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
         <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
     </header>
 
     <div class="content">
-        <div class="blog-post">
+        <section class="blog-post">
             <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
-            <p>Welcome to the JR Blog where you can find the latest news, updates, and features related to music and technology.</p>
-        </div>
-
-        <div class="music-section">
+            <p>Oh Whats Up.</p>
+        </section>
+        <section class="music-section">
             <h2 class="glitch" data-text="Music Section">Music Section</h2>
-            <p>Discover new tracks, albums, and exclusive releases. Stay tuned for the latest in the world of music.</p>
-
-            <div class="audio-player">
-                <div class="glitch-text" data-text="Now Playing:">Now Playing:</div>
-                <audio controls>
-                    <source src="song.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
-            </div>
-        </div>
+            <p>Check out this cool track:</p>
+            <p>IMissJackson.wav</p>
+            <audio controls>
+                <source src="sample_music.mp3" type="audio/mpeg">
+                Your browser does not support the audio element.
+            </audio>
+        </section>
     </div>
-
-    <div class="jarchive-dot-net">JARCHIVE.NET</div>
 </body>
 </html>
