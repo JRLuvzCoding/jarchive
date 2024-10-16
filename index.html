@@ -218,89 +218,54 @@
             animation: glitch-animation 3s infinite alternate;
         }
 
-        .control-button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1em; /* Adjust button font size */
+        /* Scrollbar styling for Webkit-based browsers (Chrome, Safari, Edge) */
+        ::-webkit-scrollbar {
+            width: 12px;
         }
 
-        .control-slider {
-            -webkit-appearance: none; /* Remove default slider styles */
-            appearance: none; /* Remove default slider styles */
-            width: 100%; /* Full width */
-            height: 5px; /* Slider height */
-            background: white; /* Slider background */
-            border-radius: 5px; /* Rounded slider */
-            margin: 0 10px; /* Space around slider */
+        ::-webkit-scrollbar-track {
+            background: #000; /* Scrollbar track background */
         }
 
-        .control-slider::-webkit-slider-thumb {
-            -webkit-appearance: none; /* Remove default thumb styles */
-            appearance: none; /* Remove default thumb styles */
-            width: 15px; /* Size of the slider thumb */
-            height: 15px;
-            background-color: red; /* Color of the thumb */
-            border-radius: 50%; /* Circular thumb */
+        ::-webkit-scrollbar-thumb {
+            background-color: #333; /* Scrollbar thumb color */
+            border-radius: 10px; /* Rounded corners */
+            border: 2px solid #000; /* Adds a border matching the background */
         }
 
-        .control-slider::-moz-range-thumb {
-            width: 15px; /* Size of the slider thumb */
-            height: 15px;
-            background-color: red; /* Color of the thumb */
-            border-radius: 50%; /* Circular thumb */
+        /* For Firefox, scrollbars are styled differently */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #333 #000; /* Thumb color, Track color */
         }
 
-        .volume-label {
-            color: white;
-            margin-left: 5px; /* Space between the slider and label */
-        }
     </style>
 </head>
 <body>
     <header>
-        <h1 class="glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</h1>
+        <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
     </header>
+
     <div class="content">
-        <section class="blog-post">
+        <div class="blog-post">
             <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
-            <p>Welcome to the JR Blog. Stay tuned for updates!</p>
-        </section>
-        <section class="music-section">
+            <p>Welcome to the JR Blog where you can find the latest news, updates, and features related to music and technology.</p>
+        </div>
+
+        <div class="music-section">
             <h2 class="glitch" data-text="Music Section">Music Section</h2>
-            <p>Check out this cool track:</p>
+            <p>Discover new tracks, albums, and exclusive releases. Stay tuned for the latest in the world of music.</p>
+
             <div class="audio-player">
-                <span class="glitch-text" data-text="Audio Player">Audio Player</span>
-                <audio id="audio" src="sample_music.mp3"></audio>
-                <button id="play-pause" class="control-button">Play</button>
-                <input type="range" id="volume" class="control-slider" min="0" max="1" step="0.1" value="1">
-                <label for="volume" class="volume-label">Volume</label>
+                <div class="glitch-text" data-text="Now Playing:">Now Playing:</div>
+                <audio controls>
+                    <source src="song.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
             </div>
-        </section>
+        </div>
     </div>
+
     <div class="jarchive-dot-net">JARCHIVE.NET</div>
-
-    <script>
-        const audio = document.getElementById('audio');
-        const playPauseButton = document.getElementById('play-pause');
-        const volumeSlider = document.getElementById('volume');
-
-        playPauseButton.addEventListener('click', () => {
-            if (audio.paused) {
-                audio.play();
-                playPauseButton.textContent = 'Pause';
-            } else {
-                audio.pause();
-                playPauseButton.textContent = 'Play';
-            }
-        });
-
-        volumeSlider.addEventListener('input', () => {
-            audio.volume = volumeSlider.value;
-        });
-    </script>
 </body>
 </html>
