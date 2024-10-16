@@ -14,7 +14,7 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            overflow: hidden;
+            overflow-y: scroll; /* Allow vertical scrolling */
         }
 
         header {
@@ -82,7 +82,7 @@
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
-            height: 100vh;
+            min-height: 100vh; /* Ensures it takes at least the full viewport */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -164,7 +164,6 @@
             border-radius: 5px;
         }
 
-        /* Add visible retro-style knobs */
         audio::-webkit-media-controls-mute-button,
         audio::-webkit-media-controls-volume-up-button {
             background-color: red;
@@ -195,12 +194,6 @@
                 <source src="sample_music.mp3" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
-            <p></p>
         </section>
     </div>
 </body>
