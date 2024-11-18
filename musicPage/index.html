@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>JARCHIVE.NET - Music</title>
-    <link rel="icon" href="../icon-website.png" type="image/png"> <!-- Favicon link -->
+    <link rel="icon" href="../icon-website.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
@@ -148,23 +148,23 @@
 
         .song-list {
             width: 80%;
-            margin: 20px auto;
+            margin: 10px auto;
             border-collapse: collapse;
             table-layout: fixed;
         }
 
         .song-list th, .song-list td {
-            padding: 10px;
+            padding: 5px; /* Reduced padding for cleaner look */
             text-align: left;
             border-bottom: 1px solid red;
-            height: 100px;
+            height: 80px; /* Adjusted row height */
             vertical-align: middle;
             overflow: hidden;
         }
 
         .song-list th {
             color: red;
-            font-size: 1.2em;
+            font-size: 1em;
         }
 
         .song-list td {
@@ -173,17 +173,17 @@
         }
 
         .album-cover {
-            width: 80px;
-            height: 80px;
+            width: 60px; /* Smaller album cover for cleaner look */
+            height: 60px;
             object-fit: cover;
             border-radius: 5px;
         }
 
         .play-button {
-            font-size: 1.5em;
+            font-size: 1.2em; /* Slightly smaller play button */
             color: red;
             cursor: pointer;
-            margin-right: 10px;
+            margin-right: 5px;
         }
 
         footer {
@@ -222,24 +222,25 @@
                     <th></th>
                     <th>Title</th>
                     <th>Date Added</th>
-                    <th>Song length</th>
+                    <th>Song Length</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><i class="fas fa-play play-button"></i></td>
-                    <td><img src="IMissJackson.jpg" alt="IMissJackson" class="album-cover"></td>
-                    <td>IMissJackson</td>
-                    <td>Aug 12, 2018</td>
-                    <td>3:45</td>
-                </tr>
-                <tr>
-                    <td><i class="fas fa-play play-button"></i></td>
+                    <td><i class="fas fa-play play-button" data-audio="SomethingsKnocking.wav"></i></td>
                     <td><img src="album-cover2.jpg" alt="SomethingsKnocking" class="album-cover"></td>
                     <td>SomethingsKnocking</td>
-                    <td>Aug 12, 2018</td>
+                    <td>Nov 17, 2024</td>
                     <td>4:12</td>
                 </tr>
+                <tr>
+                    <td><i class="fas fa-play play-button" data-audio="IMissJackson.mp3"></i></td>
+                    <td><img src="IMissJackson.jpg" alt="IMissJackson" class="album-cover"></td>
+                    <td>IMissJackson</td>
+                    <td>Oct 10, 2024</td>
+                    <td>3:50</td>
+                </tr>
+                
                 <!-- Add more songs as needed -->
             </tbody>
         </table>
@@ -255,7 +256,6 @@
             menu.classList.toggle('show-menu');
         }
 
-        // Play button functionality placeholder
         document.querySelectorAll('.play-button').forEach(button => {
             button.addEventListener('click', () => {
                 alert('Play functionality will be implemented here.');
