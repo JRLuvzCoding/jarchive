@@ -98,7 +98,7 @@
         .menu-icon div {
             width: 35px;
             height: 5px;
-            background-color: red;
+            background-color: rgb(250, 248, 248);
             margin: 6px 0;
             transition: 0.4s;
         }
@@ -109,7 +109,7 @@
             top: 50px;
             right: 0;
             background-color: black;
-            border: 2px solid red;
+            border: 2px solid rgb(255, 255, 255);
             padding: 10px;
             list-style-type: none;
             margin: 0;
@@ -124,7 +124,7 @@
             text-decoration: none;
             font-size: 1.2em;
             text-transform: uppercase;
-            text-shadow: 0 0 10px red;
+            text-shadow: 0 0 10px rgb(255, 255, 255);
         }
 
         nav ul.show-menu {
@@ -142,8 +142,8 @@
             left: 50%;
             transform: translateX(-50%);
             font-size: 1.8em;
-            color: red;
-            text-shadow: 0 0 10px red;
+            color: rgb(255, 255, 255);
+            text-shadow: 0 0 10px rgb(255, 255, 255);
         }
 
         .song-list {
@@ -163,7 +163,7 @@
         }
 
         .song-list th {
-            color: red;
+            color: rgb(253, 253, 253);
             font-size: 1em;
         }
 
@@ -181,7 +181,7 @@
 
         .play-button {
             font-size: 1.2em; /* Slightly smaller play button */
-            color: red;
+            color: rgb(255, 255, 255);
             cursor: pointer;
             margin-right: 5px;
         }
@@ -190,8 +190,8 @@
             text-align: center;
             padding: 20px;
             background-color: black;
-            color: red;
-            border-top: 2px solid red;
+            color: rgb(255, 255, 255);
+            border-top: 2px solid rgb(255, 255, 255);
         }
     </style>
 </head>
@@ -227,11 +227,11 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><i class="fas fa-play play-button" data-audio="SomethingsKnocking.wav"></i></td>
-                    <td><img src="album-cover2.jpg" alt="SomethingsKnocking" class="album-cover"></td>
+                    <td><i class="fas fa-play play-button" data-audio="somethingsKnocking.wav"></i></td>
+                    <td><img src="Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover"></td>
                     <td>SomethingsKnocking</td>
                     <td>Nov 17, 2024</td>
-                    <td>4:12</td>
+                    <td>2:14</td>
                 </tr>
                 <tr>
                     <td><i class="fas fa-play play-button" data-audio="IMissJackson.mp3"></i></td>
@@ -240,8 +240,6 @@
                     <td>Oct 10, 2024</td>
                     <td>3:50</td>
                 </tr>
-                
-                <!-- Add more songs as needed -->
             </tbody>
         </table>
     </div>
@@ -258,7 +256,24 @@
 
         document.querySelectorAll('.play-button').forEach(button => {
             button.addEventListener('click', () => {
-                alert('Play functionality will be implemented here.');
+                const audioSrc = button.getAttribute('data-audio');
+                
+                // Stop any currently playing audio
+                document.querySelectorAll('audio').forEach(audio => {
+                    audio.pause();
+                    audio.remove();
+                });
+
+                // Create a new audio element and play it
+                const audio = new Audio(audioSrc);
+                audio.play();
+
+                // Change button icon to pause and reset others
+                document.querySelectorAll('.play-button').forEach(btn => btn.classList.replace('fa-pause', 'fa-play'));
+                button.classList.replace('fa-play', 'fa-pause');
+
+                // Reset the button when audio ends
+                audio.onended = () => button.classList.replace('fa-pause', 'fa-play');
             });
         });
     </script>
