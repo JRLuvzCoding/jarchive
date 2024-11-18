@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>JARCHIVE</title>
+    <title>JARCHIVE.NET</title>
     <link rel="icon" href="icon-website.png" type="image/png"> <!-- Favicon link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -30,22 +30,9 @@
         }
 
         .jarchive-dot-net {
-            position: relative; /* Changed from absolute to relative */
-            margin-right: 20px; /* Added spacing between elements */
-            font-size: 1.5em; /* Adjusted the size for balance */
-            color: white;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px red;
-            border: 2px solid red;
-            padding: 5px 10px; /* Padding adjusted for aesthetics */
-            background-color: black; /* Ensure it contrasts against the header */
-        }
-
-        .glitch {
             position: relative;
-            display: inline-block;
+            font-size: 2.5em; /* Adjusted font size for prominence */
             color: white;
-            font-size: 2.5em;
             text-transform: uppercase;
             letter-spacing: 2px;
             overflow: hidden;
@@ -55,11 +42,11 @@
                 0 0 20px red,
                 0 0 40px red,
                 0 0 80px red;
-            margin: 0; /* Removed default margins */
+            margin: 0 20px; /* Added margin for spacing */
         }
 
-        .glitch::before,
-        .glitch::after {
+        .jarchive-dot-net::before,
+        .jarchive-dot-net::after {
             content: attr(data-text);
             position: absolute;
             left: 0;
@@ -68,14 +55,14 @@
             clip: rect(0, 0, 0, 0);
         }
 
-        .glitch::before {
+        .jarchive-dot-net::before {
             top: -2px;
             left: -2px;
             text-shadow: 1px 0 red;
             animation: glitch-top 2s infinite ease-in-out alternate-reverse;
         }
 
-        .glitch::after {
+        .jarchive-dot-net::after {
             top: 2px;
             left: 2px;
             text-shadow: -1px 0 blue;
@@ -260,8 +247,7 @@
     </div>
 
     <header>
-        <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-        <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
+        <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
         <nav>
             <div class="menu-icon" onclick="toggleMenu()">
                 <div></div>
@@ -278,7 +264,7 @@
 
     <div class="content">
         <section class="intro">
-            <h2>Welcome to JARCHIVE</h2>
+            <h2>Welcome to JARCHIVE.NET</h2>
             <p>
                 Hello! I'm Jonathan Rodriguez, a passionate musician and blogger. Welcome to my personal website where I share my thoughts, creations, and everything in between. Feel free to explore my latest blog posts, listen to my music, or get in touch.
             </p>
@@ -295,7 +281,7 @@
     </div>
 
     <footer>
-        <p>© 2024 JARCHIVE. All rights reserved.</p>
+        <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
     </footer>
 
     <button id="backToTop">Back to Top</button>
@@ -326,5 +312,7 @@
         }
     </script>
 </body>
+</html>
+
 </html>
 

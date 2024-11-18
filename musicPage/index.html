@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>JARCHIVE - Music</title>
+    <title>JARCHIVE.NET - Music</title>
     <link rel="icon" href="../icon-website.png" type="image/png"> <!-- Favicon link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
@@ -22,77 +22,105 @@
             position: relative;
             padding: 20px;
             border-bottom: 2px solid rgb(255, 255, 255);
-            background-color: #111; /* Slightly different from black */
+            background-color: black;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-start; /* Align items to the start */
+            height: 80px; /* Set a consistent height */
         }
 
         .jarchive-dot-net {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 2.5em;
-            color: white;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px red;
-            z-index: 1;
-            border: 2px solid red;
-            padding: 10px;
-        }
-
-        .glitch {
             position: relative;
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 2.5em; /* Adjusted font size for prominence */
             color: white;
-            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            overflow: hidden;
+            text-shadow:
+                0 0 5px red,
+                0 0 10px red,
+                0 0 20px red,
+                0 0 40px red,
+                0 0 80px red;
+            margin: 0 20px; /* Added margin for spacing */
         }
 
-        h1.glitch {
-            font-size: 2.5em;
-            color: cyan; /* Changed color to cyan for differentiation */
-            text-shadow: 0 0 10px cyan;
-        }
-
-        .glitch::before, .glitch::after {
+        .jarchive-dot-net::before,
+        .jarchive-dot-net::after {
             content: attr(data-text);
             position: absolute;
-            top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background: #111;
-            overflow: hidden;
-            animation: glitch-animation 3s infinite;
+            background: transparent;
+            clip: rect(0, 0, 0, 0);
         }
 
-        .glitch::before {
-            color: cyan;
-            text-shadow: 0 0 10px cyan;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
+        .jarchive-dot-net::before {
+            top: -2px;
+            left: -2px;
+            text-shadow: 1px 0 red;
+            animation: glitch-top 2s infinite ease-in-out alternate-reverse;
         }
 
-        .glitch::after {
-            color: magenta;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation 3s infinite alternate;
+        .jarchive-dot-net::after {
+            top: 2px;
+            left: 2px;
+            text-shadow: -1px 0 blue;
+            animation: glitch-bottom 2s infinite ease-in-out alternate-reverse;
         }
 
-        @keyframes glitch-animation {
-            0% { clip: rect(0, 900px, 0, 0); transform: translate(0); }
-            10% { clip: rect(0, 900px, 10px, 0); transform: translate(-2px, 0); }
-            20% { clip: rect(10px, 900px, 20px, 0); transform: translate(2px, 0); }
-            30% { clip: rect(0, 900px, 30px, 0); transform: translate(-2px, 0); }
-            40% { clip: rect(20px, 900px, 40px, 0); transform: translate(2px, 0); }
-            50% { clip: rect(10px, 900px, 50px, 0); transform: translate(-2px, 0); }
-            60% { clip: rect(0, 900px, 60px, 0); transform: translate(2px, 0); }
-            70% { clip: rect(10px, 900px, 70px, 0); transform: translate(0); }
-            80% { clip: rect(0, 900px, 80px, 0); transform: translate(-2px, 0); }
-            90% { clip: rect(20px, 900px, 90px, 0); transform: translate(2px, 0); }
-            100% { clip: rect(0, 900px, 100px, 0); transform: translate(0); }
+        @keyframes glitch-top {
+            0% {
+                clip: rect(0, 9999px, 0, 0);
+                transform: translate(0);
+            }
+            20% {
+                clip: rect(0, 9999px, 10px, 0);
+                transform: translate(-2px, -2px);
+            }
+            40% {
+                clip: rect(10px, 9999px, 20px, 0);
+                transform: translate(2px, 0);
+            }
+            60% {
+                clip: rect(20px, 9999px, 30px, 0);
+                transform: translate(-2px, 2px);
+            }
+            80% {
+                clip: rect(30px, 9999px, 40px, 0);
+                transform: translate(2px, -2px);
+            }
+            100% {
+                clip: rect(40px, 9999px, 50px, 0);
+                transform: translate(0);
+            }
+        }
+
+        @keyframes glitch-bottom {
+            0% {
+                clip: rect(50px, 9999px, 60px, 0);
+                transform: translate(0);
+            }
+            20% {
+                clip: rect(40px, 9999px, 50px, 0);
+                transform: translate(2px, 2px);
+            }
+            40% {
+                clip: rect(30px, 9999px, 40px, 0);
+                transform: translate(-2px, 0);
+            }
+            60% {
+                clip: rect(20px, 9999px, 30px, 0);
+                transform: translate(2px, -2px);
+            }
+            80% {
+                clip: rect(10px, 9999px, 20px, 0);
+                transform: translate(-2px, 2px);
+            }
+            100% {
+                clip: rect(0, 9999px, 10px, 0);
+                transform: translate(0);
+            }
         }
 
         /* Hamburger menu styles */
@@ -111,7 +139,7 @@
         .menu-icon div {
             width: 35px;
             height: 5px;
-            background-color: cyan; /* Changed color */
+            background-color: red;
             margin: 6px 0;
             transition: 0.4s;
         }
@@ -122,8 +150,8 @@
             position: absolute;
             top: 50px;
             right: 0;
-            background-color: #111;
-            border: 2px solid cyan; /* Changed color */
+            background-color: black;
+            border: 2px solid red;
             padding: 10px;
             list-style-type: none;
             margin: 0;
@@ -138,7 +166,7 @@
             text-decoration: none;
             font-size: 1.2em;
             text-transform: uppercase;
-            text-shadow: 0 0 10px cyan;
+            text-shadow: 0 0 10px red;
         }
 
         /* Show the menu when the menu-icon is clicked */
@@ -148,7 +176,7 @@
 
         .content {
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.9); /* Slightly darker */
+            background-color: rgba(0, 0, 0, 0.8);
             min-height: 100vh; /* Ensures it takes at least the full viewport */
             display: flex;
             flex-direction: column;
@@ -169,8 +197,8 @@
 
         .track-title {
             font-size: 1.8em;
-            color: cyan; /* Changed color */
-            text-shadow: 0 0 10px cyan;
+            color: red; /* Changed to match main page */
+            text-shadow: 0 0 10px red;
             margin-bottom: 10px;
         }
 
@@ -179,17 +207,17 @@
             margin-bottom: 20px;
         }
 
-        /* Retro-themed audio player styles with pixelation */
+        /* Retro-themed audio player styles */
         audio {
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
             background-color: #111;
-            border: 1px solid cyan; /* Changed color */
+            border: 1px solid red; /* Changed to match main page */
             padding: 10px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Cyan glow */
-            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* Red glow */
+            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
             image-rendering: pixelated; /* Adds pixelated look */
         }
 
@@ -198,35 +226,34 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: cyan; /* Changed color */
-            color: black;
+            background-color: red; /* Changed to match main page */
+            color: white;
             border: none;
             padding: 10px;
             cursor: pointer;
             display: none;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            background-color: #111;
-            color: cyan; /* Changed color */
-            border-top: 2px solid cyan; /* Changed color */
+            background-color: black;
+            color: red; /* Changed to match main page */
+            border-top: 2px solid red; /* Changed to match main page */
         }
     </style>
 </head>
 <body>
-    <div id="loadingScreen" style="position: fixed; width: 100%; height: 100%; background: #111; color: cyan; display: flex; justify-content: center; align-items: center;">
+    <div id="loadingScreen" style="position: fixed; width: 100%; height: 100%; background: black; color: red; display: flex; justify-content: center; align-items: center;">
         <h1>Loading...</h1>
     </div>
 
     <header>
         <a href="../">
-            <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
+            <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
         </a>
-        <h1 class="glitch" data-text="Music">Music</h1>
         <nav>
             <div class="menu-icon" onclick="toggleMenu()">
                 <div></div>
@@ -241,6 +268,9 @@
     </header>
 
     <div class="content">
+        <!-- Optional Page Title -->
+        <h2 class="page-title">Music</h2>
+
         <div class="music-showcase">
 
             <!-- Track 1 -->
@@ -269,7 +299,7 @@
     </div>
 
     <footer>
-        <p>© 2024 JARCHIVE. All rights reserved.</p>
+        <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
     </footer>
 
     <button id="backToTop">Back to Top</button>
@@ -301,4 +331,3 @@
     </script>
 </body>
 </html>
-
