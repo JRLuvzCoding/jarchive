@@ -15,7 +15,6 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            overflow-y: scroll;
         }
 
         header {
@@ -37,51 +36,7 @@
             text-shadow: 0 0 5px red, 0 0 10px red, 0 0 20px red, 0 0 40px red;
             border: 1px solid red;
             padding: 5px;
-            display: inline-block;
-            overflow: hidden;
             position: relative;
-        }
-
-        .jarchive-dot-net::before,
-        .jarchive-dot-net::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            width: 100%;
-            background: transparent;
-            clip: rect(0, 0, 0, 0);
-        }
-
-        .jarchive-dot-net::before {
-            top: -2px;
-            left: -2px;
-            text-shadow: 1px 0 red;
-            animation: glitch-top 2s infinite ease-in-out alternate-reverse;
-        }
-
-        .jarchive-dot-net::after {
-            top: 2px;
-            left: 2px;
-            text-shadow: -1px 0 blue;
-            animation: glitch-bottom 2s infinite ease-in-out alternate-reverse;
-        }
-
-        @keyframes glitch-top {
-            0% { clip: rect(0, 9999px, 0, 0); transform: translate(0); }
-            20% { clip: rect(0, 9999px, 10px, 0); transform: translate(-2px, -2px); }
-            40% { clip: rect(10px, 9999px, 20px, 0); transform: translate(2px, 0); }
-            60% { clip: rect(20px, 9999px, 30px, 0); transform: translate(-2px, 2px); }
-            80% { clip: rect(30px, 9999px, 40px, 0); transform: translate(2px, -2px); }
-            100% { clip: rect(40px, 9999px, 50px, 0); transform: translate(0); }
-        }
-
-        @keyframes glitch-bottom {
-            0% { clip: rect(50px, 9999px, 60px, 0); transform: translate(0); }
-            20% { clip: rect(40px, 9999px, 50px, 0); transform: translate(2px, 2px); }
-            40% { clip: rect(30px, 9999px, 40px, 0); transform: translate(-2px, 0); }
-            60% { clip: rect(20px, 9999px, 30px, 0); transform: translate(2px, -2px); }
-            80% { clip: rect(10px, 9999px, 20px, 0); transform: translate(-2px, 2px); }
-            100% { clip: rect(0, 9999px, 10px, 0); transform: translate(0); }
         }
 
         nav {
@@ -90,41 +45,18 @@
             right: 20px;
         }
 
-        .menu-icon {
-            display: inline-block;
-            cursor: pointer;
-        }
-
         .menu-icon div {
             width: 35px;
             height: 5px;
             background-color: red;
             margin: 6px 0;
-            transition: 0.4s;
         }
 
         nav ul {
             display: none;
             position: absolute;
-            top: 50px;
-            right: 0;
             background-color: black;
-            border: 2px solid rgb(255, 255, 255);
             padding: 10px;
-            list-style-type: none;
-            margin: 0;
-        }
-
-        nav ul li {
-            margin: 5px 0;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2em;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgb(255, 255, 255);
         }
 
         nav ul.show-menu {
@@ -134,16 +66,7 @@
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
-            min-height: calc(100vh - 80px); /* Footer + Player Adjustment */
-        }
-
-        .middle-header {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 1.8em;
-            color: rgb(255, 255, 255);
-            text-shadow: 0 0 10px rgb(255, 255, 255);
+            min-height: 100vh;
         }
 
         .song-list {
@@ -158,27 +81,13 @@
             text-align: left;
             border-bottom: 1px solid red;
             height: 150px;
-            vertical-align: middle;
-            overflow: hidden;
-        }
-
-        .song-list th {
-            color: rgb(253, 253, 253);
-            font-size: 1.2em;
-        }
-
-        .song-list td {
-            color: white;
-            font-size: 1em;
         }
 
         .album-cover {
             width: 150px;
             height: 150px;
             object-fit: cover;
-            border-radius: 5px;
             position: relative;
-            display: inline-block;
         }
 
         .play-button {
@@ -234,17 +143,26 @@
 
         .playbar {
             width: 100%;
-            max-width: 400px;
+            max-width: 300px;
             margin: 0 10px;
         }
 
-        input[type="range"] {
-            width: 100%;
+        .volume-bar {
+            max-width: 100px;
+            margin-left: 20px;
         }
 
         .song-info {
+            display: flex;
+            align-items: center;
             flex-grow: 1;
-            margin-left: 20px;
+        }
+
+        .current-album-cover {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            margin-right: 15px;
         }
 
         .song-info h4 {
@@ -264,9 +182,8 @@
         <a href="../">
             <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
         </a>
-        <div class="middle-header">Music</div>
         <nav>
-            <div class="menu-icon" onclick="toggleMenu()">
+            <div class="menu-icon">
                 <div></div>
                 <div></div>
                 <div></div>
@@ -327,123 +244,110 @@
             <i class="fas fa-random" id="shuffle"></i>
         </div>
         <input type="range" id="seekBar" min="0" max="100" value="0" class="playbar">
+        <input type="range" id="volumeBar" min="0" max="1" step="0.01" value="0.5" class="volume-bar">
         <div class="song-info">
-            <h4 id="songTitle">Title</h4>
-            <span id="songTime">0:00 / 0:00</span>
+            <img id="currentAlbumCover" class="current-album-cover" src="" alt="Album Cover">
+            <div>
+                <h4 id="songTitle">Title</h4>
+                <span id="songTime">0:00 / 0:00</span>
+            </div>
         </div>
     </div>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('menuLinks');
-            menu.classList.toggle('show-menu');
-        }
-    
         const playButtons = document.querySelectorAll('.play-button');
         const musicPlayer = document.getElementById('musicPlayer');
         const playPauseButton = document.getElementById('playPause');
         const songTitle = document.getElementById('songTitle');
         const songTime = document.getElementById('songTime');
         const seekBar = document.getElementById('seekBar');
-        const songs = Array.from(playButtons);
-    
+        const volumeBar = document.getElementById('volumeBar');
+        const currentAlbumCover = document.getElementById('currentAlbumCover');
+
         let currentAudio = null;
-        let isPlaying = false;
         let currentSongIndex = 0;
-    
-        // Load song and update player UI
-        function loadSong(index) {
-            const button = songs[index];
+
+        function loadSong(button) {
             const audioSrc = button.getAttribute('data-audio');
             const title = button.getAttribute('data-title');
             const length = button.getAttribute('data-length');
-    
+            const cover = button.closest('.album-cover').querySelector('img').src;
+
             if (currentAudio) {
                 currentAudio.pause();
-                currentAudio.currentTime = 0; // Reset previous song
             }
-    
+
             currentAudio = new Audio(audioSrc);
-            updatePlayerUI(title, length);
-            currentAudio.play();
-            isPlaying = true;
-    
-            currentAudio.ontimeupdate = updateSeekBar;
-            currentAudio.onended = nextSong;
-        }
-    
-        // Toggle play/pause for the player
-        function togglePlayPause() {
-            if (!currentAudio) return;
-    
-            if (isPlaying) {
-                currentAudio.pause();
-                playPauseButton.classList.replace('fa-pause', 'fa-play');
-            } else {
-                currentAudio.play();
-                playPauseButton.classList.replace('fa-play', 'fa-pause');
-            }
-    
-            isPlaying = !isPlaying;
-        }
-    
-        playPauseButton.addEventListener('click', togglePlayPause);
-    
-        // Update player UI (bottom music player)
-        function updatePlayerUI(title, length) {
+            currentAudio.volume = volumeBar.value;
+
             songTitle.textContent = title;
             songTime.textContent = `0:00 / ${length}`;
+            currentAlbumCover.src = cover;
             musicPlayer.style.display = 'flex';
+
+            currentAudio.play();
             playPauseButton.classList.replace('fa-play', 'fa-pause');
+
+            currentAudio.ontimeupdate = () => {
+                const currentTime = currentAudio.currentTime;
+                const duration = currentAudio.duration || 1;
+                seekBar.value = (currentTime / duration) * 100;
+                songTime.textContent = `${formatTime(currentTime)} / ${length}`;
+            };
+
+            currentAudio.onended = nextSong;
         }
-    
-        // Update the seek bar during playback
-        function updateSeekBar() {
-            const currentTime = currentAudio.currentTime;
-            const duration = currentAudio.duration;
-    
-            seekBar.value = (currentTime / duration) * 100;
-            songTime.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
-        }
-    
-        // Skip to the next song
-        function nextSong() {
-            currentSongIndex = (currentSongIndex + 1) % songs.length;
-            loadSong(currentSongIndex);
-        }
-    
-        // Skip to the previous song
-        function prevSong() {
-            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
-            loadSong(currentSongIndex);
-        }
-    
-        document.getElementById('next').addEventListener('click', nextSong);
-        document.getElementById('prev').addEventListener('click', prevSong);
-    
-        // Load song when clicking on the album play button
-        playButtons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                currentSongIndex = index;
-                loadSong(index);
-            });
-        });
-    
-        // Seek functionality
-        seekBar.addEventListener('input', (e) => {
+
+        function togglePlayPause() {
             if (currentAudio) {
-                const seekTo = (e.target.value / 100) * currentAudio.duration;
-                currentAudio.currentTime = seekTo;
+                if (currentAudio.paused) {
+                    currentAudio.play();
+                    playPauseButton.classList.replace('fa-play', 'fa-pause');
+                } else {
+                    currentAudio.pause();
+                    playPauseButton.classList.replace('fa-pause', 'fa-play');
+                }
             }
-        });
-    
-        // Format time from seconds to MM:SS
+        }
+
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % playButtons.length;
+            loadSong(playButtons[currentSongIndex]);
+        }
+
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + playButtons.length) % playButtons.length;
+            loadSong(playButtons[currentSongIndex]);
+        }
+
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
             return `${mins}:${secs}`;
         }
+
+        volumeBar.addEventListener('input', () => {
+            if (currentAudio) {
+                currentAudio.volume = volumeBar.value;
+            }
+        });
+
+        seekBar.addEventListener('input', (e) => {
+            if (currentAudio) {
+                currentAudio.currentTime = (e.target.value / 100) * currentAudio.duration;
+            }
+        });
+
+        playPauseButton.addEventListener('click', togglePlayPause);
+        document.getElementById('next').addEventListener('click', nextSong);
+        document.getElementById('prev').addEventListener('click', prevSong);
+
+        playButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                currentSongIndex = index;
+                loadSong(button);
+            });
+        });
     </script>
-    
 </body>
 </html>
