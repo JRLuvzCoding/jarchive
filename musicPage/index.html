@@ -15,7 +15,7 @@
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
             padding: 0;
-            overflow-y: scroll; /* Allow vertical scrolling */
+            overflow-y: scroll;
         }
 
         header {
@@ -25,109 +25,28 @@
             background-color: black;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Align items to the start */
-            height: 80px; /* Set a consistent height */
+            justify-content: space-between;
+            height: 80px;
         }
 
         .jarchive-dot-net {
-            position: relative;
-            font-size: 2.5em; /* Adjusted font size for prominence */
+            font-size: 2.5em;
             color: white;
             text-transform: uppercase;
             letter-spacing: 2px;
-            overflow: hidden;
             text-shadow:
                 0 0 5px red,
                 0 0 10px red,
                 0 0 20px red,
                 0 0 40px red,
                 0 0 80px red;
-            margin: 0 20px; /* Added margin for spacing */
+            border: 1px solid red;
+            padding: 5px;
+            display: inline-block;
         }
 
-        .jarchive-dot-net::before,
-        .jarchive-dot-net::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            width: 100%;
-            background: transparent;
-            clip: rect(0, 0, 0, 0);
-        }
-
-        .jarchive-dot-net::before {
-            top: -2px;
-            left: -2px;
-            text-shadow: 1px 0 red;
-            animation: glitch-top 2s infinite ease-in-out alternate-reverse;
-        }
-
-        .jarchive-dot-net::after {
-            top: 2px;
-            left: 2px;
-            text-shadow: -1px 0 blue;
-            animation: glitch-bottom 2s infinite ease-in-out alternate-reverse;
-        }
-
-        @keyframes glitch-top {
-            0% {
-                clip: rect(0, 9999px, 0, 0);
-                transform: translate(0);
-            }
-            20% {
-                clip: rect(0, 9999px, 10px, 0);
-                transform: translate(-2px, -2px);
-            }
-            40% {
-                clip: rect(10px, 9999px, 20px, 0);
-                transform: translate(2px, 0);
-            }
-            60% {
-                clip: rect(20px, 9999px, 30px, 0);
-                transform: translate(-2px, 2px);
-            }
-            80% {
-                clip: rect(30px, 9999px, 40px, 0);
-                transform: translate(2px, -2px);
-            }
-            100% {
-                clip: rect(40px, 9999px, 50px, 0);
-                transform: translate(0);
-            }
-        }
-
-        @keyframes glitch-bottom {
-            0% {
-                clip: rect(50px, 9999px, 60px, 0);
-                transform: translate(0);
-            }
-            20% {
-                clip: rect(40px, 9999px, 50px, 0);
-                transform: translate(2px, 2px);
-            }
-            40% {
-                clip: rect(30px, 9999px, 40px, 0);
-                transform: translate(-2px, 0);
-            }
-            60% {
-                clip: rect(20px, 9999px, 30px, 0);
-                transform: translate(2px, -2px);
-            }
-            80% {
-                clip: rect(10px, 9999px, 20px, 0);
-                transform: translate(-2px, 2px);
-            }
-            100% {
-                clip: rect(0, 9999px, 10px, 0);
-                transform: translate(0);
-            }
-        }
-
-        /* Hamburger menu styles */
         nav {
-            position: absolute;
-            top: 20px;
-            right: 20px;
+            position: relative;
             z-index: 2;
         }
 
@@ -144,7 +63,6 @@
             transition: 0.4s;
         }
 
-        /* Hide the menu by default */
         nav ul {
             display: none;
             position: absolute;
@@ -169,7 +87,6 @@
             text-shadow: 0 0 10px red;
         }
 
-        /* Show the menu when the menu-icon is clicked */
         nav ul.show-menu {
             display: block;
         }
@@ -177,56 +94,89 @@
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
-            min-height: 100vh; /* Ensures it takes at least the full viewport */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: flex-start;
             align-items: center;
         }
 
-        .music-showcase {
-            width: 80%;
-            max-width: 800px;
-            margin-top: 40px;
+        .page-title {
+            font-size: 2em;
+            color: red;
+            text-shadow: 0 0 10px red;
+            margin-bottom: 20px;
         }
 
-        .track {
-            margin-bottom: 60px;
+        .music-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            width: 80%;
+            max-width: 1000px;
+            margin: 40px auto;
+        }
+
+        .track-grid {
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(0, 0, 0, 0.8);
+            border: 2px solid red;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
             text-align: center;
         }
 
+        .album-cover {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .track-details {
+            margin-top: 10px;
+        }
+
         .track-title {
-            font-size: 1.8em;
-            color: red; /* Changed to match main page */
+            font-size: 1.5em;
+            color: red;
             text-shadow: 0 0 10px red;
+            margin-bottom: 5px;
+        }
+
+        .track-length {
+            font-size: 1em;
+            color: white;
             margin-bottom: 10px;
         }
 
         .track-description {
             font-size: 1.2em;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
-        /* Retro-themed audio player styles */
         audio {
             width: 100%;
-            max-width: 600px;
-            margin: 0 auto;
             background-color: #111;
-            border: 1px solid red; /* Changed to match main page */
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8); /* Red glow */
-            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
-            image-rendering: pixelated; /* Adds pixelated look */
+            border: 1px solid red;
+            border-radius: 5px;
         }
 
-        /* Back to top button */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: black;
+            color: red;
+            border-top: 2px solid red;
+        }
+
         #backToTop {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: red; /* Changed to match main page */
+            background-color: red;
             color: white;
             border: none;
             padding: 10px;
@@ -234,14 +184,6 @@
             display: none;
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: black;
-            color: red; /* Changed to match main page */
-            border-top: 2px solid red; /* Changed to match main page */
         }
     </style>
 </head>
@@ -268,33 +210,36 @@
     </header>
 
     <div class="content">
-        <!-- Optional Page Title -->
         <h2 class="page-title">Music</h2>
 
         <div class="music-showcase">
-
             <!-- Track 1 -->
-            <div class="track">
-                <h2 class="track-title">IMissJackson</h2>
-                <p class="track-description">A song I wrote for my biggest hater</p>
-                <audio controls>
-                    <source src="IMissJackson.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
+            <div class="track-grid">
+                <img src="album-cover1.jpg" alt="IMissJackson Album Cover" class="album-cover">
+                <div class="track-details">
+                    <h2 class="track-title">IMissJackson</h2>
+                    <p class="track-length">Length: 3:45</p>
+                    <p class="track-description">A song I wrote for my biggest hater.</p>
+                    <audio controls>
+                        <source src="IMissJackson.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
             </div>
 
             <!-- Track 2 -->
-            <div class="track">
-                <h2 class="track-title">SomethingsKnocking</h2>
-                <p class="track-description">This is a description for Song 2.</p>
-                <audio controls>
-                    <source src="song2.mp3" type="audio/mpeg">
-                    Your browser does not support the audio element.
-                </audio>
+            <div class="track-grid">
+                <img src="album-cover2.jpg" alt="SomethingsKnocking Album Cover" class="album-cover">
+                <div class="track-details">
+                    <h2 class="track-title">SomethingsKnocking</h2>
+                    <p class="track-length">Length: 4:12</p>
+                    <p class="track-description">This is a description for Song 2.</p>
+                    <audio controls>
+                        <source src="song2.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                </div>
             </div>
-
-            <!-- Add more tracks as needed -->
-
         </div>
     </div>
 
@@ -305,12 +250,10 @@
     <button id="backToTop">Back to Top</button>
 
     <script>
-        // Loading screen removal
         window.onload = function() {
             document.getElementById('loadingScreen').style.display = 'none';
         };
 
-        // Back to top button functionality
         const backToTopButton = document.getElementById('backToTop');
         window.onscroll = function() {
             if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
@@ -319,11 +262,11 @@
                 backToTopButton.style.display = "none";
             }
         };
+
         backToTopButton.onclick = function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Toggle menu functionality
         function toggleMenu() {
             const menu = document.getElementById('menuLinks');
             menu.classList.toggle('show-menu');
