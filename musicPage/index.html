@@ -98,7 +98,7 @@
         .menu-icon div {
             width: 35px;
             height: 5px;
-            background-color: red; /* Restored red color */
+            background-color: red;
             margin: 6px 0;
             transition: 0.4s;
         }
@@ -134,7 +134,7 @@
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
-            min-height: 100vh;
+            min-height: calc(100vh - 80px); /* Footer + Player Adjustment */
         }
 
         .middle-header {
@@ -156,7 +156,7 @@
         .song-list th, .song-list td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid white; /* White borders */
+            border-bottom: 1px solid red;
             height: 150px;
             vertical-align: middle;
             overflow: hidden;
@@ -177,13 +177,23 @@
             height: 150px;
             object-fit: cover;
             border-radius: 5px;
+            position: relative;
         }
 
         .play-button {
-            font-size: 1.5em;
-            color: rgb(255, 255, 255);
+            font-size: 2em;
+            color: red;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
             cursor: pointer;
-            margin-right: 10px;
+        }
+
+        .album-cover:hover .play-button {
+            opacity: 1;
         }
 
         footer {
@@ -194,7 +204,6 @@
             border-top: 2px solid rgb(255, 255, 255);
         }
 
-        /* Music Player Styles */
         .music-player {
             position: fixed;
             bottom: 0;
@@ -204,9 +213,10 @@
             color: white;
             padding: 10px 20px;
             border-top: 2px solid red;
-            display: none; /* Hidden initially */
+            display: flex;
             align-items: center;
             justify-content: space-between;
+            z-index: 10;
         }
 
         .player-controls {
@@ -280,15 +290,13 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><i class="fas fa-play play-button" data-audio="somethingsKnocking.mp3" data-title="SomethingsKnocking" data-length="2:14"></i></td>
-                    <td><img src="Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover"></td>
+                    <td><img src="Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover"><i class="fas fa-play play-button" data-audio="somethingsKnocking.mp3" data-title="SomethingsKnocking" data-length="2:14"></i></td>
                     <td>SomethingsKnocking</td>
                     <td>Nov 17, 2024</td>
                     <td>2:14</td>
                 </tr>
                 <tr>
-                    <td><i class="fas fa-play play-button" data-audio="IMissJackson.mp3" data-title="IMissJackson" data-length="3:50"></i></td>
-                    <td><img src="IMissJackson.jpg" alt="IMissJackson" class="album-cover"></td>
+                    <td><img src="IMissJackson.jpg" alt="IMissJackson" class="album-cover"><i class="fas fa-play play-button" data-audio="IMissJackson.mp3" data-title="IMissJackson" data-length="3:50"></i></td>
                     <td>IMissJackson</td>
                     <td>Oct 10, 2024</td>
                     <td>3:50</td>
@@ -301,7 +309,6 @@
         <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
     </footer>
 
-    <!-- Music Player -->
     <div class="music-player" id="musicPlayer">
         <div class="player-controls">
             <i class="fas fa-backward" id="prev"></i>
@@ -328,32 +335,27 @@
         const songTitle = document.getElementById('songTitle');
         const songTime = document.getElementById('songTime');
         const seekBar = document.getElementById('seekBar');
+        const songs = Array.from(playButtons);
         let currentAudio = null;
         let isPlaying = false;
+        let currentSongIndex = 0;
 
-        playButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                const audioSrc = button.getAttribute('data-audio');
-                const title = button.getAttribute('data-title');
-                const length = button.getAttribute('data-length');
+        function loadSong(index) {
+            const button = songs[index];
+            const audioSrc = button.getAttribute('data-audio');
+            const title = button.getAttribute('data-title');
+            const length = button.getAttribute('data-length');
 
-                if (currentAudio && currentAudio.src.includes(audioSrc)) {
-                    togglePlayPause();
-                } else {
-                    if (currentAudio) currentAudio.pause();
+            if (currentAudio) currentAudio.pause();
 
-                    currentAudio = new Audio(audioSrc);
-                    currentAudio.play();
-                    isPlaying = true;
-                    updatePlayerUI(title, length);
+            currentAudio = new Audio(audioSrc);
+            updatePlayerUI(title, length);
+            currentAudio.play();
+            isPlaying = true;
 
-                    currentAudio.ontimeupdate = updateSeekBar;
-                    currentAudio.onended = () => resetPlayButton();
-                }
-            });
-        });
-
-        playPauseButton.addEventListener('click', togglePlayPause);
+            currentAudio.ontimeupdate = updateSeekBar;
+            currentAudio.onended = nextSong;
+        }
 
         function togglePlayPause() {
             if (!currentAudio) return;
@@ -383,17 +385,37 @@
             songTime.textContent = `${formattedTime} / ${formatTime(duration)}`;
         }
 
-        seekBar.addEventListener('input', (e) => {
-            if (currentAudio) {
-                const seekTo = (e.target.value / 100) * currentAudio.duration;
-                currentAudio.currentTime = seekTo;
-            }
+        function nextSong() {
+            currentSongIndex = (currentSongIndex + 1) % songs.length;
+            loadSong(currentSongIndex);
+        }
+
+        function prevSong() {
+            currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
+            loadSong(currentSongIndex);
+        }
+
+        document.getElementById('next').addEventListener('click', nextSong);
+        document.getElementById('prev').addEventListener('click', prevSong);
+
+        playButtons.forEach((button, index) => {
+            button.addEventListener('click', () => {
+                currentSongIndex = index;
+                loadSong(index);
+            });
         });
 
         function resetPlayButton() {
             playPauseButton.classList.replace('fa-pause', 'fa-play');
             isPlaying = false;
         }
+
+        seekBar.addEventListener('input', (e) => {
+            if (currentAudio) {
+                const seekTo = (e.target.value / 100) * currentAudio.duration;
+                currentAudio.currentTime = seekTo;
+            }
+        });
 
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
