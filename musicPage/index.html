@@ -38,7 +38,7 @@
             padding: 5px;
             text-decoration: none;
             position: relative;
-            width: max-content; /* Prevent size changes */
+            width: max-content;
         }
 
         .jarchive-dot-net::before,
@@ -61,7 +61,7 @@
         .jarchive-dot-net::after {
             top: 2px;
             left: 2px;
-            text-shadow: -1px 0 blue;
+            text-shadow: -1px 0 rgb(209, 23, 23);
             animation: glitch-bottom 2s infinite ease-in-out alternate-reverse;
         }
 
@@ -93,7 +93,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             overflow: hidden;
-            width: max-content; /* Prevent size changes */
+            width: max-content;
         }
 
         .middle-header::before,
@@ -116,7 +116,7 @@
         .middle-header::after {
             top: 2px;
             left: 2px;
-            text-shadow: -1px 0 blue;
+            text-shadow: -1px 0 rgb(192, 23, 23);
             animation: glitch-bottom-music 1.5s infinite ease-in-out alternate-reverse;
         }
 
@@ -198,13 +198,13 @@
             padding: 10px;
             text-align: left;
             border-bottom: 1px solid red;
-            height: 150px;
+            height: 125px; /* Adjusted for new cover size */
             vertical-align: middle;
         }
 
         .album-cover {
-            width: 150px;
-            height: 150px;
+            width: 125px;
+            height: 125px;
             object-fit: cover;
             position: relative;
         }
@@ -236,7 +236,8 @@
         .music-player {
             position: fixed;
             bottom: 0;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
             background: black;
             color: white;
@@ -318,10 +319,10 @@
         <table class="song-list">
             <thead>
                 <tr>
-                    <th>Cover</th>
+                    <th></th>
                     <th>Title</th>
                     <th>Date Added</th>
-                    <th>Song Length</th>
+                    <th>Length</th>
                 </tr>
             </thead>
             <tbody>
@@ -470,6 +471,16 @@
             button.addEventListener('click', () => {
                 currentSongIndex = index;
                 loadSong(button);
+            });
+
+            button.addEventListener('click', () => {
+                if (!currentAudio.paused) {
+                    currentAudio.pause();
+                    button.classList.replace('fa-pause', 'fa-play');
+                } else {
+                    currentAudio.play();
+                    button.classList.replace('fa-play', 'fa-pause');
+                }
             });
         });
     </script>

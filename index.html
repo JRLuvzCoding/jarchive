@@ -6,161 +6,192 @@
     <link rel="icon" href="icon-website.png" type="image/png"> <!-- Favicon link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        body {
-            background-image: url('file-qNJ2r3YByA3LbPQnduwxrQUF.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: rgb(255, 255, 255);
-            font-family: 'Courier New', Courier, monospace;
-            margin: 0;
-            padding: 0;
-            overflow-y: scroll; /* Allow vertical scrolling */
-        }
+body {
+    background-image: 
+        url('file-qNJ2r3YByA3LbPQnduwxrQUF.png'), /* Original background image */
+        repeating-linear-gradient(
+            0deg,
+            rgba(255, 0, 0, 0.15) 0%, /* Red overlay */
+            rgba(0, 0, 0, 0.15) 20%, /* Black overlay */
+            rgba(255, 0, 0, 0.1) 40%, /* Slightly lighter red */
+            rgba(0, 0, 0, 0.1) 60%, /* Slightly lighter black */
+            rgba(255, 0, 0, 0.2) 80%, /* Stronger red again */
+            rgba(0, 0, 0, 0.2) 100% /* Stronger black again */
+        );
+    background-blend-mode: overlay; /* Overlay effect to blend static over the image */
+    background-size: cover, cover; /* Ensure both image and static cover full screen */
+    background-position: center;
+    background-repeat: no-repeat, repeat; /* Image stays fixed, static repeats */
+    color: rgb(255, 255, 255);
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    padding: 0;
+    overflow-y: scroll; /* Allow vertical scrolling */
+}
+
 
         header {
-    position: relative;
-    padding: 0 20px; /* Padding on left and right */
-    border-bottom: 2px solid rgb(255, 255, 255);
-    background-color: black;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 80px;
-}
+            position: relative;
+            padding: 0 20px;
+            border-bottom: 2px solid rgb(255, 46, 46);
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
 
-.jarchive-dot-net {
-    font-size: 2.5em;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow:
-        0 0 5px red,
-        0 0 10px red,
-        0 0 20px red,
-        0 0 40px red,
-        0 0 80px red;
-}
+    .jarchive-dot-net {
+        font-size: 2.5em;
+        color: rgb(0, 0, 0);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-shadow:
+            0 0 5px red,
+            0 0 10px red,
+            0 0 15px black,
+            0 0 20px black;
+        border: 1px solid red;
+        padding: 10px;
+        display: inline-block;
+        position: relative;
+        overflow: hidden;
+        width: max-content;
+        background-color: black; /* Base black background */
+    }
 
-.center-header {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 2em;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow: 0 0 5px red, 0 0 10px red, 0 0 20px red;
-    z-index: 1;
-}
+    /* Red moving background layer */
+    .jarchive-dot-net::before,
+    .jarchive-dot-net::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: repeating-linear-gradient(
+            180deg,
+            red 0%, 
+            red 10%, 
+            black 10%, 
+            black 20%, 
+            rgba(255, 0, 0, 0.1) 20%, 
+            rgba(0, 0, 0, 0.3) 25%, 
+            rgba(0, 0, 0, 0.7) 50%
+        ), 
+        url('https://i.imgur.com/6pWFXI6.png'); /* Static texture overlay */
+        background-size: cover, 100%;
+        mix-blend-mode: overlay;
+        opacity: 0.8;
+    }
 
-nav {
-    display: flex;
-    align-items: center;
-}
+    .jarchive-dot-net::before {
+        animation: glitch-static 0.5s steps(10) infinite, glitch-horizontal 1s ease-in-out infinite alternate, red-bg-move 4s linear infinite;
+    }
 
-.menu-icon {
-    cursor: pointer;
-}
+    .jarchive-dot-net::after {
+        animation: glitch-static 0.3s steps(20) infinite, glitch-horizontal 1.5s ease-in-out infinite reverse, red-bg-move 4s linear infinite reverse;
+    }
+
+    /* Text glitch effect for chaos */
+    .jarchive-dot-net::before,
+    .jarchive-dot-net::after {
+        content: attr(data-text);
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: transparent;
+    }
+
+    .jarchive-dot-net::before {
+        text-shadow: 3px 0 red, -5px 0 lime, 2px -2px blue;
+        clip-path: polygon(
+            0 0,
+            100% 5%,
+            100% 35%,
+            0 25%,
+            0 40%,
+            100% 45%,
+            100% 60%,
+            0 60%
+        );
+        animation: glitch-shift 0.1s infinite ease-in-out alternate-reverse;
+    }
+
+    .jarchive-dot-net::after {
+        text-shadow: -10px 10px blue, 6px 4px green, -9px -3px red;
+        clip-path: polygon(
+            0 70%,
+            100% 65%,
+            100% 100%,
+            0 90%,
+            0 85%,
+            100% 80%,
+            100% 95%,
+            0 100%
+        );
+        animation: glitch-pixelate 0.08s infinite linear alternate-reverse;
+    }
+
+    /* Animations */
+    @keyframes glitch-static {
+        0% { opacity: 0.8; }
+        50% { opacity: 0.5; }
+        100% { opacity: 0.8; }
+    }
+
+    @keyframes glitch-horizontal {
+        0% { transform: translate(0, 0); }
+        25% { transform: translate(-10px, -4px); }
+        50% { transform: translate(10px, 4px); }
+        75% { transform: translate(-3px, 4px); }
+        100% { transform: translate(0, -3px); }
+    }
+
+    @keyframes glitch-shift {
+        0% { transform: translate(-10px, -5px) skew(2deg, 2deg); }
+        20% { transform: translate(5px, 2px); }
+        60% { transform: translate(-12px, 8px) skew(-2deg, -1deg); }
+        100% { transform: translate(0, 5px); }
+    }
+
+    @keyframes glitch-pixelate {
+        0% { transform: translate(3px, 3px) scale(1.1); }
+        25% { transform: translate(-6px, -8px) scale(1.2); }
+        75% { transform: translate(8px, -4px) scale(1.05); }
+        100% { transform: translate(0, 0); }
+    }
+
+    @keyframes red-bg-move {
+        0% { background-position: 0% 0%; }
+        50% { background-position: 100% 100%; }
+        100% { background-position: 0% 100%; }
+    }
+
+    /* Speed glitch on hover */
+    .jarchive-dot-net:hover::before,
+    .jarchive-dot-net:hover::after {
+        animation-duration: 0.4s; /* Faster glitch on hover */
+    }
 
 
-.jarchive-dot-net {
-    font-size: 2.5em;
-    color: white;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-shadow:
-        0 0 5px red,
-        0 0 10px red,
-        0 0 20px red,
-        0 0 40px red,
-        0 0 80px red;
-    border: 1px solid red; /* Adds thin red border */
-    padding: 5px; /* Adds some space inside the border */
-    display: inline-block; /* Ensures the border wraps tightly around the text */
-}
-
-
-        .jarchive-dot-net::before,
-        .jarchive-dot-net::after {
-            content: attr(data-text);
+        .center-header {
             position: absolute;
-            left: 0;
-            width: 100%;
-            background: transparent;
-            clip: rect(0, 0, 0, 0);
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 2em;
+            color: rgb(255, 0, 0);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px red, 0 0 10px rgb(255, 0, 0), 0 0 20px red;
+            z-index: 1;
         }
 
-        .jarchive-dot-net::before {
-            top: -2px;
-            left: -2px;
-            text-shadow: 1px 0 red;
-            animation: glitch-top 2s infinite ease-in-out alternate-reverse;
-        }
-
-        .jarchive-dot-net::after {
-            top: 2px;
-            left: 2px;
-            text-shadow: -1px 0 blue;
-            animation: glitch-bottom 2s infinite ease-in-out alternate-reverse;
-        }
-
-        @keyframes glitch-top {
-            0% {
-                clip: rect(0, 9999px, 0, 0);
-                transform: translate(0);
-            }
-            20% {
-                clip: rect(0, 9999px, 10px, 0);
-                transform: translate(-2px, -2px);
-            }
-            40% {
-                clip: rect(10px, 9999px, 20px, 0);
-                transform: translate(2px, 0);
-            }
-            60% {
-                clip: rect(20px, 9999px, 30px, 0);
-                transform: translate(-2px, 2px);
-            }
-            80% {
-                clip: rect(30px, 9999px, 40px, 0);
-                transform: translate(2px, -2px);
-            }
-            100% {
-                clip: rect(40px, 9999px, 50px, 0);
-                transform: translate(0);
-            }
-        }
-
-        @keyframes glitch-bottom {
-            0% {
-                clip: rect(50px, 9999px, 60px, 0);
-                transform: translate(0);
-            }
-            20% {
-                clip: rect(40px, 9999px, 50px, 0);
-                transform: translate(2px, 2px);
-            }
-            40% {
-                clip: rect(30px, 9999px, 40px, 0);
-                transform: translate(-2px, 0);
-            }
-            60% {
-                clip: rect(20px, 9999px, 30px, 0);
-                transform: translate(2px, -2px);
-            }
-            80% {
-                clip: rect(10px, 9999px, 20px, 0);
-                transform: translate(-2px, 2px);
-            }
-            100% {
-                clip: rect(0, 9999px, 10px, 0);
-                transform: translate(0);
-            }
-        }
-
-        /* Hamburger menu styles */
         nav {
+            display: flex;
+            align-items: center;
             position: absolute;
             top: 20px;
             right: 20px;
@@ -180,7 +211,6 @@ nav {
             transition: 0.4s;
         }
 
-        /* Hide the menu by default */
         nav ul {
             display: none;
             position: absolute;
@@ -205,7 +235,6 @@ nav {
             text-shadow: 0 0 10px red;
         }
 
-        /* Show the menu when the menu-icon is clicked */
         nav ul.show-menu {
             display: block;
         }
@@ -213,7 +242,7 @@ nav {
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
-            min-height: 100vh; /* Ensures it takes at least the full viewport */
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -230,7 +259,7 @@ nav {
             font-size: 2em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: red;
+            color: rgb(255, 0, 0);
             text-shadow: 0 0 10px red;
             margin-bottom: 20px;
         }
@@ -240,7 +269,6 @@ nav {
             line-height: 1.5;
         }
 
-        /* Social media links */
         .social-links a {
             color: white;
             font-size: 1.5em;
@@ -253,7 +281,6 @@ nav {
             color: red;
         }
 
-        /* Back to top button */
         #backToTop {
             position: fixed;
             bottom: 20px;
@@ -269,32 +296,32 @@ nav {
         }
 
         footer {
-    text-align: center;
-    padding: 20px;
-    background-color: black;
-    color: red;
-    border-top: 2px solid red;
-    position: relative;
-}
+            text-align: center;
+            padding: 20px;
+            background-color: black;
+            color: red;
+            border-top: 2px solid red;
+            position: relative;
+        }
 
-.footer-social-links {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-}
+        .footer-social-links {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
 
-.footer-social-links a {
-    color: red; /* Make the text red */
-    font-size: 1em;
-    margin: 0 10px;
-    text-decoration: none;
-    transition: color 0.3s;
-}
+        .footer-social-links a {
+            color: red;
+            font-size: 1em;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
 
-.footer-social-links a:hover {
-    color: white; /* Optional hover effect */
-}
+        .footer-social-links a:hover {
+            color: white;
+        }
 
     </style>
 </head>
@@ -305,7 +332,7 @@ nav {
 
     <header>
         <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-        <div class="center-header">JARCHIVE</div> <!-- New centered header -->
+        <div class="center-header">JARCHIVE</div>
         <nav>
             <div class="menu-icon" onclick="toggleMenu()">
                 <div></div>
@@ -318,39 +345,31 @@ nav {
             </ul>
         </nav>
     </header>
-    
+
     <div class="content">
         <section class="intro">
             <h2>Welcome to JARCHIVE.NET</h2>
-            <p>
-                Somethings Knocking: Out now!
-            </p>
-            <p>
-                Stay tuned for updates and new releases!
-            </p>
+            <p>Somethings Knocking: Out now!</p>
+            <p>Stay tuned for updates and new releases!</p>
         </section>
-
     </div>
 
     <footer>
-        <footer>
-            <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
-            <div class="footer-social-links">
-                <a href="https://x.com/Jonathan_5910_" target="_blank" aria-label="Follow on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
-                <a href="https://www.linkedin.com/in/jonathan-rodriguezjarchive/" target="_blank" aria-label="Connect on LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-                <a href="https://www.instagram.com/_jrrodriguezzz/" target="_blank" aria-label="Follow on Instagram"><i class="fab fa-instagram"></i> Instagram</a>
-            </div>
-        </footer>
+        <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
+        <div class="footer-social-links">
+            <a href="https://x.com/Jonathan_5910_" target="_blank" aria-label="Follow on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="https://www.linkedin.com/in/jonathan-rodriguezjarchive/" target="_blank" aria-label="Connect on LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://www.instagram.com/_jrrodriguezzz/" target="_blank" aria-label="Follow on Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+        </div>
+    </footer>
 
     <button id="backToTop">Back to Top</button>
 
     <script>
-        // Loading screen removal
         window.onload = function() {
             document.getElementById('loadingScreen').style.display = 'none';
         };
 
-        // Back to top button functionality
         const backToTopButton = document.getElementById('backToTop');
         window.onscroll = function() {
             if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
@@ -359,11 +378,11 @@ nav {
                 backToTopButton.style.display = "none";
             }
         };
+
         backToTopButton.onclick = function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Toggle menu functionality
         function toggleMenu() {
             const menu = document.getElementById('menuLinks');
             menu.classList.toggle('show-menu');
@@ -371,6 +390,3 @@ nav {
     </script>
 </body>
 </html>
-
-</html>
-
