@@ -233,12 +233,33 @@
         }
 
         footer {
-            text-align: center;
-            padding: 20px;
-            background-color: black;
-            color: red;
-            border-top: 2px solid red;
-        }
+    text-align: center;
+    padding: 20px;
+    background-color: black;
+    color: red;
+    border-top: 2px solid red;
+    position: relative;
+}
+
+.footer-social-links {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.footer-social-links a {
+    color: red; /* Make the text red */
+    font-size: 1em;
+    margin: 0 10px;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.footer-social-links a:hover {
+    color: white; /* Optional hover effect */
+}
+
     </style>
 </head>
 <body>
@@ -281,8 +302,14 @@
     </div>
 
     <footer>
-        <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
-    </footer>
+        <footer>
+            <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
+            <div class="footer-social-links">
+                <a href="https://x.com/Jonathan_5910_" target="_blank" aria-label="Follow on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+                <a href="https://www.linkedin.com/in/jonathan-rodriguezjarchive/" target="_blank" aria-label="Connect on LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                <a href="https://www.instagram.com/_jrrodriguezzz/" target="_blank" aria-label="Follow on Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+            </div>
+        </footer>
 
     <button id="backToTop">Back to Top</button>
 
