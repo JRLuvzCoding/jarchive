@@ -154,36 +154,36 @@
         }
 
         .song-list th, .song-list td {
-            padding: 5px; /* Reduced padding for cleaner look */
+            padding: 10px; /* Adjusted padding */
             text-align: left;
             border-bottom: 1px solid red;
-            height: 80px; /* Adjusted row height */
+            height: 150px; /* Adjusted row height for larger images */
             vertical-align: middle;
             overflow: hidden;
         }
 
         .song-list th {
             color: rgb(253, 253, 253);
-            font-size: 1em;
+            font-size: 1.2em; /* Slightly larger text */
         }
 
         .song-list td {
             color: white;
-            font-size: 0.9em;
+            font-size: 1em; /* Adjust text to balance with image */
         }
 
         .album-cover {
-            width: 60px; /* Smaller album cover for cleaner look */
-            height: 60px;
+            width: 150px; /* Larger album cover */
+            height: 150px;
             object-fit: cover;
             border-radius: 5px;
         }
 
         .play-button {
-            font-size: 1.2em; /* Slightly smaller play button */
+            font-size: 1.5em; /* Larger play button */
             color: rgb(255, 255, 255);
             cursor: pointer;
-            margin-right: 5px;
+            margin-right: 10px;
         }
 
         footer {
@@ -227,7 +227,7 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><i class="fas fa-play play-button" data-audio="somethingsKnocking.wav"></i></td>
+                    <td><i class="fas fa-play play-button" data-audio="somethingsKnocking.mp3"></i></td>
                     <td><img src="Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover"></td>
                     <td>SomethingsKnocking</td>
                     <td>Nov 17, 2024</td>
@@ -255,25 +255,36 @@
         }
 
         document.querySelectorAll('.play-button').forEach(button => {
+            let currentAudio; // Keep track of the current playing audio
+
             button.addEventListener('click', () => {
                 const audioSrc = button.getAttribute('data-audio');
                 
-                // Stop any currently playing audio
-                document.querySelectorAll('audio').forEach(audio => {
-                    audio.pause();
-                    audio.remove();
-                });
+                if (currentAudio && currentAudio.src.includes(audioSrc)) {
+                    if (currentAudio.paused) {
+                        currentAudio.play();
+                        button.classList.replace('fa-play', 'fa-pause');
+                    } else {
+                        currentAudio.pause();
+                        button.classList.replace('fa-pause', 'fa-play');
+                    }
+                    return;
+                }
 
-                // Create a new audio element and play it
-                const audio = new Audio(audioSrc);
-                audio.play();
+                // Stop previously playing audio
+                if (currentAudio) {
+                    currentAudio.pause();
+                    document.querySelector('.fa-pause')?.classList.replace('fa-pause', 'fa-play');
+                }
 
-                // Change button icon to pause and reset others
-                document.querySelectorAll('.play-button').forEach(btn => btn.classList.replace('fa-pause', 'fa-play'));
+                currentAudio = new Audio(audioSrc);
+                currentAudio.play();
                 button.classList.replace('fa-play', 'fa-pause');
 
-                // Reset the button when audio ends
-                audio.onended = () => button.classList.replace('fa-pause', 'fa-play');
+                // Reset button to play on end
+                currentAudio.onended = () => {
+                    button.classList.replace('fa-pause', 'fa-play');
+                };
             });
         });
     </script>
