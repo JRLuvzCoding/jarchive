@@ -38,6 +38,97 @@
             border: 1px solid red;
             padding: 5px;
             display: inline-block;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .jarchive-dot-net::before,
+        .jarchive-dot-net::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: transparent;
+            clip: rect(0, 0, 0, 0);
+        }
+
+        .jarchive-dot-net::before {
+            top: -2px;
+            left: -2px;
+            text-shadow: 1px 0 red;
+            animation: glitch-top 2s infinite ease-in-out alternate-reverse;
+        }
+
+        .jarchive-dot-net::after {
+            top: 2px;
+            left: 2px;
+            text-shadow: -1px 0 blue;
+            animation: glitch-bottom 2s infinite ease-in-out alternate-reverse;
+        }
+
+        @keyframes glitch-top {
+            0% { clip: rect(0, 9999px, 0, 0); transform: translate(0); }
+            20% { clip: rect(0, 9999px, 10px, 0); transform: translate(-2px, -2px); }
+            40% { clip: rect(10px, 9999px, 20px, 0); transform: translate(2px, 0); }
+            60% { clip: rect(20px, 9999px, 30px, 0); transform: translate(-2px, 2px); }
+            80% { clip: rect(30px, 9999px, 40px, 0); transform: translate(2px, -2px); }
+            100% { clip: rect(40px, 9999px, 50px, 0); transform: translate(0); }
+        }
+
+        @keyframes glitch-bottom {
+            0% { clip: rect(50px, 9999px, 60px, 0); transform: translate(0); }
+            20% { clip: rect(40px, 9999px, 50px, 0); transform: translate(2px, 2px); }
+            40% { clip: rect(30px, 9999px, 40px, 0); transform: translate(-2px, 0); }
+            60% { clip: rect(20px, 9999px, 30px, 0); transform: translate(2px, -2px); }
+            80% { clip: rect(10px, 9999px, 20px, 0); transform: translate(-2px, 2px); }
+            100% { clip: rect(0, 9999px, 10px, 0); transform: translate(0); }
+        }
+
+        nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .menu-icon {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .menu-icon div {
+            width: 35px;
+            height: 5px;
+            background-color: red;
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+
+        nav ul {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: black;
+            border: 2px solid red;
+            padding: 10px;
+            list-style-type: none;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 5px 0;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px red;
+        }
+
+        nav ul.show-menu {
+            display: block;
         }
 
         .content {
@@ -58,28 +149,32 @@
             width: 80%;
             margin: 0 auto;
             border-collapse: collapse;
+            table-layout: fixed;
         }
 
-        .song-list th,
-        .song-list td {
-            text-align: left;
+        .song-list th, .song-list td {
             padding: 10px;
+            text-align: left;
             border-bottom: 1px solid red;
+            height: 100px;
+            vertical-align: middle;
+            overflow: hidden;
         }
 
         .song-list th {
             color: red;
             font-size: 1.2em;
-            text-shadow: 0 0 10px red;
         }
 
         .song-list td {
             color: white;
+            font-size: 0.9em; /* Adjust to fit image row height */
         }
 
         .album-cover {
-            width: 60px;
-            height: 60px;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
             border-radius: 5px;
         }
 
@@ -95,10 +190,15 @@
 <body>
     <header>
         <a href="../">
-            <div class="jarchive-dot-net">JARCHIVE.NET</div>
+            <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
         </a>
         <nav>
-            <ul>
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <ul id="menuLinks">
                 <li><a href="../">Home</a></li>
                 <li><a href="../blog/">Blog</a></li>
             </ul>
@@ -138,5 +238,12 @@
     <footer>
         <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('menuLinks');
+            menu.classList.toggle('show-menu');
+        }
+    </script>
 </body>
 </html>
