@@ -24,9 +24,23 @@
             padding: 20px;
             border-bottom: 2px solid rgb(255, 255, 255);
             background-color: black;
-            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        
+
+        .jarchive-dot-net {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 2.5em;
+            color: white;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px red;
+            z-index: 1;
+            border: 2px solid red;
+            padding: 10px;
+        }
 
         .glitch {
             position: relative;
@@ -82,6 +96,57 @@
             100% { clip: rect(0, 900px, 100px, 0); transform: translate(0); }
         }
 
+        /* Hamburger menu styles */
+        nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            z-index: 2;
+        }
+
+        .menu-icon {
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .menu-icon div {
+            width: 35px;
+            height: 5px;
+            background-color: red;
+            margin: 6px 0;
+            transition: 0.4s;
+        }
+
+        /* Hide the menu by default */
+        nav ul {
+            display: none;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: black;
+            border: 2px solid red;
+            padding: 10px;
+            list-style-type: none;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 5px 0;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px red;
+        }
+
+        /* Show the menu when the menu-icon is clicked */
+        nav ul.show-menu {
+            display: block;
+        }
+
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
@@ -110,58 +175,6 @@
 
         p {
             font-size: 1.5em;
-        }
-
-        .jarchive-dot-net {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 2.5em;
-            color: white;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px red;
-            z-index: 1;
-            border: 2px solid red;
-            padding: 10px;
-        }
-
-        /* Blog link styles */
-        .blog-link {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            font-size: 1.5em;
-            color: white;
-            text-decoration: underline;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px red;
-            z-index: 1;
-        }
-
-        .blog-link.glitch::before, .blog-link.glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: hidden;
-            animation: glitch-animation 3s infinite;
-        }
-
-        .blog-link.glitch::before {
-            color: red;
-            text-shadow: 0 0 10px red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
-        }
-
-        .blog-link.glitch::after {
-            color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation 3s infinite alternate;
         }
 
         /* Retro-themed audio player styles with pixelation */
@@ -291,9 +304,18 @@
 
     <header>
         <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-        <a href="/blog/" class="blog-link glitch" data-text="Blog">Blog</a>
-        <a href="/musicSelection/" class="music-link glitch" data-text="Music">Music</a>
         <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
+        <nav>
+            <div class="menu-icon" onclick="toggleMenu()">
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+            <ul id="menuLinks">
+                <li><a href="/blogs/">Blog</a></li>
+                <li><a href="/music/">Music</a></li>
+            </ul>
+        </nav>
     </header>
 
     <div class="content">
@@ -354,6 +376,12 @@
             audioSource.src = track;
             audioPlayer.load();
             audioPlayer.play();
+        }
+
+        // Toggle menu functionality
+        function toggleMenu() {
+            const menu = document.getElementById('menuLinks');
+            menu.classList.toggle('show-menu');
         }
     </script>
 </body>
