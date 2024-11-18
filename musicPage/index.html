@@ -137,17 +137,18 @@
             min-height: 100vh;
         }
 
-        .page-title {
-            font-size: 2em;
+        .middle-header {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.8em;
             color: red;
             text-shadow: 0 0 10px red;
-            margin-bottom: 20px;
-            text-align: center;
         }
 
         .song-list {
             width: 80%;
-            margin: 0 auto;
+            margin: 20px auto;
             border-collapse: collapse;
             table-layout: fixed;
         }
@@ -168,7 +169,7 @@
 
         .song-list td {
             color: white;
-            font-size: 0.9em; /* Adjust to fit image row height */
+            font-size: 0.9em;
         }
 
         .album-cover {
@@ -176,6 +177,13 @@
             height: 80px;
             object-fit: cover;
             border-radius: 5px;
+        }
+
+        .play-button {
+            font-size: 1.5em;
+            color: red;
+            cursor: pointer;
+            margin-right: 10px;
         }
 
         footer {
@@ -192,6 +200,7 @@
         <a href="../">
             <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
         </a>
+        <div class="middle-header">Music</div>
         <nav>
             <div class="menu-icon" onclick="toggleMenu()">
                 <div></div>
@@ -206,11 +215,10 @@
     </header>
 
     <div class="content">
-        <h2 class="page-title">Music</h2>
-
         <table class="song-list">
             <thead>
                 <tr>
+                    <th></th>
                     <th>Album Cover</th>
                     <th>Title</th>
                     <th>Date Added</th>
@@ -219,12 +227,14 @@
             </thead>
             <tbody>
                 <tr>
+                    <td><i class="fas fa-play play-button"></i></td>
                     <td><img src="album-cover1.jpg" alt="IMissJackson" class="album-cover"></td>
                     <td>IMissJackson</td>
                     <td>Aug 12, 2018</td>
                     <td>3:45</td>
                 </tr>
                 <tr>
+                    <td><i class="fas fa-play play-button"></i></td>
                     <td><img src="album-cover2.jpg" alt="SomethingsKnocking" class="album-cover"></td>
                     <td>SomethingsKnocking</td>
                     <td>Aug 12, 2018</td>
@@ -244,6 +254,13 @@
             const menu = document.getElementById('menuLinks');
             menu.classList.toggle('show-menu');
         }
+
+        // Play button functionality placeholder
+        document.querySelectorAll('.play-button').forEach(button => {
+            button.addEventListener('click', () => {
+                alert('Play functionality will be implemented here.');
+            });
+        });
     </script>
 </body>
 </html>
