@@ -22,7 +22,7 @@
             position: relative;
             padding: 20px;
             border-bottom: 2px solid rgb(255, 255, 255);
-            background-color: #111; /* Slightly different from black */
+            background-color: black;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -51,8 +51,8 @@
 
         h1.glitch {
             font-size: 2.5em;
-            color: cyan; /* Changed color to cyan for differentiation */
-            text-shadow: 0 0 10px cyan;
+            color: red;
+            text-shadow: 0 0 10px red;
         }
 
         .glitch::before, .glitch::after {
@@ -62,20 +62,20 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: #111;
+            background: black;
             overflow: hidden;
             animation: glitch-animation 3s infinite;
         }
 
         .glitch::before {
-            color: cyan;
-            text-shadow: 0 0 10px cyan;
+            color: red;
+            text-shadow: 0 0 10px red;
             z-index: -1;
             clip: rect(5px, 900px, 80px, 0);
         }
 
         .glitch::after {
-            color: magenta;
+            color: blue;
             z-index: -2;
             clip: rect(10px, 900px, 85px, 0);
             animation: glitch-animation 3s infinite alternate;
@@ -111,7 +111,7 @@
         .menu-icon div {
             width: 35px;
             height: 5px;
-            background-color: cyan; /* Changed color */
+            background-color: red;
             margin: 6px 0;
             transition: 0.4s;
         }
@@ -122,8 +122,8 @@
             position: absolute;
             top: 50px;
             right: 0;
-            background-color: #111;
-            border: 2px solid cyan; /* Changed color */
+            background-color: black;
+            border: 2px solid red;
             padding: 10px;
             list-style-type: none;
             margin: 0;
@@ -138,7 +138,7 @@
             text-decoration: none;
             font-size: 1.2em;
             text-transform: uppercase;
-            text-shadow: 0 0 10px cyan;
+            text-shadow: 0 0 10px red;
         }
 
         /* Show the menu when the menu-icon is clicked */
@@ -148,7 +148,7 @@
 
         .content {
             padding: 20px;
-            background-color: rgba(0, 0, 0, 0.9); /* Slightly darker */
+            background-color: rgba(0, 0, 0, 0.8);
             min-height: 100vh; /* Ensures it takes at least the full viewport */
             display: flex;
             flex-direction: column;
@@ -169,8 +169,8 @@
 
         .track-title {
             font-size: 1.8em;
-            color: cyan; /* Changed color */
-            text-shadow: 0 0 10px cyan;
+            color: red;
+            text-shadow: 0 0 10px red;
             margin-bottom: 10px;
         }
 
@@ -184,13 +184,26 @@
             width: 100%;
             max-width: 600px;
             margin: 0 auto;
-            background-color: #111;
-            border: 1px solid cyan; /* Changed color */
+            background-color: black;
+            border: 1px solid red;
             padding: 10px;
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8); /* Cyan glow */
-            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(0, 255, 255, 0.5));
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
+            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
             image-rendering: pixelated; /* Adds pixelated look */
+        }
+
+        /* Social media links */
+        .social-links a {
+            color: white;
+            font-size: 1.5em;
+            margin: 0 10px;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: red;
         }
 
         /* Back to top button */
@@ -198,34 +211,32 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: cyan; /* Changed color */
-            color: black;
+            background-color: red;
+            color: white;
             border: none;
             padding: 10px;
             cursor: pointer;
             display: none;
             border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            background-color: #111;
-            color: cyan; /* Changed color */
-            border-top: 2px solid cyan; /* Changed color */
+            background-color: black;
+            color: red;
+            border-top: 2px solid red;
         }
     </style>
 </head>
 <body>
-    <div id="loadingScreen" style="position: fixed; width: 100%; height: 100%; background: #111; color: cyan; display: flex; justify-content: center; align-items: center;">
+    <div id="loadingScreen" style="position: fixed; width: 100%; height: 100%; background: black; color: red; display: flex; justify-content: center; align-items: center;">
         <h1>Loading...</h1>
     </div>
 
     <header>
-        <a href="../">
-            <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-        </a>
+        <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
         <h1 class="glitch" data-text="Music">Music</h1>
         <nav>
             <div class="menu-icon" onclick="toggleMenu()">
@@ -245,17 +256,17 @@
 
             <!-- Track 1 -->
             <div class="track">
-                <h2 class="track-title">IMissJackson</h2>
-                <p class="track-description">A song I wrote for my biggest hater</p>
+                <h2 class="track-title">Song Title 1</h2>
+                <p class="track-description">This is a description for Song 1.</p>
                 <audio controls>
-                    <source src="IMissJackson.mp3" type="audio/mpeg">
+                    <source src="song1.mp3" type="audio/mpeg">
                     Your browser does not support the audio element.
                 </audio>
             </div>
 
             <!-- Track 2 -->
             <div class="track">
-                <h2 class="track-title">SomethingsKnocking</h2>
+                <h2 class="track-title">Song Title 2</h2>
                 <p class="track-description">This is a description for Song 2.</p>
                 <audio controls>
                     <source src="song2.mp3" type="audio/mpeg">
@@ -265,6 +276,12 @@
 
             <!-- Add more tracks as needed -->
 
+        </div>
+
+        <div class="social-links">
+            <a href="https://x.com/Jonathan_5910_" target="_blank" aria-label="Follow on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+            <a href="https://www.linkedin.com/in/jonathan-rodriguezjarchive/" target="_blank" aria-label="Connect on LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+            <a href="https://www.instagram.com/_jrrodriguezzz/" target="_blank" aria-label="Follow on Instagram"><i class="fab fa-instagram"></i> Instagram</a>
         </div>
     </div>
 
@@ -301,4 +318,3 @@
     </script>
 </body>
 </html>
-
