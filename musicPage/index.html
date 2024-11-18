@@ -2,13 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>JARCHIVE</title>
-    <link rel="icon" href="icon-website.png" type="image/png"> <!-- Favicon link -->
+    <title>JARCHIVE - Music</title>
+    <link rel="icon" href="../icon-website.png" type="image/png"> <!-- Favicon link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         body {
-            background-image: url('file-qNJ2r3YByA3LbPQnduwxrQUF.png');
+            background-image: url('../file-qNJ2r3YByA3LbPQnduwxrQUF.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -153,35 +152,38 @@
             min-height: 100vh; /* Ensures it takes at least the full viewport */
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
         }
 
-        .blog-post, .music-section {
+        .music-showcase {
+            width: 80%;
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        .track {
             margin-bottom: 60px;
             text-align: center;
-            width: 60%;
         }
 
-        h2 {
-            font-size: 1.2em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: relative;
-            display: inline-block;
+        .track-title {
+            font-size: 1.8em;
             color: red;
             text-shadow: 0 0 10px red;
+            margin-bottom: 10px;
         }
 
-        p {
-            font-size: 1.5em;
+        .track-description {
+            font-size: 1.2em;
+            margin-bottom: 20px;
         }
 
         /* Retro-themed audio player styles with pixelation */
         audio {
             width: 100%;
-            max-width: 400px;
-            margin: 20px 0;
+            max-width: 600px;
+            margin: 0 auto;
             background-color: black;
             border: 1px solid red;
             padding: 10px;
@@ -189,75 +191,6 @@
             box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
             filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
             image-rendering: pixelated; /* Adds pixelated look */
-        }
-
-        audio::-webkit-media-controls-panel {
-            background-color: black;
-            border: none; /* Remove the unwanted white border */
-            border-radius: 10px;
-        }
-
-        audio::-webkit-media-controls-play-button {
-            background-color: red;
-            border: 2px solid white;
-            border-radius: 50%;
-            height: 20px;
-            width: 20px;
-        }
-
-        audio::-webkit-media-controls-volume-slider {
-            background-color: red;
-            border: none; /* Remove the white border */
-            height: 10px;
-            border-radius: 5px;
-        }
-
-        audio::-webkit-media-controls-timeline {
-            background-color: red;
-            border: none; /* Remove the white border */
-            height: 10px;
-            border-radius: 5px;
-        }
-
-        audio::-webkit-media-controls-mute-button,
-        audio::-webkit-media-controls-volume-up-button {
-            background-color: red;
-            border: 2px solid white;
-            border-radius: 50%;
-            height: 20px;
-            width: 20px;
-        }
-
-        /* Style for the 'Play Next Song' button */
-        #nextTrackButton {
-            background-color: black;
-            color: red;
-            border: 1px solid red;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
-            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
-            width: 100%;
-            max-width: 400px;
-            margin: 20px 0;
-            cursor: pointer;
-            display: block;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-
-        /* Hover effect */
-        #nextTrackButton:hover {
-            background-color: red;
-            color: black;
-        }
-
-        /* Center the button */
-        .audio-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
         }
 
         /* Social media links */
@@ -304,7 +237,7 @@
 
     <header>
         <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-        <h1 class="glitch" data-text="JARCHIVE">JARCHIVE</h1>
+        <h1 class="glitch" data-text="Music">Music</h1>
         <nav>
             <div class="menu-icon" onclick="toggleMenu()">
                 <div></div>
@@ -312,30 +245,38 @@
                 <div></div>
             </div>
             <ul id="menuLinks">
-                <li><a href="/blogs/">Blog</a></li>
-                <li><a href="/musicPage/">music-showcase</a></li>
+                <li><a href="../">Home</a></li>
+                <li><a href="../blog/">Blog</a></li>
             </ul>
         </nav>
     </header>
 
     <div class="content">
-        <section class="blog-post">
-            <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
-            <p>Oh Whats Up.</p>
-        </section>
-        <section class="music-section">
-            <h2 class="glitch" data-text="Music Section">Music Section</h2>
-            <p>Check out this cool track:</p>
-            <p>IMissJackson.wav</p>
-            <audio id="audioPlayer" controls>
-                <source id="audioSource" src="sample_music.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-            <!-- Centered and styled button -->
-            <div class="audio-controls">
-                <button id="nextTrackButton" onclick="changeTrack('song2.mp3')">Play Next Song</button>
+        <div class="music-showcase">
+
+            <!-- Track 1 -->
+            <div class="track">
+                <h2 class="track-title">Song Title 1</h2>
+                <p class="track-description">This is a description for Song 1.</p>
+                <audio controls>
+                    <source src="song1.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
             </div>
-        </section>
+
+            <!-- Track 2 -->
+            <div class="track">
+                <h2 class="track-title">Song Title 2</h2>
+                <p class="track-description">This is a description for Song 2.</p>
+                <audio controls>
+                    <source src="song2.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+
+            <!-- Add more tracks as needed -->
+
+        </div>
 
         <div class="social-links">
             <a href="https://x.com/Jonathan_5910_" target="_blank" aria-label="Follow on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
@@ -368,15 +309,6 @@
         backToTopButton.onclick = function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
-
-        // Change track functionality
-        function changeTrack(track) {
-            const audioPlayer = document.getElementById('audioPlayer');
-            const audioSource = document.getElementById('audioSource');
-            audioSource.src = track;
-            audioPlayer.load();
-            audioPlayer.play();
-        }
 
         // Toggle menu functionality
         function toggleMenu() {
