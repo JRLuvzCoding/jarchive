@@ -36,7 +36,9 @@
             text-shadow: 0 0 5px red, 0 0 10px red, 0 0 20px red, 0 0 40px red;
             border: 1px solid red;
             padding: 5px;
-            text-decoration: none; /* Removed underline */
+            text-decoration: none;
+            position: relative;
+            width: max-content; /* Prevent size changes */
         }
 
         .jarchive-dot-net::before,
@@ -91,6 +93,7 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             overflow: hidden;
+            width: max-content; /* Prevent size changes */
         }
 
         .middle-header::before,
