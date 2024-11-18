@@ -178,6 +178,7 @@
             object-fit: cover;
             border-radius: 5px;
             position: relative;
+            display: inline-block;
         }
 
         .play-button {
@@ -281,8 +282,7 @@
         <table class="song-list">
             <thead>
                 <tr>
-                    <th></th>
-                    <th></th>
+                    <th>Cover</th>
                     <th>Title</th>
                     <th>Date Added</th>
                     <th>Song Length</th>
@@ -290,13 +290,23 @@
             </thead>
             <tbody>
                 <tr>
-                    <td><img src="Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover"><i class="fas fa-play play-button" data-audio="somethingsKnocking.mp3" data-title="SomethingsKnocking" data-length="2:14"></i></td>
+                    <td>
+                        <div class="album-cover">
+                            <img src="Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover">
+                            <i class="fas fa-play play-button" data-audio="somethingsKnocking.mp3" data-title="SomethingsKnocking" data-length="2:14"></i>
+                        </div>
+                    </td>
                     <td>SomethingsKnocking</td>
                     <td>Nov 17, 2024</td>
                     <td>2:14</td>
                 </tr>
                 <tr>
-                    <td><img src="IMissJackson.jpg" alt="IMissJackson" class="album-cover"><i class="fas fa-play play-button" data-audio="IMissJackson.mp3" data-title="IMissJackson" data-length="3:50"></i></td>
+                    <td>
+                        <div class="album-cover">
+                            <img src="IMissJackson.jpg" alt="IMissJackson" class="album-cover">
+                            <i class="fas fa-play play-button" data-audio="IMissJackson.mp3" data-title="IMissJackson" data-length="3:50"></i>
+                        </div>
+                    </td>
                     <td>IMissJackson</td>
                     <td>Oct 10, 2024</td>
                     <td>3:50</td>
@@ -309,7 +319,7 @@
         <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
     </footer>
 
-    <div class="music-player" id="musicPlayer">
+    <div class="music-player" id="musicPlayer" style="display: none;">
         <div class="player-controls">
             <i class="fas fa-backward" id="prev"></i>
             <i class="fas fa-play" id="playPause"></i>
