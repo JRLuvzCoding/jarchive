@@ -338,7 +338,7 @@
             const menu = document.getElementById('menuLinks');
             menu.classList.toggle('show-menu');
         }
-
+    
         const playButtons = document.querySelectorAll('.play-button');
         const musicPlayer = document.getElementById('musicPlayer');
         const playPauseButton = document.getElementById('playPause');
@@ -346,29 +346,36 @@
         const songTime = document.getElementById('songTime');
         const seekBar = document.getElementById('seekBar');
         const songs = Array.from(playButtons);
+    
         let currentAudio = null;
         let isPlaying = false;
         let currentSongIndex = 0;
-
+    
+        // Load song and update player UI
         function loadSong(index) {
             const button = songs[index];
             const audioSrc = button.getAttribute('data-audio');
             const title = button.getAttribute('data-title');
             const length = button.getAttribute('data-length');
-
-            if (currentAudio) currentAudio.pause();
-
+    
+            if (currentAudio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0; // Reset previous song
+            }
+    
             currentAudio = new Audio(audioSrc);
             updatePlayerUI(title, length);
             currentAudio.play();
             isPlaying = true;
-
+    
             currentAudio.ontimeupdate = updateSeekBar;
             currentAudio.onended = nextSong;
         }
-
+    
+        // Toggle play/pause for the player
         function togglePlayPause() {
             if (!currentAudio) return;
+    
             if (isPlaying) {
                 currentAudio.pause();
                 playPauseButton.classList.replace('fa-pause', 'fa-play');
@@ -376,62 +383,67 @@
                 currentAudio.play();
                 playPauseButton.classList.replace('fa-play', 'fa-pause');
             }
+    
             isPlaying = !isPlaying;
         }
-
+    
+        playPauseButton.addEventListener('click', togglePlayPause);
+    
+        // Update player UI (bottom music player)
         function updatePlayerUI(title, length) {
             songTitle.textContent = title;
             songTime.textContent = `0:00 / ${length}`;
             musicPlayer.style.display = 'flex';
             playPauseButton.classList.replace('fa-play', 'fa-pause');
         }
-
+    
+        // Update the seek bar during playback
         function updateSeekBar() {
             const currentTime = currentAudio.currentTime;
             const duration = currentAudio.duration;
+    
             seekBar.value = (currentTime / duration) * 100;
-
-            const formattedTime = formatTime(currentTime);
-            songTime.textContent = `${formattedTime} / ${formatTime(duration)}`;
+            songTime.textContent = `${formatTime(currentTime)} / ${formatTime(duration)}`;
         }
-
+    
+        // Skip to the next song
         function nextSong() {
             currentSongIndex = (currentSongIndex + 1) % songs.length;
             loadSong(currentSongIndex);
         }
-
+    
+        // Skip to the previous song
         function prevSong() {
             currentSongIndex = (currentSongIndex - 1 + songs.length) % songs.length;
             loadSong(currentSongIndex);
         }
-
+    
         document.getElementById('next').addEventListener('click', nextSong);
         document.getElementById('prev').addEventListener('click', prevSong);
-
+    
+        // Load song when clicking on the album play button
         playButtons.forEach((button, index) => {
             button.addEventListener('click', () => {
                 currentSongIndex = index;
                 loadSong(index);
             });
         });
-
-        function resetPlayButton() {
-            playPauseButton.classList.replace('fa-pause', 'fa-play');
-            isPlaying = false;
-        }
-
+    
+        // Seek functionality
         seekBar.addEventListener('input', (e) => {
             if (currentAudio) {
                 const seekTo = (e.target.value / 100) * currentAudio.duration;
                 currentAudio.currentTime = seekTo;
             }
         });
-
+    
+        // Format time from seconds to MM:SS
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
             return `${mins}:${secs}`;
         }
     </script>
+    
 </body>
 </html>
