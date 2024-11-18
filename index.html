@@ -19,15 +19,50 @@
         }
 
         header {
-            position: relative;
-            padding: 20px;
-            border-bottom: 2px solid rgb(255, 255, 255);
-            background-color: black;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start; /* Align items to the start */
-            height: 80px; /* Set a consistent height */
-        }
+    position: relative;
+    padding: 0 20px; /* Padding on left and right */
+    border-bottom: 2px solid rgb(255, 255, 255);
+    background-color: black;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+}
+
+.jarchive-dot-net {
+    font-size: 2.5em;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow:
+        0 0 5px red,
+        0 0 10px red,
+        0 0 20px red,
+        0 0 40px red,
+        0 0 80px red;
+}
+
+.center-header {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 2em;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 5px red, 0 0 10px red, 0 0 20px red;
+    z-index: 1;
+}
+
+nav {
+    display: flex;
+    align-items: center;
+}
+
+.menu-icon {
+    cursor: pointer;
+}
+
 
         .jarchive-dot-net {
             position: relative;
@@ -269,6 +304,7 @@
 
     <header>
         <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
+        <div class="center-header">JARCHIVE</div> <!-- New centered header -->
         <nav>
             <div class="menu-icon" onclick="toggleMenu()">
                 <div></div>
@@ -278,11 +314,10 @@
             <ul id="menuLinks">
                 <li><a href="/blog/">Blog</a></li>
                 <li><a href="/musicPage/">Music</a></li>
-                <!-- Add more navigation links as needed -->
             </ul>
         </nav>
     </header>
-
+    
     <div class="content">
         <section class="intro">
             <h2>Welcome to JARCHIVE.NET</h2>
@@ -294,11 +329,6 @@
             </p>
         </section>
 
-        <div class="social-links">
-            <a href="https://x.com/Jonathan_5910_" target="_blank" aria-label="Follow on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
-            <a href="https://www.linkedin.com/in/jonathan-rodriguezjarchive/" target="_blank" aria-label="Connect on LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-            <a href="https://www.instagram.com/_jrrodriguezzz/" target="_blank" aria-label="Follow on Instagram"><i class="fab fa-instagram"></i> Instagram</a>
-        </div>
     </div>
 
     <footer>
