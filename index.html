@@ -2,7 +2,6 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JARCHIVE</title>
     <link rel="icon" href="icon-website.png" type="image/png"> <!-- Favicon link -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -48,6 +47,7 @@
             text-transform: uppercase;
             color: white;
             display: inline-block;
+            overflow: visible; /* Ensure overflow is visible */
         }
 
         h1.glitch {
@@ -64,36 +64,92 @@
             width: 100%;
             height: 100%;
             background: black;
-            overflow: hidden;
-            animation: glitch-animation 3s infinite;
+            overflow: visible; /* Ensure overflow is visible */
+            clip: rect(0, 900px, 0, 0); /* Initial clip */
         }
 
         .glitch::before {
-            color: red;
-            text-shadow: 0 0 10px red;
-            z-index: -1;
-            clip: rect(5px, 900px, 80px, 0);
+            left: 2px;
+            text-shadow: -2px 0 red;
+            animation: glitch-anim 2s infinite linear alternate-reverse;
         }
 
         .glitch::after {
-            color: blue;
-            z-index: -2;
-            clip: rect(10px, 900px, 85px, 0);
-            animation: glitch-animation 3s infinite alternate;
+            left: -2px;
+            text-shadow: -2px 0 blue;
+            animation: glitch-anim2 2s infinite linear alternate-reverse;
         }
 
-        @keyframes glitch-animation {
-            0% { clip: rect(0, 900px, 0, 0); transform: translate(0); }
-            10% { clip: rect(0, 900px, 10px, 0); transform: translate(-2px, 0); }
-            20% { clip: rect(10px, 900px, 20px, 0); transform: translate(2px, 0); }
-            30% { clip: rect(0, 900px, 30px, 0); transform: translate(-2px, 0); }
-            40% { clip: rect(20px, 900px, 40px, 0); transform: translate(2px, 0); }
-            50% { clip: rect(10px, 900px, 50px, 0); transform: translate(-2px, 0); }
-            60% { clip: rect(0, 900px, 60px, 0); transform: translate(2px, 0); }
-            70% { clip: rect(10px, 900px, 70px, 0); transform: translate(0); }
-            80% { clip: rect(0, 900px, 80px, 0); transform: translate(-2px, 0); }
-            90% { clip: rect(20px, 900px, 90px, 0); transform: translate(2px, 0); }
-            100% { clip: rect(0, 900px, 100px, 0); transform: translate(0); }
+        @keyframes glitch-anim {
+            0% {
+                clip: rect(0, 9999px, 0, 0);
+            }
+            10% {
+                clip: rect(10px, 9999px, 40px, 0);
+            }
+            20% {
+                clip: rect(10px, 9999px, 60px, 0);
+            }
+            30% {
+                clip: rect(30px, 9999px, 70px, 0);
+            }
+            40% {
+                clip: rect(30px, 9999px, 90px, 0);
+            }
+            50% {
+                clip: rect(50px, 9999px, 110px, 0);
+            }
+            60% {
+                clip: rect(50px, 9999px, 130px, 0);
+            }
+            70% {
+                clip: rect(70px, 9999px, 150px, 0);
+            }
+            80% {
+                clip: rect(90px, 9999px, 170px, 0);
+            }
+            90% {
+                clip: rect(110px, 9999px, 190px, 0);
+            }
+            100% {
+                clip: rect(130px, 9999px, 210px, 0);
+            }
+        }
+
+        @keyframes glitch-anim2 {
+            0% {
+                clip: rect(0, 9999px, 0, 0);
+            }
+            10% {
+                clip: rect(15px, 9999px, 50px, 0);
+            }
+            20% {
+                clip: rect(25px, 9999px, 70px, 0);
+            }
+            30% {
+                clip: rect(35px, 9999px, 90px, 0);
+            }
+            40% {
+                clip: rect(45px, 9999px, 110px, 0);
+            }
+            50% {
+                clip: rect(55px, 9999px, 130px, 0);
+            }
+            60% {
+                clip: rect(65px, 9999px, 150px, 0);
+            }
+            70% {
+                clip: rect(75px, 9999px, 170px, 0);
+            }
+            80% {
+                clip: rect(85px, 9999px, 190px, 0);
+            }
+            90% {
+                clip: rect(95px, 9999px, 210px, 0);
+            }
+            100% {
+                clip: rect(105px, 9999px, 230px, 0);
+            }
         }
 
         /* Hamburger menu styles */
@@ -157,107 +213,24 @@
             align-items: center;
         }
 
-        .blog-post, .music-section {
+        .intro {
             margin-bottom: 60px;
             text-align: center;
             width: 60%;
         }
 
-        h2 {
-            font-size: 1.2em;
+        .intro h2 {
+            font-size: 2em;
             text-transform: uppercase;
             letter-spacing: 1px;
-            position: relative;
-            display: inline-block;
             color: red;
             text-shadow: 0 0 10px red;
+            margin-bottom: 20px;
         }
 
-        p {
+        .intro p {
             font-size: 1.5em;
-        }
-
-        /* Retro-themed audio player styles with pixelation */
-        audio {
-            width: 100%;
-            max-width: 400px;
-            margin: 20px 0;
-            background-color: black;
-            border: 1px solid red;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
-            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
-            image-rendering: pixelated; /* Adds pixelated look */
-        }
-
-        audio::-webkit-media-controls-panel {
-            background-color: black;
-            border: none; /* Remove the unwanted white border */
-            border-radius: 10px;
-        }
-
-        audio::-webkit-media-controls-play-button {
-            background-color: red;
-            border: 2px solid white;
-            border-radius: 50%;
-            height: 20px;
-            width: 20px;
-        }
-
-        audio::-webkit-media-controls-volume-slider {
-            background-color: red;
-            border: none; /* Remove the white border */
-            height: 10px;
-            border-radius: 5px;
-        }
-
-        audio::-webkit-media-controls-timeline {
-            background-color: red;
-            border: none; /* Remove the white border */
-            height: 10px;
-            border-radius: 5px;
-        }
-
-        audio::-webkit-media-controls-mute-button,
-        audio::-webkit-media-controls-volume-up-button {
-            background-color: red;
-            border: 2px solid white;
-            border-radius: 50%;
-            height: 20px;
-            width: 20px;
-        }
-
-        /* Style for the 'Play Next Song' button */
-        #nextTrackButton {
-            background-color: black;
-            color: red;
-            border: 1px solid red;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(255, 0, 0, 0.8);
-            filter: contrast(1.2) saturate(1.5) drop-shadow(0 0 10px rgba(255, 0, 0, 0.5));
-            width: 100%;
-            max-width: 400px;
-            margin: 20px 0;
-            cursor: pointer;
-            display: block;
-            text-align: center;
-            transition: background-color 0.3s;
-        }
-
-        /* Hover effect */
-        #nextTrackButton:hover {
-            background-color: red;
-            color: black;
-        }
-
-        /* Center the button */
-        .audio-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            line-height: 1.5;
         }
 
         /* Social media links */
@@ -312,29 +285,23 @@
                 <div></div>
             </div>
             <ul id="menuLinks">
-                <li><a href="/blogs/">Blog</a></li>
-                <li><a href="/musicPage/">music-showcase</a></li>
+                <li><a href="/blog/">Blog</a></li>
+                <li><a href="/music/">Music</a></li>
+                <li><a href="/contact/">Contact</a></li>
+                <!-- Add more navigation links as needed -->
             </ul>
         </nav>
     </header>
 
     <div class="content">
-        <section class="blog-post">
-            <h2 class="glitch" data-text="JR Blog">JR Blog</h2>
-            <p>Oh Whats Up.</p>
-        </section>
-        <section class="music-section">
-            <h2 class="glitch" data-text="Music Section">Music Section</h2>
-            <p>Check out this cool track:</p>
-            <p>IMissJackson.wav</p>
-            <audio id="audioPlayer" controls>
-                <source id="audioSource" src="sample_music.mp3" type="audio/mpeg">
-                Your browser does not support the audio element.
-            </audio>
-            <!-- Centered and styled button -->
-            <div class="audio-controls">
-                <button id="nextTrackButton" onclick="changeTrack('song2.mp3')">Play Next Song</button>
-            </div>
+        <section class="intro">
+            <h2>Welcome to JARCHIVE</h2>
+            <p>
+                Hello! I'm Jonathan Rodriguez, a passionate musician and blogger. Welcome to my personal website where I share my thoughts, creations, and everything in between. Feel free to explore my latest blog posts, listen to my music, or get in touch.
+            </p>
+            <p>
+                Stay tuned for updates and new releases!
+            </p>
         </section>
 
         <div class="social-links">
@@ -369,15 +336,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
 
-        // Change track functionality
-        function changeTrack(track) {
-            const audioPlayer = document.getElementById('audioPlayer');
-            const audioSource = document.getElementById('audioSource');
-            audioSource.src = track;
-            audioPlayer.load();
-            audioPlayer.play();
-        }
-
         // Toggle menu functionality
         function toggleMenu() {
             const menu = document.getElementById('menuLinks');
@@ -386,3 +344,4 @@
     </script>
 </body>
 </html>
+
