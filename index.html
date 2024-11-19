@@ -2,33 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JARCHIVE.NET</title>
-    <link rel="icon" href="icon-website.png" type="image/png"> <!-- Favicon link -->
+    <link rel="icon" href="icon-website.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-body {
-    background-image: 
-        url('file-qNJ2r3YByA3LbPQnduwxrQUF.png'), /* Original background image */
-        repeating-linear-gradient(
-            0deg,
-            rgba(255, 0, 0, 0.15) 0%, /* Red overlay */
-            rgba(0, 0, 0, 0.15) 20%, /* Black overlay */
-            rgba(255, 0, 0, 0.1) 40%, /* Slightly lighter red */
-            rgba(0, 0, 0, 0.1) 60%, /* Slightly lighter black */
-            rgba(255, 0, 0, 0.2) 80%, /* Stronger red again */
-            rgba(0, 0, 0, 0.2) 100% /* Stronger black again */
-        );
-    background-blend-mode: overlay; /* Overlay effect to blend static over the image */
-    background-size: cover, cover; /* Ensure both image and static cover full screen */
-    background-position: center;
-    background-repeat: no-repeat, repeat; /* Image stays fixed, static repeats */
-    color: rgb(255, 255, 255);
-    font-family: 'Courier New', Courier, monospace;
-    margin: 0;
-    padding: 0;
-    overflow-y: scroll; /* Allow vertical scrolling */
-}
-
+        body {
+            background-image: 
+                url('file-qNJ2r3YByA3LbPQnduwxrQUF.png'),
+                repeating-linear-gradient(
+                    0deg,
+                    rgba(255, 0, 0, 0.15) 0%, 
+                    rgba(0, 0, 0, 0.15) 20%, 
+                    rgba(255, 0, 0, 0.1) 40%, 
+                    rgba(0, 0, 0, 0.1) 60%, 
+                    rgba(255, 0, 0, 0.2) 80%, 
+                    rgba(0, 0, 0, 0.2) 100%
+                );
+            background-blend-mode: overlay;
+            background-size: cover, cover;
+            background-position: center;
+            background-repeat: no-repeat, repeat;
+            color: rgb(255, 255, 255);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+            overflow-y: scroll;
+        }
 
         header {
             position: relative;
@@ -41,141 +41,52 @@ body {
             height: 80px;
         }
 
-    .jarchive-dot-net {
-        font-size: 2.5em;
-        color: rgb(0, 0, 0);
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        text-shadow:
-            0 0 5px red,
-            0 0 10px red,
-            0 0 15px black,
-            0 0 20px black;
-        border: 1px solid red;
-        padding: 10px;
-        display: inline-block;
-        position: relative;
-        overflow: hidden;
-        width: max-content;
-        background-color: black; /* Base black background */
-    }
+        .jarchive-dot-net {
+            font-size: 2.5em;
+            color: rgb(0, 0, 0);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow:
+                0 0 5px red,
+                0 0 10px red,
+                0 0 15px black,
+                0 0 20px black;
+            border: 1px solid red;
+            padding: 10px;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+            width: max-content;
+            background-color: black;
+        }
 
-    /* Red moving background layer */
-    .jarchive-dot-net::before,
-    .jarchive-dot-net::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: repeating-linear-gradient(
-            180deg,
-            red 0%, 
-            red 10%, 
-            black 10%, 
-            black 20%, 
-            rgba(255, 0, 0, 0.1) 20%, 
-            rgba(0, 0, 0, 0.3) 25%, 
-            rgba(0, 0, 0, 0.7) 50%
-        ), 
-        url('https://i.imgur.com/6pWFXI6.png'); /* Static texture overlay */
-        background-size: cover, 100%;
-        mix-blend-mode: overlay;
-        opacity: 0.8;
-    }
+        .jarchive-dot-net::before,
+        .jarchive-dot-net::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%);
+        }
 
-    .jarchive-dot-net::before {
-        animation: glitch-static 0.5s steps(10) infinite, glitch-horizontal 1s ease-in-out infinite alternate, red-bg-move 4s linear infinite;
-    }
+        .jarchive-dot-net::before {
+            text-shadow: 2px 2px red;
+            animation: glitch-shift 0.15s infinite alternate;
+        }
 
-    .jarchive-dot-net::after {
-        animation: glitch-static 0.3s steps(20) infinite, glitch-horizontal 1.5s ease-in-out infinite reverse, red-bg-move 4s linear infinite reverse;
-    }
+        .jarchive-dot-net::after {
+            text-shadow: -2px -2px rgb(220, 220, 226);
+            animation: glitch-shift 0.15s infinite alternate-reverse;
+        }
 
-    /* Text glitch effect for chaos */
-    .jarchive-dot-net::before,
-    .jarchive-dot-net::after {
-        content: attr(data-text);
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: transparent;
-    }
-
-    .jarchive-dot-net::before {
-        text-shadow: 3px 0 red, -5px 0 lime, 2px -2px blue;
-        clip-path: polygon(
-            0 0,
-            100% 5%,
-            100% 35%,
-            0 25%,
-            0 40%,
-            100% 45%,
-            100% 60%,
-            0 60%
-        );
-        animation: glitch-shift 0.1s infinite ease-in-out alternate-reverse;
-    }
-
-    .jarchive-dot-net::after {
-        text-shadow: -10px 10px blue, 6px 4px green, -9px -3px red;
-        clip-path: polygon(
-            0 70%,
-            100% 65%,
-            100% 100%,
-            0 90%,
-            0 85%,
-            100% 80%,
-            100% 95%,
-            0 100%
-        );
-        animation: glitch-pixelate 0.08s infinite linear alternate-reverse;
-    }
-
-    /* Animations */
-    @keyframes glitch-static {
-        0% { opacity: 0.8; }
-        50% { opacity: 0.5; }
-        100% { opacity: 0.8; }
-    }
-
-    @keyframes glitch-horizontal {
-        0% { transform: translate(0, 0); }
-        25% { transform: translate(-10px, -4px); }
-        50% { transform: translate(10px, 4px); }
-        75% { transform: translate(-3px, 4px); }
-        100% { transform: translate(0, -3px); }
-    }
-
-    @keyframes glitch-shift {
-        0% { transform: translate(-10px, -5px) skew(2deg, 2deg); }
-        20% { transform: translate(5px, 2px); }
-        60% { transform: translate(-12px, 8px) skew(-2deg, -1deg); }
-        100% { transform: translate(0, 5px); }
-    }
-
-    @keyframes glitch-pixelate {
-        0% { transform: translate(3px, 3px) scale(1.1); }
-        25% { transform: translate(-6px, -8px) scale(1.2); }
-        75% { transform: translate(8px, -4px) scale(1.05); }
-        100% { transform: translate(0, 0); }
-    }
-
-    @keyframes red-bg-move {
-        0% { background-position: 0% 0%; }
-        50% { background-position: 100% 100%; }
-        100% { background-position: 0% 100%; }
-    }
-
-    /* Speed glitch on hover */
-    .jarchive-dot-net:hover::before,
-    .jarchive-dot-net:hover::after {
-        animation-duration: 0.4s; /* Faster glitch on hover */
-    }
-
+        @keyframes glitch-shift {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(3px, -3px); }
+            100% { transform: translate(-3px, 3px); }
+        }
 
         .center-header {
             position: absolute;
@@ -190,8 +101,6 @@ body {
         }
 
         nav {
-            display: flex;
-            align-items: center;
             position: absolute;
             top: 20px;
             right: 20px;
@@ -199,7 +108,7 @@ body {
         }
 
         .menu-icon {
-            display: inline-block;
+            display: none;
             cursor: pointer;
         }
 
@@ -212,19 +121,15 @@ body {
         }
 
         nav ul {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background-color: black;
-            border: 2px solid red;
-            padding: 10px;
-            list-style-type: none;
+            display: flex;
+            align-items: center;
+            list-style: none;
+            padding: 0;
             margin: 0;
         }
 
         nav ul li {
-            margin: 5px 0;
+            margin-left: 20px;
         }
 
         nav ul li a {
@@ -269,53 +174,19 @@ body {
             line-height: 1.5;
         }
 
-        .social-links a {
-            color: white;
-            font-size: 1.5em;
-            margin: 0 10px;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .social-links a:hover {
-            color: red;
-        }
-
-        #backToTop {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 10px;
-            cursor: pointer;
-            display: none;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
-        }
-
         footer {
             text-align: center;
             padding: 20px;
             background-color: black;
             color: red;
-            border-top: 2px solid red;
-            position: relative;
-        }
-
-        .footer-social-links {
-            position: absolute;
-            right: 20px;
-            top: 50%;
-            transform: translateY(-50%);
+            border-top: 6px solid red;
         }
 
         .footer-social-links a {
             color: red;
-            font-size: 1em;
-            margin: 0 10px;
             text-decoration: none;
+            font-size: 1.5em;
+            margin: 0 10px;
             transition: color 0.3s;
         }
 
@@ -323,70 +194,76 @@ body {
             color: white;
         }
 
+        /* MEDIA QUERIES */
+        @media (max-width: 768px) {
+            header {
+                flex-wrap: wrap;
+            }
+
+            nav ul {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 80px;
+                right: 10px;
+                background-color: black;
+                width: 150px;
+            }
+
+            nav ul.show-menu {
+                display: flex;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            .content .intro {
+                width: 90%;
+            }
+
+            .footer-social-links a {
+                font-size: 1.2em;
+            }
+        }
     </style>
 </head>
 <body>
-    <div id="loadingScreen" style="position: fixed; width: 100%; height: 100%; background: black; color: red; display: flex; justify-content: center; align-items: center;">
-        <h1>Loading...</h1>
-    </div>
-
-    <header>
-        <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-        <div class="center-header">JARCHIVE</div>
-        <nav>
-            <div class="menu-icon" onclick="toggleMenu()">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-            <ul id="menuLinks">
-                <li><a href="/blog/">Blog</a></li>
-                <li><a href="/musicPage/">Music</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="content">
-        <section class="intro">
-            <h2>Welcome to JARCHIVE.NET</h2>
-            <p>Somethings Knocking: Out now!</p>
-            <p>Stay tuned for updates and new releases!</p>
-        </section>
-    </div>
-
-    <footer>
-        <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
-        <div class="footer-social-links">
-            <a href="https://x.com/Jonathan_5910_" target="_blank" aria-label="Follow on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
-            <a href="https://www.linkedin.com/in/jonathan-rodriguezjarchive/" target="_blank" aria-label="Connect on LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
-            <a href="https://www.instagram.com/_jrrodriguezzz/" target="_blank" aria-label="Follow on Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+<header>
+    <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
+    <div class="center-header">JARCHIVE</div>
+    <nav>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
-    </footer>
-
-    <button id="backToTop">Back to Top</button>
-
-    <script>
-        window.onload = function() {
-            document.getElementById('loadingScreen').style.display = 'none';
-        };
-
-        const backToTopButton = document.getElementById('backToTop');
-        window.onscroll = function() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                backToTopButton.style.display = "block";
-            } else {
-                backToTopButton.style.display = "none";
-            }
-        };
-
-        backToTopButton.onclick = function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-
-        function toggleMenu() {
-            const menu = document.getElementById('menuLinks');
-            menu.classList.toggle('show-menu');
-        }
-    </script>
+        <ul id="menuLinks">
+            <li><a href="/blog/">Blog</a></li>
+            <li><a href="/musicPage/">Music</a></li>
+        </ul>
+    </nav>
+</header>
+<section class="content">
+    <section class="intro">
+        <h2>Welcome to JARCHIVE.NET</h2>
+        <p>Somethings Knocking: Out now!</p>
+        <p>Stay tuned for updates and new releases!</p>
+    </section>
+</section>
+<footer>
+    <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
+    <div class="footer-social-links">
+        <a href="https://x.com/Jonathan_5910_" target="_blank" aria-label="Follow on Twitter"><i class="fab fa-twitter"></i> Twitter</a>
+        <a href="https://www.linkedin.com/in/jonathan-rodriguezjarchive/" target="_blank" aria-label="Connect on LinkedIn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+        <a href="https://www.instagram.com/_jrrodriguezzz/" target="_blank" aria-label="Follow on Instagram"><i class="fab fa-instagram"></i> Instagram</a>
+    </div>
+</footer>
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menuLinks');
+        menu.classList.toggle('show-menu');
+    }
+</script>
 </body>
 </html>

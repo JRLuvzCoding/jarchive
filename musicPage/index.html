@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JARCHIVE.NET - Music</title>
     <link rel="icon" href="../icon-website.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -30,11 +31,11 @@
 
         .jarchive-dot-net {
             font-size: 2.5em;
-            color: white;
+            color: rgb(0, 0, 0);
             text-transform: uppercase;
             letter-spacing: 2px;
-            text-shadow: 0 0 5px red, 0 0 10px red, 0 0 20px red, 0 0 40px red;
-            border: 1px solid red;
+            text-shadow: 0 0 5px rgb(250, 249, 249), 0 0 10px rgb(0, 0, 0), 0 0 20px rgb(255, 255, 255), 0 0 40px rgb(255, 255, 255);
+            border: 1px solid rgb(255, 255, 255);
             padding: 5px;
             text-decoration: none;
             position: relative;
@@ -48,39 +49,31 @@
             left: 0;
             width: 100%;
             background: transparent;
-            clip: rect(0, 0, 0, 0);
+            clip-path: polygon(0 0, 100% 10%, 100% 20%, 0 10%);
         }
 
         .jarchive-dot-net::before {
             top: -2px;
-            left: -2px;
-            text-shadow: 1px 0 red;
+            text-shadow: 1px 0 rgb(255, 255, 255);
             animation: glitch-top 2s infinite ease-in-out alternate-reverse;
         }
 
         .jarchive-dot-net::after {
             top: 2px;
-            left: 2px;
-            text-shadow: -1px 0 rgb(209, 23, 23);
+            text-shadow: -1px 0 rgb(255, 253, 253);
             animation: glitch-bottom 2s infinite ease-in-out alternate-reverse;
         }
 
         @keyframes glitch-top {
-            0% { clip: rect(0, 9999px, 0, 0); transform: translate(0); }
-            20% { clip: rect(0, 9999px, 10px, 0); transform: translate(-2px, -2px); }
-            40% { clip: rect(10px, 9999px, 20px, 0); transform: translate(2px, 0); }
-            60% { clip: rect(20px, 9999px, 30px, 0); transform: translate(-2px, 2px); }
-            80% { clip: rect(30px, 9999px, 40px, 0); transform: translate(2px, -2px); }
-            100% { clip: rect(40px, 9999px, 50px, 0); transform: translate(0); }
+            0% { clip-path: polygon(0 0, 100% 5%, 100% 15%, 0 10%); transform: translate(0); }
+            20% { clip-path: polygon(0 10%, 100% 20%, 100% 40%, 0 30%); transform: translate(-2px, -2px); }
+            100% { clip-path: polygon(0 40%, 100% 45%, 100% 65%, 0 60%); transform: translate(0); }
         }
 
         @keyframes glitch-bottom {
-            0% { clip: rect(50px, 9999px, 60px, 0); transform: translate(0); }
-            20% { clip: rect(40px, 9999px, 50px, 0); transform: translate(2px, 2px); }
-            40% { clip: rect(30px, 9999px, 40px, 0); transform: translate(-2px, 0); }
-            60% { clip: rect(20px, 9999px, 30px, 0); transform: translate(2px, -2px); }
-            80% { clip: rect(10px, 9999px, 20px, 0); transform: translate(-2px, 2px); }
-            100% { clip: rect(0, 9999px, 10px, 0); transform: translate(0); }
+            0% { clip-path: polygon(0 60%, 100% 65%, 100% 85%, 0 80%); transform: translate(0); }
+            20% { clip-path: polygon(0 70%, 100% 75%, 100% 95%, 0 90%); transform: translate(2px, 2px); }
+            100% { clip-path: polygon(0 90%, 100% 95%, 100% 100%, 0 100%); transform: translate(0); }
         }
 
         .middle-header {
@@ -103,37 +96,31 @@
             left: 0;
             width: 100%;
             background: transparent;
-            clip: rect(0, 0, 0, 0);
+            clip-path: polygon(0 0, 100% 10%, 100% 20%, 0 10%);
         }
 
         .middle-header::before {
             top: -2px;
-            left: -2px;
-            text-shadow: 1px 0 red;
+            text-shadow: 1px 0 rgb(255, 255, 255);
             animation: glitch-top-music 1.5s infinite ease-in-out alternate-reverse;
         }
 
         .middle-header::after {
             top: 2px;
-            left: 2px;
-            text-shadow: -1px 0 rgb(192, 23, 23);
+            text-shadow: -1px 0 rgb(255, 255, 255);
             animation: glitch-bottom-music 1.5s infinite ease-in-out alternate-reverse;
         }
 
         @keyframes glitch-top-music {
-            0% { clip: rect(0, 9999px, 5px, 0); transform: translate(0); }
-            25% { clip: rect(5px, 9999px, 15px, 0); transform: translate(-2px, -2px); }
-            50% { clip: rect(15px, 9999px, 25px, 0); transform: translate(2px, 0); }
-            75% { clip: rect(25px, 9999px, 35px, 0); transform: translate(-1px, 2px); }
-            100% { clip: rect(35px, 9999px, 45px, 0); transform: translate(0); }
+            0% { clip-path: polygon(0 0, 100% 5%, 100% 35%, 0 25%); transform: translate(0); }
+            20% { clip-path: polygon(0 10%, 100% 20%, 100% 40%, 0 30%); transform: translate(-1px, -2px); }
+            100% { clip-path: polygon(0 40%, 100% 45%, 100% 65%, 0 60%); transform: translate(0); }
         }
 
         @keyframes glitch-bottom-music {
-            0% { clip: rect(35px, 9999px, 45px, 0); transform: translate(0); }
-            25% { clip: rect(25px, 9999px, 35px, 0); transform: translate(2px, 2px); }
-            50% { clip: rect(15px, 9999px, 25px, 0); transform: translate(-2px, 0); }
-            75% { clip: rect(5px, 9999px, 15px, 0); transform: translate(1px, -2px); }
-            100% { clip: rect(0px, 9999px, 5px, 0); transform: translate(0); }
+            0% { clip-path: polygon(0 60%, 100% 65%, 100% 85%, 0 80%); transform: translate(0); }
+            20% { clip-path: polygon(0 70%, 100% 75%, 100% 95%, 0 90%); transform: translate(1px, 2px); }
+            100% { clip-path: polygon(0 90%, 100% 95%, 100% 100%, 0 100%); transform: translate(0); }
         }
 
         nav {
@@ -143,30 +130,26 @@
         }
 
         .menu-icon {
-            display: inline-block;
+            display: none;
             cursor: pointer;
         }
 
         .menu-icon div {
             width: 35px;
             height: 5px;
-            background-color: red;
+            background-color: rgb(221, 218, 218);
             margin: 6px 0;
         }
 
         nav ul {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background-color: black;
-            border: 2px solid red;
-            padding: 10px;
-            list-style-type: none;
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
 
         nav ul li {
-            margin: 5px 0;
+            margin: 5px 20px;
         }
 
         nav ul li a {
@@ -178,7 +161,18 @@
         }
 
         nav ul.show-menu {
-            display: block;
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: black;
+            border: 2px solid rgb(245, 232, 232);
+            padding: 10px;
+        }
+
+        nav ul.show-menu li {
+            margin: 10px 0;
         }
 
         .content {
@@ -188,30 +182,29 @@
         }
 
         .song-list {
-            width: 80%;
+            width: 90%;
             margin: 10px auto;
             border-collapse: collapse;
-            table-layout: fixed;
         }
 
         .song-list th, .song-list td {
             padding: 10px;
             text-align: left;
-            border-bottom: 1px solid red;
-            height: 125px; /* Adjusted for new cover size */
+            border-bottom: 1px solid rgb(255, 255, 255);
+            height: 125px;
             vertical-align: middle;
         }
 
         .album-cover {
-            width: 125px;
-            height: 125px;
+            width: 100px;
+            height: 100px;
             object-fit: cover;
             position: relative;
         }
 
         .play-button {
             font-size: 2em;
-            color: red;
+            color: rgb(255, 255, 255);
             position: absolute;
             top: 50%;
             left: 50%;
@@ -244,7 +237,7 @@
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
-            border-top: 2px solid red;
+            border-top: 2px solid rgb(255, 255, 255);
             z-index: 10;
         }
 
@@ -255,7 +248,7 @@
 
         .player-controls i {
             font-size: 1.5em;
-            color: red;
+            color: rgb(223, 209, 209);
             margin: 0 10px;
             cursor: pointer;
         }
@@ -294,195 +287,231 @@
             font-size: 0.8em;
             color: gray;
         }
+
+        /* Responsive styles */
+        @media (max-width: 768px) {
+            header {
+                flex-wrap: wrap;
+            }
+
+            .jarchive-dot-net {
+                font-size: 1.5em;
+                padding: 5px 10px;
+            }
+
+            .middle-header {
+                font-size: 1.2em;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            nav ul.show-menu {
+                display: flex;
+            }
+
+            .song-list {
+                width: 100%;
+            }
+
+            .album-cover {
+                width: 80px;
+                height: 80px;
+            }
+
+            .music-player {
+                flex-wrap: wrap;
+            }
+
+            .player-controls {
+                width: 100%;
+                justify-content: space-around;
+                margin-bottom: 10px;
+            }
+
+            .playbar, .volume-bar {
+                width: 90%;
+            }
+
+            .current-album-cover {
+                width: 40px;
+                height: 40px;
+            }
+
+            .song-info h4 {
+                font-size: 0.9em;
+            }
+
+            .song-info span {
+                font-size: 0.7em;
+            }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <a href="../">
-            <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-        </a>
-        <div class="middle-header" data-text="Music">Music</div>
-        <nav>
-            <div class="menu-icon" onclick="toggleMenu()">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-            <ul id="menuLinks">
-                <li><a href="../">Home</a></li>
-                <li><a href="../blog/">Blog</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="content">
-        <table class="song-list">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Title</th>
-                    <th>Date Added</th>
-                    <th>Length</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>
-                        <div class="album-cover">
-                            <img src="Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover">
-                            <i class="fas fa-play play-button" data-audio="somethingsKnocking.mp3" data-title="SomethingsKnocking" data-length="2:14"></i>
-                        </div>
-                    </td>
-                    <td>SomethingsKnocking</td>
-                    <td>Nov 17, 2024</td>
-                    <td>2:14</td>
-                </tr>
-                <tr>
-                    <td>
-                        <div class="album-cover">
-                            <img src="IMissJackson.jpg" alt="IMissJackson" class="album-cover">
-                            <i class="fas fa-play play-button" data-audio="IMissJackson.mp3" data-title="IMissJackson" data-length="3:50"></i>
-                        </div>
-                    </td>
-                    <td>IMissJackson</td>
-                    <td>Oct 10, 2024</td>
-                    <td>3:50</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <footer>
-        <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
-    </footer>
-
-    <div class="music-player" id="musicPlayer" style="display: none;">
-        <div class="player-controls">
-            <i class="fas fa-backward" id="prev"></i>
-            <i class="fas fa-play" id="playPause"></i>
-            <i class="fas fa-forward" id="next"></i>
-            <i class="fas fa-random" id="shuffle"></i>
+<header>
+    <a href="../">
+        <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
+    </a>
+    <div class="middle-header" data-text="Music">Music</div>
+    <nav>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
         </div>
-        <input type="range" id="seekBar" min="0" max="100" value="0" class="playbar">
-        <input type="range" id="volumeBar" min="0" max="1" step="0.01" value="0.5" class="volume-bar">
-        <div class="song-info">
-            <img id="currentAlbumCover" class="current-album-cover" src="" alt="Album Cover">
-            <div>
-                <h4 id="songTitle">Title</h4>
-                <span id="songTime">0:00 / 0:00</span>
-            </div>
+        <ul id="menuLinks">
+            <li><a href="../">Home</a></li>
+            <li><a href="../blog/">Blog</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="content">
+    <table class="song-list">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Title</th>
+                <th>Date Added</th>
+                <th>Length</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <div class="album-cover">
+                        <img src="Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover">
+                        <i class="fas fa-play play-button" data-audio="somethingsKnocking.mp3" data-title="SomethingsKnocking" data-length="2:14"></i>
+                    </div>
+                </td>
+                <td>SomethingsKnocking</td>
+                <td>Nov 17, 2024</td>
+                <td>2:14</td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="album-cover">
+                        <img src="IMissJackson.jpg" alt="IMissJackson" class="album-cover">
+                        <i class="fas fa-play play-button" data-audio="IMissJackson.mp3" data-title="IMissJackson" data-length="3:50"></i>
+                    </div>
+                </td>
+                <td>IMissJackson</td>
+                <td>Oct 10, 2024</td>
+                <td>3:50</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<footer>
+    <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
+</footer>
+
+<div class="music-player" id="musicPlayer" style="display: none;">
+    <div class="player-controls">
+        <i class="fas fa-backward" id="prev"></i>
+        <i class="fas fa-play" id="playPause"></i>
+        <i class="fas fa-forward" id="next"></i>
+    </div>
+    <input type="range" id="seekBar" min="0" max="100" value="0" class="playbar">
+    <input type="range" id="volumeBar" min="0" max="1" step="0.01" value="0.5" class="volume-bar">
+    <div class="song-info">
+        <img id="currentAlbumCover" class="current-album-cover" src="" alt="Album Cover">
+        <div>
+            <h4 id="songTitle">Title</h4>
+            <span id="songTime">0:00 / 0:00</span>
         </div>
     </div>
+</div>
 
-    <script>
-        function toggleMenu() {
-            const menu = document.getElementById('menuLinks');
-            menu.classList.toggle('show-menu');
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menuLinks');
+        menu.classList.toggle('show-menu');
+    }
+
+    const playButtons = document.querySelectorAll('.play-button');
+    const musicPlayer = document.getElementById('musicPlayer');
+    const playPauseButton = document.getElementById('playPause');
+    const songTitle = document.getElementById('songTitle');
+    const songTime = document.getElementById('songTime');
+    const seekBar = document.getElementById('seekBar');
+    const volumeBar = document.getElementById('volumeBar');
+    const currentAlbumCover = document.getElementById('currentAlbumCover');
+
+    let currentAudio = null;
+
+    function loadSong(button) {
+        const audioSrc = button.getAttribute('data-audio');
+        const title = button.getAttribute('data-title');
+        const length = button.getAttribute('data-length');
+        const cover = button.closest('.album-cover').querySelector('img').src;
+
+        if (currentAudio) {
+            currentAudio.pause();
         }
 
-        const playButtons = document.querySelectorAll('.play-button');
-        const musicPlayer = document.getElementById('musicPlayer');
-        const playPauseButton = document.getElementById('playPause');
-        const songTitle = document.getElementById('songTitle');
-        const songTime = document.getElementById('songTime');
-        const seekBar = document.getElementById('seekBar');
-        const volumeBar = document.getElementById('volumeBar');
-        const currentAlbumCover = document.getElementById('currentAlbumCover');
+        currentAudio = new Audio(audioSrc);
+        currentAudio.volume = volumeBar.value;
 
-        let currentAudio = null;
-        let currentSongIndex = 0;
+        songTitle.textContent = title;
+        songTime.textContent = `0:00 / ${length}`;
+        currentAlbumCover.src = cover;
+        musicPlayer.style.display = 'flex';
 
-        function loadSong(button) {
-            const audioSrc = button.getAttribute('data-audio');
-            const title = button.getAttribute('data-title');
-            const length = button.getAttribute('data-length');
-            const cover = button.closest('.album-cover').querySelector('img').src;
+        currentAudio.play();
+        playPauseButton.classList.replace('fa-play', 'fa-pause');
 
-            if (currentAudio) {
+        currentAudio.ontimeupdate = () => {
+            const currentTime = currentAudio.currentTime;
+            seekBar.value = (currentTime / currentAudio.duration) * 100;
+            songTime.textContent = `${formatTime(currentTime)} / ${length}`;
+        };
+    }
+
+    function togglePlayPause() {
+        if (currentAudio) {
+            if (currentAudio.paused) {
+                currentAudio.play();
+                playPauseButton.classList.replace('fa-play', 'fa-pause');
+            } else {
                 currentAudio.pause();
+                playPauseButton.classList.replace('fa-pause', 'fa-play');
             }
+        }
+    }
 
-            currentAudio = new Audio(audioSrc);
+    function formatTime(seconds) {
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return `${mins}:${secs}`;
+    }
+
+    volumeBar.addEventListener('input', () => {
+        if (currentAudio) {
             currentAudio.volume = volumeBar.value;
-
-            songTitle.textContent = title;
-            songTime.textContent = `0:00 / ${length}`;
-            currentAlbumCover.src = cover;
-            musicPlayer.style.display = 'flex';
-
-            currentAudio.play();
-            playPauseButton.classList.replace('fa-play', 'fa-pause');
-
-            currentAudio.ontimeupdate = () => {
-                const currentTime = currentAudio.currentTime;
-                const duration = currentAudio.duration || 1;
-                seekBar.value = (currentTime / duration) * 100;
-                songTime.textContent = `${formatTime(currentTime)} / ${length}`;
-            };
-
-            currentAudio.onended = nextSong;
         }
+    });
 
-        function togglePlayPause() {
-            if (currentAudio) {
-                if (currentAudio.paused) {
-                    currentAudio.play();
-                    playPauseButton.classList.replace('fa-play', 'fa-pause');
-                } else {
-                    currentAudio.pause();
-                    playPauseButton.classList.replace('fa-pause', 'fa-play');
-                }
-            }
+    seekBar.addEventListener('input', (e) => {
+        if (currentAudio) {
+            currentAudio.currentTime = (e.target.value / 100) * currentAudio.duration;
         }
+    });
 
-        function nextSong() {
-            currentSongIndex = (currentSongIndex + 1) % playButtons.length;
-            loadSong(playButtons[currentSongIndex]);
-        }
+    playPauseButton.addEventListener('click', togglePlayPause);
 
-        function prevSong() {
-            currentSongIndex = (currentSongIndex - 1 + playButtons.length) % playButtons.length;
-            loadSong(playButtons[currentSongIndex]);
-        }
-
-        function formatTime(seconds) {
-            const mins = Math.floor(seconds / 60);
-            const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-            return `${mins}:${secs}`;
-        }
-
-        volumeBar.addEventListener('input', () => {
-            if (currentAudio) {
-                currentAudio.volume = volumeBar.value;
-            }
+    playButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            loadSong(button);
         });
-
-        seekBar.addEventListener('input', (e) => {
-            if (currentAudio) {
-                currentAudio.currentTime = (e.target.value / 100) * currentAudio.duration;
-            }
-        });
-
-        playPauseButton.addEventListener('click', togglePlayPause);
-        document.getElementById('next').addEventListener('click', nextSong);
-        document.getElementById('prev').addEventListener('click', prevSong);
-
-        playButtons.forEach((button, index) => {
-            button.addEventListener('click', () => {
-                currentSongIndex = index;
-                loadSong(button);
-            });
-
-            button.addEventListener('click', () => {
-                if (!currentAudio.paused) {
-                    currentAudio.pause();
-                    button.classList.replace('fa-pause', 'fa-play');
-                } else {
-                    currentAudio.play();
-                    button.classList.replace('fa-play', 'fa-pause');
-                }
-            });
-        });
-    </script>
+    });
+</script>
 </body>
 </html>
