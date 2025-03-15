@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JARCHIVE.NET - Media Collage</title>
+    <link rel="icon" href="../icon-website.png" type="image/png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            background-image: url('./CollageBackground.jpg'); /* Collage-themed background */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: rgb(255, 255, 255);
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            position: relative;
+            padding: 20px;
+            border-bottom: 2px solid rgb(255, 255, 255);
+            background-color: black;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 80px;
+        }
+
+        /* Glitch Effect for JARCHIVE.NET Header */
+        .jarchive-dot-net {
+            font-size: 2.5em;
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 5px red, 0 0 10px white, 0 0 20px red, 0 0 40px red;
+            border: 1px solid white;
+            padding: 5px;
+            position: relative;
+            width: max-content;
+        }
+
+        .jarchive-dot-net::before,
+        .jarchive-dot-net::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: transparent;
+        }
+
+        .jarchive-dot-net::before {
+            top: -2px;
+            text-shadow: 2px 0 red, -2px 0 cyan;
+            clip-path: inset(0 0 50% 0);
+            animation: glitch-chaotic-original-1 0.9s infinite linear alternate-reverse;
+        }
+
+        .jarchive-dot-net::after {
+            top: 2px;
+            text-shadow: -2px 0 lime, 2px -2px yellow;
+            clip-path: inset(50% 0 0 0);
+            animation: glitch-chaotic-original-2 0.9s infinite linear alternate-reverse;
+        }
+
+        /* Glitch Effect for Media Collage Header */
+        .middle-header {
+            font-size: 1.8em;
+            color: white;
+            text-shadow: 0 0 10px white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: max-content;
+        }
+
+        .middle-header::before,
+        .middle-header::after {
+            content: attr(data-text);
+            position: absolute;
+            left: 0;
+            width: 100%;
+            background: transparent;
+        }
+
+        .middle-header::before {
+            top: -2px;
+            text-shadow: 2px 0 yellow, -2px 0 blue;
+            clip-path: inset(0 0 50% 0);
+            animation: glitch-chaotic-original-1 1s infinite linear alternate-reverse;
+        }
+
+        .middle-header::after {
+            top: 2px;
+            text-shadow: -2px 0 magenta, 2px -2px cyan;
+            clip-path: inset(50% 0 0 0);
+            animation: glitch-chaotic-original-2 1s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-chaotic-original-1 {
+            0% {
+                clip-path: inset(10% 0 85% 0);
+                transform: translate(-2px, -2px);
+            }
+            25% {
+                clip-path: inset(20% 0 75% 0);
+                transform: translate(2px, 1px);
+            }
+            50% {
+                clip-path: inset(30% 0 65% 0);
+                transform: translate(-1px, 3px);
+            }
+            75% {
+                clip-path: inset(40% 0 55% 0);
+                transform: translate(3px, -1px);
+            }
+            100% {
+                clip-path: inset(50% 0 45% 0);
+                transform: translate(0, 0);
+            }
+        }
+
+        @keyframes glitch-chaotic-original-2 {
+            0% {
+                clip-path: inset(85% 0 10% 0);
+                transform: translate(2px, -1px);
+            }
+            25% {
+                clip-path: inset(75% 0 20% 0);
+                transform: translate(-2px, -2px);
+            }
+            50% {
+                clip-path: inset(65% 0 30% 0);
+                transform: translate(3px, 2px);
+            }
+            75% {
+                clip-path: inset(55% 0 40% 0);
+                transform: translate(-1px, 1px);
+            }
+            100% {
+                clip-path: inset(45% 0 50% 0);
+                transform: translate(0, -2px);
+            }
+        }
+
+        nav {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .menu-icon {
+            display: none;
+            cursor: pointer;
+        }
+
+        .menu-icon div {
+            width: 35px;
+            height: 5px;
+            background-color: white;
+            margin: 6px 0;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        nav ul li {
+            margin: 5px 20px;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px white;
+        }
+
+        nav ul.show-menu {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 50px;
+            right: 0;
+            background-color: black;
+            border: 2px solid white;
+            padding: 10px;
+        }
+
+        nav ul.show-menu li {
+            margin: 10px 0;
+        }
+
+        .content {
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            min-height: calc(100vh - 160px);
+        }
+
+        .media-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .media-gallery img, .media-gallery video {
+            width: 100%;
+            height: auto;
+            border: 2px solid white;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+
+        .media-gallery img:hover, .media-gallery video:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            border-top: 2px solid white;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                flex-wrap: wrap;
+            }
+
+            .jarchive-dot-net {
+                font-size: 1.5em;
+                padding: 5px 10px;
+            }
+
+            .middle-header {
+                font-size: 1.2em;
+            }
+
+            .menu-icon {
+                display: block;
+            }
+
+            nav ul {
+                display: none;
+            }
+
+            nav ul.show-menu {
+                display: flex;
+            }
+
+            .media-gallery {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <a href="../">
+        <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
+    </a>
+    <div class="middle-header" data-text="Media Collage">Media Collage</div>
+    <nav>
+        <div class="menu-icon" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <ul id="menuLinks">
+            <li><a href="../">Home</a></li>
+            <li><a href="../music/">Music</a></li>
+        </ul>
+    </nav>
+</header>
+
+<div class="content">
+    <h2>My Music Journey</h2>
+    <p>Here's a collection of all the photos and videos that define my music career.</p>
+
+    <div class="media-gallery">
+        <!-- Sample Media -->
+        <img src="photo1.jpg" alt="Music Photo 1">
+        <img src="photo2.jpg" alt="Music Photo 2">
+        <video src="video1.mp4" controls></video>
+        <img src="photo3.jpg" alt="Music Photo 3">
+        <video src="video2.mp4" controls></video>
+        <img src="photo4.jpg" alt="Music Photo 4">
+    </div>
+</div>
+
+<footer>
+    <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
+</footer>
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menuLinks');
+        menu.classList.toggle('show-menu');
+    }
+</script>
+</body>
+</html>
