@@ -14,6 +14,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
             color: rgb(255, 255, 255);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
@@ -159,6 +160,37 @@
             margin: 0 auto;
         }
 
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #cccccc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .song-list {
             width: 90%;
             margin: 0 auto;
@@ -188,8 +220,18 @@
             vertical-align: middle;
         }
 
+        .song-list tr {
+            transition: all 0.3s ease;
+        }
+
         .song-list tr:hover {
             background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .song-list tr.playing {
+            background: rgba(255, 0, 0, 0.1);
+            border-left: 4px solid #ff0000;
         }
 
         .album-cover {
@@ -199,6 +241,7 @@
             border-radius: 8px;
             border: 2px solid rgba(255, 255, 255, 0.3);
             transition: all 0.3s ease;
+            cursor: pointer;
         }
 
         .album-cover:hover {
@@ -244,6 +287,23 @@
             align-items: center;
             gap: 5px;
             font-size: 0.9em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
         }
 
         .action-btn:hover {
@@ -253,9 +313,17 @@
             box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
         }
 
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
         .play-btn {
             background: rgba(255, 255, 255, 0.1);
             border-color: #ffffff;
+        }
+
+        .play-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .download-btn {
@@ -280,6 +348,35 @@
             font-family: 'Courier New', monospace;
         }
 
+        .now-playing-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #ff0000;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         footer {
             text-align: center;
             padding: 20px;
@@ -301,6 +398,18 @@
 
             .music-header h1 {
                 font-size: 2em;
+            }
+
+            .stats-bar {
+                gap: 15px;
+            }
+
+            .stat-item {
+                padding: 10px 15px;
+            }
+
+            .stat-number {
+                font-size: 1.5em;
             }
 
             .song-list {
@@ -342,6 +451,38 @@
                 width: 50px;
                 height: 50px;
             }
+
+            .stats-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Focus states for accessibility */
+        .action-btn:focus,
+        .album-cover:focus {
+            outline: 2px solid #ff0000;
+            outline-offset: 2px;
+        }
+
+        /* Loading state */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading .action-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
         }
     </style>
 </head>
@@ -359,6 +500,21 @@
         <p>Explore the latest tracks and mixes from JARCHIVE</p>
     </div>
 
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">13</div>
+            <div class="stat-label">Tracks</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">43:52</div>
+            <div class="stat-label">Longest Track</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">2025</div>
+            <div class="stat-label">Latest Release</div>
+        </div>
+    </div>
+
     <table class="song-list">
         <thead>
             <tr>
@@ -370,13 +526,16 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr data-track="WARINTHEATMOSPHERE">
                 <td>
-                    <img src="songCovers/WarIntheAtmosphere.png" alt="WarIntheAtmosphere" class="album-cover">
+                    <img src="songCovers/WarIntheAtmosphere.png" alt="WarIntheAtmosphere" class="album-cover" onclick="playTrack('WARINTHEATMOSPHERE')">
                 </td>           
                 <td>
                     <div class="track-info">
-                        <div class="track-title">WARINTHEATMOSPHERE</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            WARINTHEATMOSPHERE
+                        </div>
                         <div class="track-artist">JR & FIREWOLF</div>
                     </div>
                 </td>
@@ -384,22 +543,25 @@
                 <td class="track-length">3:01</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('WARINTHEATMOSPHERE')">
+                        <button class="action-btn play-btn" onclick="playTrack('WARINTHEATMOSPHERE')" title="Play WARINTHEATMOSPHERE">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/WARINTHEATMOSPHERE.wav" class="action-btn download-btn" download>
+                        <a href="Songs/WARINTHEATMOSPHERE.wav" class="action-btn download-btn" download title="Download WARINTHEATMOSPHERE">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="Mix 3">
                 <td>
-                    <img src="songCovers/Mix3.png" alt="Mix3" class="album-cover">
+                    <img src="songCovers/Mix3.png" alt="Mix3" class="album-cover" onclick="playTrack('Mix 3')">
                 </td>           
                 <td>
                     <div class="track-info">
-                        <div class="track-title">Mix 3</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Mix 3
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -407,22 +569,25 @@
                 <td class="track-length">43:52</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('Mix 3')">
+                        <button class="action-btn play-btn" onclick="playTrack('Mix 3')" title="Play Mix 3">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/RECORDED MIX.mp3" class="action-btn download-btn" download>
+                        <a href="Songs/RECORDED MIX.mp3" class="action-btn download-btn" download title="Download Mix 3">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="11:59">
                 <td>
-                    <img src="songCovers/LordeCum.png" alt="What Was That Cover" class="album-cover">
+                    <img src="songCovers/LordeCum.png" alt="What Was That Cover" class="album-cover" onclick="playTrack('11:59')">
                 </td>           
                 <td>
                     <div class="track-info">
-                        <div class="track-title">11:59</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            11:59
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -430,22 +595,25 @@
                 <td class="track-length">4:01</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('11:59')">
+                        <button class="action-btn play-btn" onclick="playTrack('11:59')" title="Play 11:59">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/lorde master.wav" class="action-btn download-btn" download>
+                        <a href="Songs/lorde master.wav" class="action-btn download-btn" download title="Download 11:59">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="The Second Mix Of The Century">
                 <td>
-                    <img src="songCovers/mix2.jpg" alt="mix2" class="album-cover">
+                    <img src="songCovers/mix2.jpg" alt="mix2" class="album-cover" onclick="playTrack('The Second Mix Of The Century')">
                 </td>           
                 <td>
                     <div class="track-info">
-                        <div class="track-title">The Second Mix Of The Century</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            The Second Mix Of The Century
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -453,22 +621,25 @@
                 <td class="track-length">14:44</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('The Second Mix Of The Century')">
+                        <button class="action-btn play-btn" onclick="playTrack('The Second Mix Of The Century')" title="Play The Second Mix Of The Century">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/THE MIX.mp3" class="action-btn download-btn" download>
+                        <a href="Songs/THE MIX.mp3" class="action-btn download-btn" download title="Download The Second Mix Of The Century">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="g66_Track">
                 <td>
-                    <img src="songCovers/G6.jpeg" alt="G6" class="album-cover">
+                    <img src="songCovers/G6.jpeg" alt="G6" class="album-cover" onclick="playTrack('g66_Track')">
                 </td>           
                 <td>
                     <div class="track-info">
-                        <div class="track-title">g66_Track</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            g66_Track
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -476,22 +647,25 @@
                 <td class="track-length">2:57</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('g66_Track')">
+                        <button class="action-btn play-btn" onclick="playTrack('g66_Track')" title="Play g66_Track">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/g66_Track.wav" class="action-btn download-btn" download>
+                        <a href="Songs/g66_Track.wav" class="action-btn download-btn" download title="Download g66_Track">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="SuperTaq ft. andre y kess">
                 <td>
-                    <img src="songCovers/superTaq.jpg" alt="superTaq" class="album-cover">
+                    <img src="songCovers/superTaq.jpg" alt="superTaq" class="album-cover" onclick="playTrack('SuperTaq ft. andre y kess')">
                 </td>           
                 <td>
                     <div class="track-info">
-                        <div class="track-title">SuperTaq ft. andre y kess</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            SuperTaq ft. andre y kess
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -499,22 +673,25 @@
                 <td class="track-length">1:30</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('SuperTaq ft. andre y kess')">
+                        <button class="action-btn play-btn" onclick="playTrack('SuperTaq ft. andre y kess')" title="Play SuperTaq ft. andre y kess">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/SuperTaq ft. andre y kess.wav" class="action-btn download-btn" download>
+                        <a href="Songs/SuperTaq ft. andre y kess.wav" class="action-btn download-btn" download title="Download SuperTaq ft. andre y kess">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="Flames & Fire /With Kevy/">
                 <td>
-                    <img src="songCovers/flamezfire.png" alt="flamesfire" class="album-cover">
+                    <img src="songCovers/flamezfire.png" alt="flamesfire" class="album-cover" onclick="playTrack('Flames & Fire /With Kevy/')">
                 </td>           
                 <td>
                     <div class="track-info">
-                        <div class="track-title">Flames & Fire /With Kevy/</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Flames & Fire /With Kevy/
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -522,22 +699,25 @@
                 <td class="track-length">2:13</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('Flames & Fire /With Kevy/')">
+                        <button class="action-btn play-btn" onclick="playTrack('Flames & Fire /With Kevy/')" title="Play Flames & Fire /With Kevy/">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/Flames Fire2.wav" class="action-btn download-btn" download>
+                        <a href="Songs/Flames Fire2.wav" class="action-btn download-btn" download title="Download Flames & Fire /With Kevy/">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="Mix1">
                 <td>
-                    <img src="songCovers/Dubstep.png" alt="thesky" class="album-cover">
+                    <img src="songCovers/Dubstep.png" alt="thesky" class="album-cover" onclick="playTrack('Mix1')">
                 </td>
                 <td>
                     <div class="track-info">
-                        <div class="track-title">Mix1</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Mix1
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -545,22 +725,25 @@
                 <td class="track-length">15:38</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('Mix1')">
+                        <button class="action-btn play-btn" onclick="playTrack('Mix1')" title="Play Mix1">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/mix of the century.mp3" class="action-btn download-btn" download>
+                        <a href="Songs/mix of the century.mp3" class="action-btn download-btn" download title="Download Mix1">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="The Demo I been Poppin Since!">
                 <td>
-                    <img src="songCovers/theDemoIBeenPoppingSince.jpg" alt="thesky" class="album-cover">
+                    <img src="songCovers/theDemoIBeenPoppingSince.jpg" alt="thesky" class="album-cover" onclick="playTrack('The Demo I been Poppin Since!')">
                 </td>
                 <td>
                     <div class="track-info">
-                        <div class="track-title">The Demo I been Poppin Since!</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            The Demo I been Poppin Since!
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -568,22 +751,25 @@
                 <td class="track-length">2:18</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('The Demo I been Poppin Since!')">
+                        <button class="action-btn play-btn" onclick="playTrack('The Demo I been Poppin Since!')" title="Play The Demo I been Poppin Since!">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/theDemoIBeenPoppinSince.wav" class="action-btn download-btn" download>
+                        <a href="Songs/theDemoIBeenPoppinSince.wav" class="action-btn download-btn" download title="Download The Demo I been Poppin Since!">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="Bash_50">
                 <td>
-                    <img src="songCovers/AI Kins.jpg" alt="thesky" class="album-cover">
+                    <img src="songCovers/AI Kins.jpg" alt="thesky" class="album-cover" onclick="playTrack('Bash_50')">
                 </td>
                 <td>
                     <div class="track-info">
-                        <div class="track-title">Bash_50</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Bash_50
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -591,22 +777,25 @@
                 <td class="track-length">5:27</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('Bash_50')">
+                        <button class="action-btn play-btn" onclick="playTrack('Bash_50')" title="Play Bash_50">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/Bash_55_mp3.mp3" class="action-btn download-btn" download>
+                        <a href="Songs/Bash_55_mp3.mp3" class="action-btn download-btn" download title="Download Bash_50">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="Happening">
                 <td>
-                    <img src="songCovers/regular-show-dark-space-t9uyayx1rb89f2o8.png" alt="thesky" class="album-cover">
+                    <img src="songCovers/regular-show-dark-space-t9uyayx1rb89f2o8.png" alt="thesky" class="album-cover" onclick="playTrack('Happening')">
                 </td>
                 <td>
                     <div class="track-info">
-                        <div class="track-title">Happening</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Happening
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -614,22 +803,25 @@
                 <td class="track-length">3:36</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('Happening')">
+                        <button class="action-btn play-btn" onclick="playTrack('Happening')" title="Play Happening">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/SONDER THINGS KEEP HAPPENING.wav" class="action-btn download-btn" download>
+                        <a href="Songs/SONDER THINGS KEEP HAPPENING.wav" class="action-btn download-btn" download title="Download Happening">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="SomethingsKnocking">
                 <td>
-                    <img src="songCovers/Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover">
+                    <img src="songCovers/Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover" onclick="playTrack('SomethingsKnocking')">
                 </td>
                 <td>
                     <div class="track-info">
-                        <div class="track-title">SomethingsKnocking</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            SomethingsKnocking
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -637,22 +829,25 @@
                 <td class="track-length">2:14</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('SomethingsKnocking')">
+                        <button class="action-btn play-btn" onclick="playTrack('SomethingsKnocking')" title="Play SomethingsKnocking">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/somethingsKnocking.mp3" class="action-btn download-btn" download>
+                        <a href="Songs/somethingsKnocking.mp3" class="action-btn download-btn" download title="Download SomethingsKnocking">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr data-track="IMissJackson">
                 <td>
-                    <img src="songCovers/IMissJackson.jpg" alt="IMissJackson" class="album-cover">
+                    <img src="songCovers/IMissJackson.jpg" alt="IMissJackson" class="album-cover" onclick="playTrack('IMissJackson')">
                 </td>
                 <td>
                     <div class="track-info">
-                        <div class="track-title">IMissJackson</div>
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            IMissJackson
+                        </div>
                         <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
@@ -660,10 +855,10 @@
                 <td class="track-length">3:50</td>
                 <td>
                     <div class="track-actions">
-                        <button class="action-btn play-btn" onclick="playTrack('IMissJackson')">
+                        <button class="action-btn play-btn" onclick="playTrack('IMissJackson')" title="Play IMissJackson">
                             <i class="fas fa-play"></i> Play
                         </button>
-                        <a href="Songs/IMissJackson.mp3" class="action-btn download-btn" download>
+                        <a href="Songs/IMissJackson.mp3" class="action-btn download-btn" download title="Download IMissJackson">
                             <i class="fas fa-download"></i> Download
                         </a>
                     </div>
@@ -682,9 +877,61 @@
 <script>
     function playTrack(title) {
         if (window.jarchivePlayer) {
+            // Add loading state
+            const row = document.querySelector(`tr[data-track="${title}"]`);
+            if (row) {
+                row.classList.add('playing');
+                const indicator = row.querySelector('.now-playing-indicator');
+                if (indicator) {
+                    indicator.style.display = 'inline-block';
+                }
+            }
+            
+            // Remove playing state from other tracks
+            document.querySelectorAll('tr.playing').forEach(tr => {
+                if (tr !== row) {
+                    tr.classList.remove('playing');
+                    const otherIndicator = tr.querySelector('.now-playing-indicator');
+                    if (otherIndicator) {
+                        otherIndicator.style.display = 'none';
+                    }
+                }
+            });
+            
             window.jarchivePlayer.playTrackByTitle(title);
         }
     }
+
+    // Update playing indicator when audio player state changes
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.jarchivePlayer) {
+            const audio = window.jarchivePlayer.audio;
+            
+            audio.addEventListener('play', () => {
+                const currentTrack = window.jarchivePlayer.playlist[window.jarchivePlayer.currentTrackIndex];
+                if (currentTrack) {
+                    const row = document.querySelector(`tr[data-track="${currentTrack.title}"]`);
+                    if (row) {
+                        row.classList.add('playing');
+                        const indicator = row.querySelector('.now-playing-indicator');
+                        if (indicator) {
+                            indicator.style.display = 'inline-block';
+                        }
+                    }
+                }
+            });
+            
+            audio.addEventListener('pause', () => {
+                document.querySelectorAll('tr.playing').forEach(tr => {
+                    tr.classList.remove('playing');
+                    const indicator = tr.querySelector('.now-playing-indicator');
+                    if (indicator) {
+                        indicator.style.display = 'none';
+                    }
+                });
+            });
+        }
+    });
 </script>
 </body>
 </html>
