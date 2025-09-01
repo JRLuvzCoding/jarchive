@@ -1,0 +1,373 @@
+/* JArchive Audio Player Styles */
+.jarchive-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 0, 0, 0.95) 100%);
+    border-top: 2px solid #ff0000;
+    box-shadow: 0 -5px 20px rgba(255, 0, 0, 0.3);
+    z-index: 1000;
+    backdrop-filter: blur(10px);
+    display: none;
+    padding: 15px 20px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.player-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 200px;
+    flex: 1;
+}
+
+.player-cover {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border: 2px solid #ff0000;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+.player-cover:hover {
+    transform: scale(1.05);
+}
+
+.track-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.track-title {
+    font-size: 1.1em;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.track-artist {
+    font-size: 0.9em;
+    color: #ff0000;
+    text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.control-btn {
+    background: transparent;
+    border: 1px solid #ff0000;
+    color: #ffffff;
+    padding: 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 40px;
+    height: 40px;
+    font-size: 1em;
+}
+
+.control-btn:hover {
+    background: rgba(255, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+.control-btn:active {
+    transform: translateY(0);
+}
+
+.control-btn.active {
+    background: rgba(255, 0, 0, 0.3);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.7);
+}
+
+.play-btn {
+    background: rgba(255, 0, 0, 0.2);
+    border-width: 2px;
+    min-width: 50px;
+    height: 50px;
+    font-size: 1.2em;
+}
+
+.play-btn:hover {
+    background: rgba(255, 0, 0, 0.4);
+}
+
+.download-btn {
+    background: rgba(0, 255, 0, 0.1);
+    border-color: #00ff00;
+    color: #00ff00;
+}
+
+.download-btn:hover {
+    background: rgba(0, 255, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+}
+
+.player-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.time-display {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8em;
+    color: #cccccc;
+    font-family: 'Courier New', monospace;
+}
+
+.progress-container {
+    position: relative;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    z-index: 2;
+}
+
+.progress-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: #ff0000;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+    transition: all 0.3s ease;
+}
+
+.progress-bar::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 1);
+}
+
+.progress-bar::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: #ff0000;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+}
+
+.progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: linear-gradient(90deg, #ff0000 0%, #ff4444 100%);
+    border-radius: 3px;
+    transition: width 0.1s ease;
+    z-index: 1;
+}
+
+.player-volume {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.volume-bar {
+    width: 80px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.volume-bar::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+
+.volume-bar::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: #ffffff;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.7);
+}
+
+.player-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .jarchive-player {
+        padding: 10px 15px;
+    }
+    
+    .player-main {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .player-info {
+        min-width: auto;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .player-controls {
+        order: -1;
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .player-progress {
+        width: 100%;
+        min-width: auto;
+    }
+    
+    .player-volume {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .volume-bar {
+        width: 120px;
+    }
+    
+    .player-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .track-title,
+    .track-artist {
+        max-width: 150px;
+    }
+}
+
+@media (max-width: 480px) {
+    .control-btn {
+        min-width: 35px;
+        height: 35px;
+        padding: 8px;
+        font-size: 0.9em;
+    }
+    
+    .play-btn {
+        min-width: 45px;
+        height: 45px;
+        font-size: 1.1em;
+    }
+    
+    .player-cover {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .track-title {
+        font-size: 1em;
+        max-width: 120px;
+    }
+    
+    .track-artist {
+        font-size: 0.8em;
+        max-width: 120px;
+    }
+}
+
+/* Focus states for accessibility */
+.control-btn:focus,
+.progress-bar:focus,
+.volume-bar:focus {
+    outline: 2px solid #ff0000;
+    outline-offset: 2px;
+}
+
+/* Animation for player appearance */
+@keyframes slideUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.jarchive-player {
+    animation: slideUp 0.3s ease-out;
+}
+
+/* Glitch effect for active buttons */
+.control-btn.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 0, 0, 0.1);
+    animation: glitch-flicker 0.3s infinite;
+}
+
+@keyframes glitch-flicker {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}

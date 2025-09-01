@@ -1,0 +1,227 @@
+/* JArchive Navigation Styles */
+.jarchive-nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.menu-icon {
+    display: none;
+    cursor: pointer;
+    padding: 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.menu-icon:hover {
+    border-color: #ff0000;
+    background: rgba(255, 0, 0, 0.1);
+}
+
+.menu-icon.active {
+    border-color: #ff0000;
+    background: rgba(255, 0, 0, 0.2);
+}
+
+.menu-icon div {
+    width: 25px;
+    height: 3px;
+    background-color: #ff0000;
+    margin: 5px 0;
+    transition: 0.3s;
+    box-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
+}
+
+.menu-icon.active div:nth-child(1) {
+    transform: rotate(-45deg) translate(-5px, 6px);
+}
+
+.menu-icon.active div:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-icon.active div:nth-child(3) {
+    transform: rotate(45deg) translate(-5px, -6px);
+}
+
+.nav-menu {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 20px;
+    align-items: center;
+}
+
+.nav-menu li {
+    margin: 0;
+}
+
+.nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1.1em;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 8px 12px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    position: relative;
+    text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.nav-link:hover {
+    color: #ff0000;
+    border-color: #ff0000;
+    background: rgba(255, 0, 0, 0.1);
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(255, 0, 0, 0.3);
+}
+
+.nav-link.active {
+    color: #ff0000;
+    border-color: #ff0000;
+    background: rgba(255, 0, 0, 0.2);
+    text-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    box-shadow: 0 0 15px rgba(255, 0, 0, 0.5);
+}
+
+.nav-link.active::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 0, 0, 0.1);
+    animation: glitch-flicker 0.3s infinite;
+    border-radius: 4px;
+}
+
+/* Mobile Navigation */
+@media (max-width: 768px) {
+    .menu-icon {
+        display: block;
+    }
+    
+    .nav-menu {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        flex-direction: column;
+        background: rgba(0, 0, 0, 0.95);
+        border: 2px solid #ff0000;
+        border-radius: 8px;
+        padding: 15px;
+        min-width: 200px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+        backdrop-filter: blur(10px);
+        gap: 10px;
+    }
+    
+    .nav-menu.show-menu {
+        display: flex;
+        animation: slideDown 0.3s ease-out;
+    }
+    
+    .nav-menu li {
+        width: 100%;
+    }
+    
+    .nav-link {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 12px 15px;
+        font-size: 1em;
+        border-radius: 6px;
+    }
+    
+    .nav-link:hover {
+        transform: translateX(5px);
+    }
+}
+
+/* Tablet Navigation */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .nav-menu {
+        gap: 15px;
+    }
+    
+    .nav-link {
+        font-size: 1em;
+        padding: 6px 10px;
+    }
+}
+
+/* Animations */
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes glitch-flicker {
+    0%, 100% { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+/* Focus states for accessibility */
+.nav-link:focus,
+.menu-icon:focus {
+    outline: 2px solid #ff0000;
+    outline-offset: 2px;
+}
+
+/* Hover effects for desktop */
+@media (min-width: 769px) {
+    .nav-link::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 0;
+        height: 2px;
+        background: #ff0000;
+        transition: all 0.3s ease;
+        transform: translateX(-50%);
+    }
+    
+    .nav-link:hover::after {
+        width: 100%;
+    }
+    
+    .nav-link.active::after {
+        width: 100%;
+        box-shadow: 0 0 10px rgba(255, 0, 0, 0.8);
+    }
+}
+
+/* Glitch effect for active navigation */
+.nav-link.active::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    clip-path: polygon(0 0, 100% 10%, 100% 90%, 0 100%);
+    animation: glitch-shift 0.15s infinite alternate;
+}
+
+@keyframes glitch-shift {
+    0% { transform: translate(0, 0); }
+    50% { transform: translate(2px, -2px); }
+    100% { transform: translate(-2px, 2px); }
+}
