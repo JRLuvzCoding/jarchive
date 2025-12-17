@@ -4,14 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>JARCHIVE.NET - Music</title>
-    <link rel="icon" href="../icon-website.png" type="image/png">
+    <link rel="icon" href="../Icons/Icon website.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../shared/audio-player.css">
+    <link rel="stylesheet" href="../shared/navigation.css">
     <style>
         body {
             background-image: url('./Chillback-ground.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed;
             color: rgb(255, 255, 255);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
@@ -22,11 +25,12 @@
             position: relative;
             padding: 20px;
             border-bottom: 2px solid rgb(255, 255, 255);
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.9);
             display: flex;
             align-items: center;
             justify-content: space-between;
             height: 80px;
+            backdrop-filter: blur(10px);
         }
 
         .jarchive-dot-net {
@@ -40,6 +44,12 @@
             text-decoration: none;
             position: relative;
             width: max-content;
+            transition: all 0.3s ease;
+        }
+
+        .jarchive-dot-net:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
         }
 
         .jarchive-dot-net::before,
@@ -123,177 +133,260 @@
             100% { clip-path: polygon(0 90%, 100% 95%, 100% 100%, 0 100%); transform: translate(0); }
         }
 
-        nav {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        .menu-icon {
-            display: none;
-            cursor: pointer;
-        }
-
-        .menu-icon div {
-            width: 35px;
-            height: 5px;
-            background-color: rgb(221, 218, 218);
-            margin: 6px 0;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-
-        nav ul li {
-            margin: 5px 20px;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2em;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px white;
-        }
-
-        nav ul.show-menu {
-            display: none;
-            flex-direction: column;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background-color: black;
-            border: 2px solid rgb(245, 232, 232);
-            padding: 10px;
-        }
-
-        nav ul.show-menu li {
-            margin: 10px 0;
-        }
-
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
             min-height: calc(100vh - 160px);
         }
 
-        .song-list {
-            width: 90%;
-            margin: 10px auto;
-            border-collapse: collapse;
+        .music-header {
+            text-align: center;
+            margin-bottom: 40px;
         }
 
-        .song-list th, .song-list td {
-            padding: 10px;
+        .music-header h1 {
+            font-size: 3em;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .music-header p {
+            font-size: 1.2em;
+            color: #cccccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            text-align: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #ff0000;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            color: #cccccc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .song-list {
+            width: 90%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+        }
+
+        .song-list th {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px 15px;
             text-align: left;
-            border-bottom: 1px solid rgb(255, 255, 255);
-            height: 125px;
+            font-size: 1.1em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #ffffff;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .song-list td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            height: 100px;
             vertical-align: middle;
         }
 
-        .album-cover {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            position: relative;
+        .song-list tr {
+            transition: all 0.3s ease;
         }
 
-        .play-button {
-            font-size: 1em;
-            color: rgb(255, 255, 255);
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
+        .song-list tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(5px);
+        }
+
+        .song-list tr.playing {
+            background: rgba(255, 0, 0, 0.1);
+            border-left: 4px solid #ff0000;
+        }
+
+        .album-cover {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
             cursor: pointer;
         }
 
-        .album-cover:hover .play-button {
-            opacity: 1;
+        .album-cover:hover {
+            transform: scale(1.1);
+            border-color: #ffffff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+
+        .track-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .track-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .track-artist {
+            font-size: 0.9em;
+            color: #cccccc;
+        }
+
+        .track-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .action-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .action-btn:hover::before {
+            left: 100%;
+        }
+
+        .action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 255, 255, 0.2);
+        }
+
+        .action-btn:active {
+            transform: translateY(0);
+        }
+
+        .play-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #ffffff;
+        }
+
+        .play-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .download-btn {
+            background: rgba(0, 255, 0, 0.1);
+            border-color: #00ff00;
+            color: #00ff00;
+        }
+
+        .download-btn:hover {
+            background: rgba(0, 255, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 255, 0, 0.3);
+        }
+
+        .track-date {
+            color: #cccccc;
+            font-size: 0.9em;
+        }
+
+        .track-length {
+            color: #cccccc;
+            font-size: 0.9em;
+            font-family: 'Courier New', monospace;
+        }
+
+        .now-playing-indicator {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: #ff0000;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
 
         footer {
             text-align: center;
             padding: 20px;
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.9);
             color: white;
             border-top: 2px solid white;
         }
 
-        .music-player {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            background: black;
-            color: white;
-            padding: 10px 20px;
-            display: flex;
-            justify-content: space-between;
-            border-top: 2px solid rgb(255, 255, 255);
-            z-index: 10;
-        }
-
-        .player-controls {
-            display: flex;
-            align-items: center;
-        }
-
-        .player-controls i {
-            font-size: 1.5em;
-            color: rgb(223, 209, 209);
-            margin: 0 10px;
-            cursor: pointer;
-        }
-
-        .playbar {
-            width: 100%;
-            max-width: 300px;
-            margin: 0 10px;
-        }
-
-        .volume-bar {
-            max-width: 100px;
-            margin-left: 20px;
-        }
-
-        .song-info {
-            display: flex;
-            align-items: center;
-            flex-grow: 1;
-        }
-
-        .current-album-cover {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            margin-right: 15px;
-        }
-
-        .song-info h4 {
-            margin: 0;
-            font-size: 1em;
-            color: white;
-        }
-
-        .song-info span {
-            font-size: 0.8em;
-            color: gray;
-        }
-
         /* Responsive styles */
         @media (max-width: 768px) {
-            header {
-                flex-wrap: wrap;
-            }
-
             .jarchive-dot-net {
                 font-size: 1.5em;
                 padding: 5px 10px;
@@ -303,53 +396,93 @@
                 font-size: 1.2em;
             }
 
-            .menu-icon {
-                display: block;
+            .music-header h1 {
+                font-size: 2em;
             }
 
-            nav ul {
-                display: none;
+            .stats-bar {
+                gap: 15px;
             }
 
-            nav ul.show-menu {
-                display: flex;
+            .stat-item {
+                padding: 10px 15px;
+            }
+
+            .stat-number {
+                font-size: 1.5em;
             }
 
             .song-list {
                 width: 100%;
-            }
-
-            .album-cover {
-                width: 80px;
-                height: 80px;
-            }
-
-            .music-player {
-                flex-wrap: wrap;
-            }
-
-            .player-controls {
-                width: 100%;
-                justify-content: space-around;
-                margin-bottom: 10px;
-            }
-
-            .playbar, .volume-bar {
-                width: 90%;
-            }
-
-            .current-album-cover {
-                width: 40px;
-                height: 40px;
-            }
-
-            .song-info h4 {
                 font-size: 0.9em;
             }
 
-            .song-info span {
-                font-size: 0.7em;
+            .song-list th,
+            .song-list td {
+                padding: 10px 8px;
             }
+
+            .album-cover {
+                width: 60px;
+                height: 60px;
+            }
+
+            .track-actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .action-btn {
+                padding: 6px 10px;
+                font-size: 0.8em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .song-list {
+                font-size: 0.8em;
+            }
+
+            .track-title {
+                font-size: 1em;
+            }
+
+            .album-cover {
+                width: 50px;
+                height: 50px;
+            }
+
+            .stats-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        /* Focus states for accessibility */
+        .action-btn:focus,
+        .album-cover:focus {
+            outline: 2px solid #ff0000;
+            outline-offset: 2px;
+        }
+
+        /* Loading state */
+        .loading {
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .loading .action-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
         }
     </style>
 </head>
@@ -359,177 +492,377 @@
         <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
     </a>
     <div class="middle-header" data-text="Music">Music</div>
-    <nav>
-        <div class="menu-icon" onclick="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <ul id="menuLinks">
-            <li><a href="../">Home</a></li>
-            <li><a href="../blog/">Blog</a></li>
-        </ul>
-    </nav>
 </header>
 
 <div class="content">
+    <div class="music-header">
+        <h1>Music Collection</h1>
+        <p>Explore the latest tracks and mixes from JARCHIVE</p>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-item">
+            <div class="stat-number">13</div>
+            <div class="stat-label">Tracks</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">43:52</div>
+            <div class="stat-label">Longest Track</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-number">2025</div>
+            <div class="stat-label">Latest Release</div>
+        </div>
+    </div>
+
     <table class="song-list">
         <thead>
             <tr>
                 <th></th>
-                <th>Title</th>
+                <th>Track</th>
                 <th>Date Added</th>
                 <th>Length</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
-            <tr>
+            <tr data-track="WARINTHEATMOSPHERE">
                 <td>
-                    <div class="album-cover">
-                        <img src="songCovers/WarIntheAtmosphere.png" alt="WarIntheAtmosphere" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/WARINTHEATMOSPHERE.wav" data-title="WARINTHEATMOSPHERE" data-length="3:01"></i>
-                    </div> 
+                    <img src="songCovers/WarIntheAtmosphere.png" alt="WarIntheAtmosphere" class="album-cover" onclick="playTrack('WARINTHEATMOSPHERE')">
                 </td>           
-                <td>JR & FIREWOLF - WARINTHEATMOSPHERE</td>
-                <td>May 28, 2025</td>
-                <td>3:01</td>
-            <tr>
-            <tr>
                 <td>
-                    <div class="album-cover">
-                        <img src="songCovers/Mix3.png" alt="Mix3" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/RECORDED MIX.mp3" data-title="11:59" data-length="43:52"></i>
-                    </div> 
-                </td>           
-                <td>Mix 3</td>
-                <td>May 3, 2025</td>
-                <td>43:52</td>
-            <tr>
-                <td>
-                    <div class="album-cover">
-                        <img src="songCovers/LordeCum.png" alt="What Was That Cover" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/lorde master.wav" data-title="11:59" data-length="4:01"></i>
-                    </div> 
-                </td>           
-                <td>11:59</td>
-                <td>May 3, 2025</td>
-                <td>4:01</td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="album-cover">
-                        <img src="songCovers/mix2.jpg" alt="mix2" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/THE MIX.mp3" data-title="Second Mix Of The Century" data-length="14:44"></i>
-                    </div>
-                </td>           
-            </td>
-            <td>The Second Mix Of The Century</td>
-            <td>April 25, 2025</td>
-            <td>14:44</td>
-        </tr>
-        <tr>
-            <td>
-                <div class="album-cover">
-                    <img src="songCovers/G6.jpeg" alt="G6" class="album-cover">
-                    <i class="fas fa-play play-button" data-audio="Songs/g66_Track.wav" data-title="g66_Track" data-length="2:57"></i>
-                </div>
-            </td>           
-        </td>
-        <td>g66_Track</td>
-        <td>April 18, 2025</td>
-        <td>2:57</td>
-    </tr>
-            <tr>
-                <td>
-                    <div class="album-cover">
-                        <img src="songCovers/superTaq.jpg" alt="superTaq" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/SuperTaq ft. andre y kess.wav" data-title="SuperTaq" data-length="1:30"></i>
-                    </div>
-                </td>           
-            </td>
-            <td>SuperTaq ft. andre y kess</td>
-            <td>April 11, 2025</td>
-            <td>1:30</td>
-        </tr>
-    <tr>
-            <tr>
-                    <td>
-                        <div class="album-cover">
-                            <img src="songCovers/flamezfire.png" alt="flamesfire" class="album-cover">
-                            <i class="fas fa-play play-button" data-audio="Songs/Flames Fire2.wav" data-title="Flames & Fire" data-length="2:13"></i>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            WARINTHEATMOSPHERE
                         </div>
-                    </td>           
-                </td>
-                <td>Flames & Fire /With Kevy/</td>
-                <td>April 4, 2025</td>
-                <td>2:13</td>
-            </tr>
-            <tr>
-                <td>
-                    <div class="album-cover">
-                        <img src="songCovers/Dubstep.png" alt="thesky" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/mix of the century.mp3" data-title="Mix1" data-length="15:38"></i>
+                        <div class="track-artist">JR & FIREWOLF</div>
                     </div>
                 </td>
-                <td>Mix1</td>
-                <td>Mar 28, 2025</td>
-                <td>15:38</td>
-            </tr>
-            <tr>
-            <tr>
+                <td class="track-date">May 28, 2025</td>
+                <td class="track-length">3:01</td>
                 <td>
-                    <div class="album-cover">
-                        <img src="songCovers/theDemoIBeenPoppingSince.jpg" alt="thesky" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/theDemoIBeenPoppinSince.wav" data-title="The Demo I been Poppin Since" data-length="2:18"></i>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('WARINTHEATMOSPHERE')" title="Play WARINTHEATMOSPHERE">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/WARINTHEATMOSPHERE.wav" class="action-btn download-btn" download title="Download WARINTHEATMOSPHERE">
+                            <i class="fas fa-download"></i> Download
+                        </a>
                     </div>
                 </td>
-                <td>The Demo I been Poppin Since!</td>
-                <td>Mar 20, 2025</td>
-                <td>2:18</td>
             </tr>
-            <tr>
+            <tr data-track="Mix 3">
                 <td>
-                    <div class="album-cover">
-                        <img src="songCovers/AI Kins.jpg" alt="thesky" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/Bash_55_mp3.mp3" data-title="Bash_50" data-length="5:27"></i>
+                    <img src="songCovers/Mix3.png" alt="Mix3" class="album-cover" onclick="playTrack('Mix 3')">
+                </td>           
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Mix 3
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
-                <td>Bash_50</td>
-                <td>Mar 20, 2025</td>
-                <td>5:27</td>
-            </tr>
-            <tr>
+                <td class="track-date">May 3, 2025</td>
+                <td class="track-length">43:52</td>
                 <td>
-                    <div class="album-cover">
-                        <img src="songCovers/regular-show-dark-space-t9uyayx1rb89f2o8.png" alt="thesky" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/SONDER THINGS KEEP HAPPENING.wav" data-title="Happening" data-length="3:36"></i>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('Mix 3')" title="Play Mix 3">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/RECORDED MIX.mp3" class="action-btn download-btn" download title="Download Mix 3">
+                            <i class="fas fa-download"></i> Download
+                        </a>
                     </div>
                 </td>
-                <td>Happening</td>
-                <td>Mar 14, 2025</td>
-                <td>3:36</td>
             </tr>
-            <tr>
+            <tr data-track="11:59">
                 <td>
-                    <div class="album-cover">
-                        <img src="songCovers/Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/somethingsKnocking.mp3" data-title="SomethingsKnocking" data-length="2:14"></i>
+                    <img src="songCovers/LordeCum.png" alt="What Was That Cover" class="album-cover" onclick="playTrack('11:59')">
+                </td>           
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            11:59
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
                     </div>
                 </td>
-                <td>SomethingsKnocking</td>
-                <td>Nov 17, 2024</td>
-                <td>2:14</td>
-            </tr>
-            <tr>
+                <td class="track-date">May 3, 2025</td>
+                <td class="track-length">4:01</td>
                 <td>
-                    <div class="album-cover">
-                        <img src="songCovers/IMissJackson.jpg" alt="IMissJackson" class="album-cover">
-                        <i class="fas fa-play play-button" data-audio="Songs/IMissJackson.mp3" data-title="IMissJackson" data-length="3:50"></i>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('11:59')" title="Play 11:59">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/lorde master.wav" class="action-btn download-btn" download title="Download 11:59">
+                            <i class="fas fa-download"></i> Download
+                        </a>
                     </div>
                 </td>
-                <td>IMissJackson</td>
-                <td>Oct 10, 2024</td>
-                <td>3:50</td>
+            </tr>
+            <tr data-track="The Second Mix Of The Century">
+                <td>
+                    <img src="songCovers/mix2.jpg" alt="mix2" class="album-cover" onclick="playTrack('The Second Mix Of The Century')">
+                </td>           
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            The Second Mix Of The Century
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">April 25, 2025</td>
+                <td class="track-length">14:44</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('The Second Mix Of The Century')" title="Play The Second Mix Of The Century">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/THE MIX.mp3" class="action-btn download-btn" download title="Download The Second Mix Of The Century">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="g66_Track">
+                <td>
+                    <img src="songCovers/G6.jpeg" alt="G6" class="album-cover" onclick="playTrack('g66_Track')">
+                </td>           
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            g66_Track
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">April 18, 2025</td>
+                <td class="track-length">2:57</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('g66_Track')" title="Play g66_Track">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/g66_Track.wav" class="action-btn download-btn" download title="Download g66_Track">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="SuperTaq ft. andre y kess">
+                <td>
+                    <img src="songCovers/superTaq.jpg" alt="superTaq" class="album-cover" onclick="playTrack('SuperTaq ft. andre y kess')">
+                </td>           
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            SuperTaq ft. andre y kess
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">April 11, 2025</td>
+                <td class="track-length">1:30</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('SuperTaq ft. andre y kess')" title="Play SuperTaq ft. andre y kess">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/SuperTaq ft. andre y kess.wav" class="action-btn download-btn" download title="Download SuperTaq ft. andre y kess">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="Flames & Fire /With Kevy/">
+                <td>
+                    <img src="songCovers/flamezfire.png" alt="flamesfire" class="album-cover" onclick="playTrack('Flames & Fire /With Kevy/')">
+                </td>           
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Flames & Fire /With Kevy/
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">April 4, 2025</td>
+                <td class="track-length">2:13</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('Flames & Fire /With Kevy/')" title="Play Flames & Fire /With Kevy/">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/Flames Fire2.wav" class="action-btn download-btn" download title="Download Flames & Fire /With Kevy/">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="Mix1">
+                <td>
+                    <img src="songCovers/Dubstep.png" alt="thesky" class="album-cover" onclick="playTrack('Mix1')">
+                </td>
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Mix1
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">Mar 28, 2025</td>
+                <td class="track-length">15:38</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('Mix1')" title="Play Mix1">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/mix of the century.mp3" class="action-btn download-btn" download title="Download Mix1">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="The Demo I been Poppin Since!">
+                <td>
+                    <img src="songCovers/theDemoIBeenPoppingSince.jpg" alt="thesky" class="album-cover" onclick="playTrack('The Demo I been Poppin Since!')">
+                </td>
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            The Demo I been Poppin Since!
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">Mar 20, 2025</td>
+                <td class="track-length">2:18</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('The Demo I been Poppin Since!')" title="Play The Demo I been Poppin Since!">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/theDemoIBeenPoppinSince.wav" class="action-btn download-btn" download title="Download The Demo I been Poppin Since!">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="Bash_50">
+                <td>
+                    <img src="songCovers/AI Kins.jpg" alt="thesky" class="album-cover" onclick="playTrack('Bash_50')">
+                </td>
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Bash_50
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">Mar 20, 2025</td>
+                <td class="track-length">5:27</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('Bash_50')" title="Play Bash_50">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/Bash_55_mp3.mp3" class="action-btn download-btn" download title="Download Bash_50">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="Happening">
+                <td>
+                    <img src="songCovers/regular-show-dark-space-t9uyayx1rb89f2o8.png" alt="thesky" class="album-cover" onclick="playTrack('Happening')">
+                </td>
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            Happening
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">Mar 14, 2025</td>
+                <td class="track-length">3:36</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('Happening')" title="Play Happening">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/SONDER THINGS KEEP HAPPENING.wav" class="action-btn download-btn" download title="Download Happening">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="SomethingsKnocking">
+                <td>
+                    <img src="songCovers/Something's Knocking.jpg" alt="SomethingsKnocking" class="album-cover" onclick="playTrack('SomethingsKnocking')">
+                </td>
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            SomethingsKnocking
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">Nov 17, 2024</td>
+                <td class="track-length">2:14</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('SomethingsKnocking')" title="Play SomethingsKnocking">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/somethingsKnocking.mp3" class="action-btn download-btn" download title="Download SomethingsKnocking">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            <tr data-track="IMissJackson">
+                <td>
+                    <img src="songCovers/IMissJackson.jpg" alt="IMissJackson" class="album-cover" onclick="playTrack('IMissJackson')">
+                </td>
+                <td>
+                    <div class="track-info">
+                        <div class="track-title">
+                            <span class="now-playing-indicator" style="display: none;"></span>
+                            IMissJackson
+                        </div>
+                        <div class="track-artist">JARCHIVE</div>
+                    </div>
+                </td>
+                <td class="track-date">Oct 10, 2024</td>
+                <td class="track-length">3:50</td>
+                <td>
+                    <div class="track-actions">
+                        <button class="action-btn play-btn" onclick="playTrack('IMissJackson')" title="Play IMissJackson">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <a href="Songs/IMissJackson.mp3" class="action-btn download-btn" download title="Download IMissJackson">
+                            <i class="fas fa-download"></i> Download
+                        </a>
+                    </div>
+                </td>
             </tr>
         </tbody>
     </table>
@@ -539,104 +872,65 @@
     <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
 </footer>
 
-<div class="music-player" id="musicPlayer" style="display: none;">
-    <div class="player-controls">
-        <i class="fas fa-backward" id="prev"></i>
-        <i class="fas fa-play" id="playPause"></i>
-        <i class="fas fa-forward" id="next"></i>
-    </div>
-    <input type="range" id="seekBar" min="0" max="100" value="0" class="playbar">
-    <input type="range" id="volumeBar" min="0" max="1" step="0.01" value="0.5" class="volume-bar">
-    <div class="song-info">
-        <img id="currentAlbumCover" class="current-album-cover" src="" alt="Album Cover">
-        <div>
-            <h4 id="songTitle">Title</h4>
-            <span id="songTime">0:00 / 0:00</span>
-        </div>
-    </div>
-</div>
-
+<script src="../shared/audio-player.js"></script>
+<script src="../shared/navigation.js"></script>
 <script>
-    function toggleMenu() {
-        const menu = document.getElementById('menuLinks');
-        menu.classList.toggle('show-menu');
-    }
-
-    const playButtons = document.querySelectorAll('.play-button');
-    const musicPlayer = document.getElementById('musicPlayer');
-    const playPauseButton = document.getElementById('playPause');
-    const songTitle = document.getElementById('songTitle');
-    const songTime = document.getElementById('songTime');
-    const seekBar = document.getElementById('seekBar');
-    const volumeBar = document.getElementById('volumeBar');
-    const currentAlbumCover = document.getElementById('currentAlbumCover');
-
-    let currentAudio = null;
-
-    function loadSong(button) {
-        const audioSrc = button.getAttribute('data-audio');
-        const title = button.getAttribute('data-title');
-        const length = button.getAttribute('data-length');
-        const cover = button.closest('.album-cover').querySelector('img').src;
-
-        if (currentAudio) {
-            currentAudio.pause();
-        }
-
-        currentAudio = new Audio(audioSrc);
-        currentAudio.volume = volumeBar.value;
-
-        songTitle.textContent = title;
-        songTime.textContent = `0:00 / ${length}`;
-        currentAlbumCover.src = cover;
-        musicPlayer.style.display = 'flex';
-
-        currentAudio.play();
-        playPauseButton.classList.replace('fa-play', 'fa-pause');
-
-        currentAudio.ontimeupdate = () => {
-            const currentTime = currentAudio.currentTime;
-            seekBar.value = (currentTime / currentAudio.duration) * 100;
-            songTime.textContent = `${formatTime(currentTime)} / ${length}`;
-        };
-    }
-
-    function togglePlayPause() {
-        if (currentAudio) {
-            if (currentAudio.paused) {
-                currentAudio.play();
-                playPauseButton.classList.replace('fa-play', 'fa-pause');
-            } else {
-                currentAudio.pause();
-                playPauseButton.classList.replace('fa-pause', 'fa-play');
+    function playTrack(title) {
+        if (window.jarchivePlayer) {
+            // Add loading state
+            const row = document.querySelector(`tr[data-track="${title}"]`);
+            if (row) {
+                row.classList.add('playing');
+                const indicator = row.querySelector('.now-playing-indicator');
+                if (indicator) {
+                    indicator.style.display = 'inline-block';
+                }
             }
+            
+            // Remove playing state from other tracks
+            document.querySelectorAll('tr.playing').forEach(tr => {
+                if (tr !== row) {
+                    tr.classList.remove('playing');
+                    const otherIndicator = tr.querySelector('.now-playing-indicator');
+                    if (otherIndicator) {
+                        otherIndicator.style.display = 'none';
+                    }
+                }
+            });
+            
+            window.jarchivePlayer.playTrackByTitle(title);
         }
     }
 
-    function formatTime(seconds) {
-        const mins = Math.floor(seconds / 60);
-        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-        return `${mins}:${secs}`;
-    }
-
-    volumeBar.addEventListener('input', () => {
-        if (currentAudio) {
-            currentAudio.volume = volumeBar.value;
+    // Update playing indicator when audio player state changes
+    document.addEventListener('DOMContentLoaded', () => {
+        if (window.jarchivePlayer) {
+            const audio = window.jarchivePlayer.audio;
+            
+            audio.addEventListener('play', () => {
+                const currentTrack = window.jarchivePlayer.playlist[window.jarchivePlayer.currentTrackIndex];
+                if (currentTrack) {
+                    const row = document.querySelector(`tr[data-track="${currentTrack.title}"]`);
+                    if (row) {
+                        row.classList.add('playing');
+                        const indicator = row.querySelector('.now-playing-indicator');
+                        if (indicator) {
+                            indicator.style.display = 'inline-block';
+                        }
+                    }
+                }
+            });
+            
+            audio.addEventListener('pause', () => {
+                document.querySelectorAll('tr.playing').forEach(tr => {
+                    tr.classList.remove('playing');
+                    const indicator = tr.querySelector('.now-playing-indicator');
+                    if (indicator) {
+                        indicator.style.display = 'none';
+                    }
+                });
+            });
         }
-    });
-
-    seekBar.addEventListener('input', (e) => {
-        if (currentAudio) {
-            currentAudio.currentTime = (e.target.value / 100) * currentAudio.duration;
-        }
-    });
-
-    playPauseButton.addEventListener('click', togglePlayPause);
-
-    playButtons.forEach((button) => {
-        button.addEventListener('click', () => {
-            loadSong(button);
-        });
     });
 </script>
 </body>

@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>JARCHIVE - Blog</title>
-    <link rel="icon" href="../icon-website.png" type="image/png">
+    <link rel="icon" href="../Icons/Icon website.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="../shared/audio-player.css">
+    <link rel="stylesheet" href="../shared/navigation.css">
     <style>
         body {
-            background-image: url('../file-qNJ2r3YByA3LbPQnduwxrQUF.png'); /* Adjust the path if needed */
+            background-image: url('../file-qNJ2r3YByA3LbPQnduwxrQUF.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -22,10 +24,11 @@
             position: relative;
             padding: 20px;
             border-bottom: 2px solid white;
-            background-color: black;
+            background-color: rgba(0, 0, 0, 0.9);
             display: flex;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(10px);
         }
 
         .jarchive-dot-net {
@@ -39,6 +42,12 @@
             z-index: 1;
             border: 2px solid red;
             padding: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .jarchive-dot-net:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
         }
 
         .glitch {
@@ -108,57 +117,6 @@
             100% { clip: rect(105px, 9999px, 230px, 0); }
         }
 
-        /* Hamburger menu styles */
-        nav {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            z-index: 2;
-        }
-
-        .menu-icon {
-            display: inline-block;
-            cursor: pointer;
-        }
-
-        .menu-icon div {
-            width: 35px;
-            height: 5px;
-            background-color: red;
-            margin: 6px 0;
-            transition: 0.4s;
-        }
-
-        /* Hide the menu by default */
-        nav ul {
-            display: none;
-            position: absolute;
-            top: 50px;
-            right: 0;
-            background-color: black;
-            border: 2px solid red;
-            padding: 10px;
-            list-style-type: none;
-            margin: 0;
-        }
-
-        nav ul li {
-            margin: 5px 0;
-        }
-
-        nav ul li a {
-            color: white;
-            text-decoration: none;
-            font-size: 1.2em;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px red;
-        }
-
-        /* Show the menu when the menu-icon is clicked */
-        nav ul.show-menu {
-            display: block;
-        }
-
         .content {
             padding: 20px;
             background-color: rgba(0, 0, 0, 0.8);
@@ -169,50 +127,146 @@
             align-items: center;
         }
 
+        .blog-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .blog-header h1 {
+            font-size: 3em;
+            color: #ff0000;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        .blog-header p {
+            font-size: 1.2em;
+            color: #cccccc;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
         .blog-posts {
             width: 80%;
             max-width: 800px;
         }
 
         .blog-post {
-            background-color: rgba(255, 255, 255, 0.1);
-            padding: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 30px;
             margin-bottom: 40px;
-            border-radius: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
+        }
+
+        .blog-post:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
+            border-color: rgba(255, 0, 0, 0.5);
         }
 
         .blog-post h2 {
             font-size: 1.8em;
             color: red;
             text-shadow: 0 0 10px red;
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            border-bottom: 2px solid rgba(255, 0, 0, 0.3);
+            padding-bottom: 10px;
         }
 
         .blog-post p {
             font-size: 1.2em;
-            line-height: 1.6;
+            line-height: 1.8;
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
+        }
+
+        .blog-meta {
+            font-size: 0.9em;
+            color: #cccccc;
+            margin-bottom: 15px;
+            font-style: italic;
         }
 
         footer {
             text-align: center;
-            padding: 20px;
-            background-color: black;
+            padding: 40px 20px;
+            background-color: rgba(0, 0, 0, 0.9);
             color: red;
             border-top: 2px solid red;
+            margin-top: 60px;
         }
 
         #backToTop {
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: red;
+            background: rgba(255, 0, 0, 0.2);
             color: white;
-            border: none;
-            padding: 10px;
+            border: 2px solid #ff0000;
+            padding: 15px;
             cursor: pointer;
             display: none;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        #backToTop:hover {
+            background: rgba(255, 0, 0, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 25px rgba(255, 0, 0, 0.7);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .jarchive-dot-net {
+                font-size: 1.8em;
+                padding: 8px;
+            }
+
+            .blog-header h1 {
+                font-size: 2.5em;
+            }
+
+            .blog-posts {
+                width: 95%;
+            }
+
+            .blog-post {
+                padding: 20px;
+            }
+
+            .blog-post h2 {
+                font-size: 1.5em;
+            }
+
+            .blog-post p {
+                font-size: 1.1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .blog-header h1 {
+                font-size: 2em;
+            }
+
+            .blog-post {
+                padding: 15px;
+            }
+
+            .blog-post h2 {
+                font-size: 1.3em;
+            }
+
+            .blog-post p {
+                font-size: 1em;
+            }
         }
     </style>
 </head>
@@ -222,30 +276,27 @@
             <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
         </a>
         <h1 class="glitch" data-text="Blog">Blog</h1>
-        <nav>
-            <div class="menu-icon" onclick="toggleMenu()">
-                <div></div>
-                <div></div>
-                <div></div>
-            </div>
-            <ul id="menuLinks">
-                <li><a href="../">Home</a></li>
-                <li><a href="../musicPage/index.html">Music</a></li>
-                <!-- Add more navigation links as needed -->
-            </ul>
-        </nav>
     </header>
 
     <div class="content">
+        <div class="blog-header">
+            <h1>Blog</h1>
+            <p>Thoughts, updates, and behind-the-scenes from JARCHIVE</p>
+        </div>
+
         <div class="blog-posts">
             <!-- Blog Post 1 -->
             <div class="blog-post">
-                <h2>#1 :) April 15, 2025 10:44am</h2>
+                <div class="blog-meta">April 15, 2025 • 10:44am</div>
+                <h2>#1 :)</h2>
                 <p>
                     The goal for this week is to get out another mix and also a song by friday. The only thing thats really in the way from now on is school. So I whole heartedly believe Ill be able to start getting more content out for the website. After a few months we'll start posting on social media and other music sharing platforms.
+                </p>
+                <p>
                     Me and Sam (Ditty) Have been planning something big. Something beyond our control and were excited to finally start bringing these plans into fruition its going to be a good next couple of years in terms of creativity and productivity. AMEN
                 </p>
             </div>
+            
             <!-- Add more blog posts as needed -->
         </div>
     </div>
@@ -254,8 +305,12 @@
         <p>© 2024 JARCHIVE. All rights reserved.</p>
     </footer>
 
-    <button id="backToTop">Back to Top</button>
+    <button id="backToTop" title="Back to Top">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
+    <script src="../shared/audio-player.js"></script>
+    <script src="../shared/navigation.js"></script>
     <script>
         // Back to top button functionality
         const backToTopButton = document.getElementById('backToTop');
@@ -269,12 +324,6 @@
         backToTopButton.onclick = function() {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         };
-
-        // Toggle menu functionality
-        function toggleMenu() {
-            const menu = document.getElementById('menuLinks');
-            menu.classList.toggle('show-menu');
-        }
     </script>
 </body>
 </html>
