@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>WARINTHEATMOSPHERE - JARCHIVE.NET</title>
+  <style>
+    body {
+      background: black;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Courier New', monospace;
+    }
+
+    .boombox-container {
+      position: relative;
+      width: 768px;
+      height: 812px;
+      background: url('boombox.png') no-repeat center/contain;
+    }
+
+    /* 🎯 FINAL cassette art position */
+    .cassette-art {
+      position: absolute;
+      top: 374px;
+      left: 250px;
+      width: 268px;
+      height: 72px;
+      object-fit: cover;
+      z-index: 2;
+      border-radius: 3px;
+    }
+
+    .button-zone {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      z-index: 10;
+      border: 2px solid transparent;
+      transition: border 0.2s ease-in-out;
+    }
+
+    .button-zone:hover {
+      border: 2px solid red;
+    }
+
+    /* 🎮 FINAL button positions */
+    .rewind  { top: 536px; left: 236px; }
+    .play    { top: 536px; left: 341px; }
+    .forward { top: 536px; left: 446px; }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="boombox-container">
+    <!-- Album Cover Fitted to Cassette Window -->
+    <img src="cover.png" alt="Cassette Art" class="cassette-art" />
+
+    <!-- Button Hit Zones -->
+    <div class="button-zone rewind" onclick="rewind()"></div>
+    <div class="button-zone play" onclick="togglePlay()"></div>
+    <div class="button-zone forward" onclick="forward()"></div>
+
+    <!-- Audio -->
+    <audio id="player" src="audio.wav"></audio>
+  </div>
+
+  <script>
+    const player = document.getElementById("player");
+
+    function togglePlay() {
+      if (player.paused) {
+        player.play();
+      } else {
+        player.pause();
+      }
+    }
+
+    function rewind() {
+      player.currentTime = Math.max(player.currentTime - 5, 0);
+    }
+
+    function forward() {
+      player.currentTime = Math.min(player.currentTime + 5, player.duration);
+    }
+  </script>
+</body>
+</html>
