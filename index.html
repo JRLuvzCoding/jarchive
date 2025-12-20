@@ -160,12 +160,12 @@
     /* ===== JR Side Nav (flush-left) ===== */
     .jr-side-nav{
       position: fixed;
-      left: 6px;                 /* almost falling off screen */
-      top: 50%;
-      transform: translateY(-50%);
+      left: 0px;                 /* almost falling off screen */
+      top: 12px;
+      transform: none;
       display: flex !important;    /* beat any shared css */
       flex-direction: column;
-      gap: 16px;
+      gap: 12px;
       z-index: 99999;              /* above everything */
       user-select: none;
       pointer-events: auto;
@@ -177,20 +177,24 @@
       transform: rotate(180deg);
       color: rgba(255,255,255,.55);
       text-decoration: none;
-      font-size: 12px;
+      font-size: 14px;
       letter-spacing: .35em;
       text-transform: uppercase;
       padding: 8px 2px;
       border-radius: 999px;
       transition: .2s ease;
     }
-    .jr-side-nav a:hover{ color:#fff; }
+    .jr-side-nav a:hover {
+      color: rgba(255,255,255,0.82); /* slightly dimmer than pure white */
+      background: transparent;
+      box-shadow: none;
+    }
 
     .jr-side-nav a.is-active{
       color:#fff;
-      text-shadow: 0 0 16px rgba(255,0,0,.65);
-      outline: 1px solid rgba(255,0,0,.45);
-      background: rgba(255,0,0,.10);
+      background: transparent;
+      outline: none;
+      box-shadow: none;
     }
 
     .jr-side-nav a.is-active::after{
@@ -522,7 +526,7 @@
       z-index: 10000;
       padding: 10px 18px;
       border-radius: 999px;
-      border: 1px solid rgba(255,0,0,.55);
+      border: none; /* Removed red border */
       background: rgba(0,0,0,.65);
       color: #fff;
       letter-spacing: .18em;
@@ -535,7 +539,7 @@
     }
     #logoutBtn:hover {
       background: rgba(255,0,0,.14);
-      border-color: rgba(255,0,0,.85);
+      /* border-color: rgba(255,0,0,.85); */
     }
 
     /* Mobile */
@@ -663,17 +667,14 @@
       <div class="bg-vignette" aria-hidden="true"></div>
     </div>
 
-    <div class="top-brand">
-      <div class="dotnet">JARCHIVE.NET</div>
-      <div class="pill">HOME</div>
-    </div>
+
 
     <nav class="jr-side-nav" aria-label="Primary">
-      <a href="#music">MUSIC</a>
+      <a href="/musicPage/">MUSIC</a>
       <a href="#stations">STATIONS</a>
-      <a href="#media">MEDIA</a>
-      <a href="#blog">BLOG</a>
-      <a href="#home">JARCHIVE</a>
+      <a href="/media/">MEDIA</a>
+      <a href="/blog/">BLOG</a>
+      <a href="/index.html">JARCHIVE</a>
     </nav>
 
     <main>
@@ -683,14 +684,10 @@
           <img class="hero-img mobile"  src="Hiya.jpg" alt="" />
 
           <div class="hero-content">
-            <div class="hero-kicker">Jarchive</div>
-            <h1 class="hero-title">JARCHIVE.NET</h1>
-            <p class="hero-subtitle">
-              Community :) Stay tuned — new stuff is always loading in here. Music, stations, media, and blog updates.
+            <div class="hero-kicker"></div>
             </p>
             <div class="hero-cta">
-              <a class="btn" href="#music"><i class="fas fa-play"></i> Music</a>
-              <a class="btn" href="#media"><i class="fas fa-photo-film"></i> Media</a>
+          
             </div>
           </div>
         </div>
@@ -698,16 +695,9 @@
 
       <section class="panel" id="music">
         <div class="panel-inner">
-          <h2 class="section-title">Music</h2>
-          <p class="section-note">Latest release pulls from your audio player data (same behavior as before).</p>
-
-          <div class="release-shell" style="margin-top:22px;">
-            <div class="release-card" id="latest-release-card">
-              <div style="color: rgba(255,255,255,.65); padding: 18px;">
-                Loading latest release…
-              </div>
-            </div>
-          </div>
+          <h2 class="section-title">Latest Music</h2>
+          <div id="home-latest-music"></div>
+          <div class="section-note">Hear the newest tracks and mixes.</div>
         </div>
       </section>
 
@@ -727,23 +717,17 @@
 
       <section class="panel" id="media">
         <div class="panel-inner">
-          <h2 class="section-title">Media</h2>
-          <p class="section-note">Same gallery logic you already had — just restyled.</p>
-          <div class="media-gallery" id="media-gallery" style="margin-top:22px;"></div>
+          <h2 class="section-title">Latest Media</h2>
+          <div id="home-latest-media" class="media-gallery"></div>
+          <div class="section-note">Photos and videos from the journey.</div>
         </div>
       </section>
 
       <section class="panel" id="blog">
         <div class="panel-inner">
-          <h2 class="section-title">Blog</h2>
-          <p class="section-note">Placeholder for now. When you’re ready, we can load posts from a JSON file or Markdown.</p>
-
-          <div style="margin-top:26px; border:1px solid rgba(255,0,0,.25); border-radius:18px; padding:18px; background:rgba(255,0,0,.06);">
-            <div style="color:#fff; letter-spacing:.18em; text-transform:uppercase; font-size:12px;">No posts yet</div>
-            <div style="margin-top:10px; color: rgba(255,255,255,.60); line-height:1.7;">
-              Add your first post and this will become the feed.
-            </div>
-          </div>
+          <h2 class="section-title">Latest Blog</h2>
+          <div id="home-latest-blog"></div>
+          <div class="section-note">Thoughts, updates, and behind-the-scenes.</div>
         </div>
       </section>
     </main>
@@ -938,6 +922,89 @@
           window.addEventListener('scroll', onScroll, { passive: true });
           onScroll();
         }
+
+    async function fetchContent() {
+      try {
+        const res = await fetch('shared/content.json');
+        if (!res.ok) throw new Error('Failed to load content');
+        return await res.json();
+      } catch (e) {
+        return { music: [], media: [], blog: [] };
+      }
+    }
+
+    function renderMusic(music) {
+      const container = document.getElementById('home-latest-music');
+      container.innerHTML = '';
+      if (!music.length) {
+        container.innerHTML = `<div class="card"><div class="release-info"><div class="release-title">Nothing yet</div><div class="release-artist">Check back soon!</div></div></div>`;
+        return;
+      }
+      music.forEach(item => {
+        container.innerHTML += `
+          <div class="card release-shell">
+            <div class="release-card">
+              <img class="release-cover" src="${item.cover}" alt="${item.title}">
+              <div class="release-info">
+                <div class="release-title">${item.title}</div>
+                <div class="release-artist">${item.artist || ''}</div>
+                <div class="release-date">${new Date(item.date).toLocaleDateString()}</div>
+                <div class="release-actions">
+                  <a class="btn" href="${item.audio}" target="_blank">Listen</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderMedia(media) {
+      const container = document.getElementById('home-latest-media');
+      container.innerHTML = '';
+      if (!media.length) {
+        container.innerHTML = `<div class="media-item"><div class="media-title">Nothing yet</div></div>`;
+        return;
+      }
+      media.forEach(item => {
+        container.innerHTML += `
+          <div class="media-item media-card">
+            ${item.type === 'Video' ? `<video src="${item.src}" controls></video>` : `<img class="media-thumb" src="${item.src}" alt="${item.title}">`}
+            <div class="media-overlay">
+              <div class="media-title">${item.title}</div>
+              <div class="media-type">${item.type}</div>
+              <div class="media-description">${item.description || ''}</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderBlog(blog) {
+      const container = document.getElementById('home-latest-blog');
+      container.innerHTML = '';
+      if (!blog.length) {
+        container.innerHTML = `<div class="blog-post"><div class="blog-meta">Nothing yet</div><h2>Check back soon!</h2></div>`;
+        return;
+      }
+      const item = blog[0];
+      container.innerHTML = `
+        <div class="blog-post">
+          <div class="blog-meta">${new Date(item.date).toLocaleString()}${item.author ? ' • ' + item.author : ''}</div>
+          <h2>${item.title}</h2>
+          <p>${(item.content || '').replace(/\n/g, '<br>')}</p>
+        </div>
+      `;
+    }
+
+    fetchContent().then(data => {
+      const music = (data.music || []).slice().sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,8);
+      const media = (data.media || []).slice().sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,4);
+      const blog = (data.blog || []).slice().sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,1);
+      renderMusic(music);
+      renderMedia(media);
+      renderBlog(blog);
+    });
   </script>
 </body>
 </html>

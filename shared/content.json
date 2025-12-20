@@ -1,0 +1,98 @@
+{
+  "music": [
+    {
+      "title": "IMissJackson",
+      "artist": "JARCHIVE",
+      "date": "2025-12-18T14:00:00Z",
+      "cover": "musicPage/songCovers/IMissJackson.jpg",
+      "audio": "musicPage/Songs/IMissJackson.mp3"
+    },
+    {
+      "title": "SuperTaq ft. andre y kess",
+      "artist": "JARCHIVE",
+      "date": "2025-12-15T10:00:00Z",
+      "cover": "musicPage/songCovers/superTaq.jpg",
+      "audio": "musicPage/Songs/SuperTaq ft. andre y kess.wav"
+    },
+    {
+      "title": "WARINTHEATMOSPHERE",
+      "artist": "JARCHIVE",
+      "date": "2025-12-10T09:00:00Z",
+      "cover": "musicPage/songCovers/WarIntheAtmosphere.png",
+      "audio": "musicPage/Songs/WARINTHEATMOSPHERE.wav"
+    },
+    {
+      "title": "Mix of the Century",
+      "artist": "JARCHIVE",
+      "date": "2025-12-05T08:00:00Z",
+      "cover": "musicPage/songCovers/Mix3.png",
+      "audio": "musicPage/Songs/mix of the century.mp3"
+    },
+    {
+      "title": "Flames & Fire",
+      "artist": "JARCHIVE",
+      "date": "2025-12-01T07:00:00Z",
+      "cover": "musicPage/songCovers/flamezfire.png",
+      "audio": "musicPage/Songs/FLAMES AND FIRE.wav"
+    },
+    {
+      "title": "G6 Track",
+      "artist": "JARCHIVE",
+      "date": "2025-11-28T06:00:00Z",
+      "cover": "musicPage/songCovers/G6.jpeg",
+      "audio": "musicPage/Songs/g66_Track.wav"
+    },
+    {
+      "title": "Lorde Master",
+      "artist": "JARCHIVE",
+      "date": "2025-11-25T05:00:00Z",
+      "cover": "musicPage/songCovers/LordeCum.png",
+      "audio": "musicPage/Songs/lorde master.wav"
+    },
+    {
+      "title": "The Demo I Been Poppin Since!",
+      "artist": "JARCHIVE",
+      "date": "2025-11-20T04:00:00Z",
+      "cover": "musicPage/songCovers/theDemoIBeenPoppingSince.jpg",
+      "audio": "musicPage/Songs/theDemoIBeenPoppinSince.wav"
+    }
+  ],
+  "media": [
+    {
+      "type": "photo",
+      "title": "Studio Setup",
+      "date": "2025-12-19T12:00:00Z",
+      "src": "media/Photos/macBook.jpeg",
+      "description": "Behind the scenes of the creative process"
+    },
+    {
+      "type": "photo",
+      "title": "Mixing Session",
+      "date": "2025-12-17T11:00:00Z",
+      "src": "media/Photos/mix.png",
+      "description": "Perfecting the sound in the studio"
+    },
+    {
+      "type": "video",
+      "title": "G6 Early",
+      "date": "2025-12-15T10:00:00Z",
+      "src": "media/Videos/g6early.mp4",
+      "description": "Early stages of track development"
+    },
+    {
+      "type": "photo",
+      "title": "We Lit",
+      "date": "2025-12-13T09:00:00Z",
+      "src": "media/Photos/weLit.png",
+      "description": "Capturing the energy and vibe"
+    }
+  ],
+  "blog": [
+    {
+      "title": "#1 :)",
+      "date": "2025-12-15T10:44:00Z",
+      "author": "JARCHIVE",
+      "content": "The goal for this week is to get out another mix and also a song by friday. The only thing thats really in the way from now on is school. So I whole heartedly believe Ill be able to start getting more content out for the website. After a few months we'll start posting on social media and other music sharing platforms.\nMe and Sam (Ditty) Have been planning something big. Something beyond our control and were excited to finally start bringing these plans into fruition its going to be a good next couple of years in terms of creativity and productivity. AMEN"
+    }
+  ]
+}
