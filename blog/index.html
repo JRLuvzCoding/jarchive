@@ -19,10 +19,80 @@
             box-sizing: border-box;
         }
 
+        html {
+            height: 100%;
+        }
+
         body {
             font-family: 'Courier New', Courier, monospace;
             line-height: 1.6;
-            padding-bottom: 120px; /* Space for audio player */
+            min-height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding-bottom: 0; /* Removed - footer will handle spacing */
+        }
+
+        /* ===== JR Side Nav (flush-left) ===== */
+        .jr-side-nav{
+            position: fixed;
+            left: 0px;
+            top: 12px;
+            transform: none;
+            display: flex !important;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 99999;
+            user-select: none;
+            pointer-events: auto;
+        }
+
+        .jr-side-nav a{
+            writing-mode: vertical-rl;
+            position: relative;
+            transform: rotate(180deg);
+            color: rgba(255,255,255,.55);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: .35em;
+            text-transform: uppercase;
+            padding: 8px 2px;
+            border-radius: 999px;
+            transition: .2s ease;
+        }
+        .jr-side-nav a:hover {
+            color: rgba(255,255,255,0.82);
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .jr-side-nav a.is-active{
+            color:#fff;
+            background: transparent;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .jr-side-nav a.is-active::after{
+            content:"";
+            position:absolute;
+            right: -10px;
+            top: 50%;
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            transform: translateY(-50%);
+            background: rgba(255,0,0,.9);
+            box-shadow: 0 0 18px rgba(255,0,0,.55);
+            animation: navPulse 1.2s ease-in-out infinite;
+        }
+
+        @media (max-width: 900px){
+            .jr-side-nav{ display:none !important; }
+        }
+
+        @keyframes navPulse{
+            0%,100% { transform: translateY(-50%) scale(1); opacity: .85; }
+            50%     { transform: translateY(-50%) scale(1.35); opacity: 1; }
         }
 
         /* FORUM HEADER (Forum Title Area) */
@@ -49,10 +119,11 @@
         .forum-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1rem;
+            padding: 2rem 1rem;
             display: grid;
             grid-template-columns: 1fr;
             gap: 2rem;
+            flex: 1; /* Push footer to bottom */
         }
 
         /* Optional: Two-column layout for sidebar */
@@ -243,7 +314,8 @@
         .forum-footer {
             text-align: center;
             padding: 2rem 1rem;
-            margin-top: 3rem;
+            padding-bottom: calc(2rem + 120px); /* Extra space for audio player */
+            margin-top: auto; /* Push to bottom */
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.15em;
@@ -345,11 +417,14 @@
 </head>
 <body>
     
-    <!-- FORUM HEADER (Site Title) -->
-    <header class="forum-header">
-        <h1 class="forum-title">JARCHIVE Blog</h1>
-        <p class="forum-subtitle">Development Log & Updates</p>
-    </header>
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="jr-side-nav" aria-label="Primary">
+        <a href="../musicPage/">MUSIC</a>
+        <a href="../#stations">STATIONS</a>
+        <a href="../media/">MEDIA</a>
+        <a href="../blog/" class="is-active">BLOG</a>
+        <a href="../">JARCHIVE</a>
+    </nav>
 
     <!-- MAIN FORUM CONTAINER -->
     <div class="forum-container">
@@ -359,15 +434,13 @@
             
             <!-- SECTION HEADER (Category) -->
             <div class="section-header">
-                <h2 class="section-title">Recent Entries</h2>
+                <h2 class="section-title">Blog</h2>
             </div>
 
-            <!-- THREAD ENTRY #1 (Expanded - Full Post) -->
-            <article class="thread-entry expanded" id="post-1">
+            <!-- THREAD ENTRY #1 -->
+            <article class="thread-entry" id="post-1">
                 <aside class="thread-meta">
                     <div class="thread-number">#001</div>
-                    <div class="thread-date">Apr 15</div>
-                    <div class="thread-time">10:44am</div>
                     <div class="thread-tag">Update</div>
                 </aside>
                 
@@ -375,7 +448,6 @@
                     <h3 class="thread-title">
                         <a href="#post-1">Plans for the Week :)</a>
                     </h3>
-                    
                     <div class="thread-body">
                         <p>
                             The goal for this week is to get out another mix and also a song by friday. The only thing thats really in the way from now on is school. So I whole heartedly believe Ill be able to start getting more content out for the website. After a few months we'll start posting on social media and other music sharing platforms.
@@ -385,50 +457,10 @@
                         </p>
                     </div>
                 </div>
-            </article>
-
-            <!-- THREAD ENTRY #2 (Collapsed - Preview) -->
-            <article class="thread-entry" id="post-2">
-                <aside class="thread-meta">
-                    <div class="thread-number">#002</div>
-                    <div class="thread-tag">News</div>
-                </aside>
-                
-                <div class="thread-content">
-                    <h3 class="thread-title">
-                        <a href="#post-2">New Track Incoming</a>
-                    </h3>
-                    <p class="thread-excerpt">
-                        Working on something special for next week. Stay tuned...
-                    </p>
-                </div>
                 
                 <aside class="thread-stats">
-                    <div class="thread-date">Apr 22</div>
-                    <div class="thread-time">3:15pm</div>
-                    <div class="thread-author">by JARCHIVE</div>
-                </aside>
-            </article>
-
-            <!-- THREAD ENTRY #3 (Collapsed - Preview) -->
-            <article class="thread-entry" id="post-3">
-                <aside class="thread-meta">
-                    <div class="thread-number">#003</div>
-                    <div class="thread-tag">Thoughts</div>
-                </aside>
-                
-                <div class="thread-content">
-                    <h3 class="thread-title">
-                        <a href="#post-3">On Creative Process</a>
-                    </h3>
-                    <p class="thread-excerpt">
-                        Been thinking about the relationship between constraints and creativity. Sometimes limitations force you to...
-                    </p>
-                </div>
-                
-                <aside class="thread-stats">
-                    <div class="thread-date">Apr 29</div>
-                    <div class="thread-time">11:20am</div>
+                    <div class="thread-date">Apr 15</div>
+                    <div class="thread-time">10:44am</div>
                     <div class="thread-author">by JARCHIVE</div>
                 </aside>
             </article>
@@ -487,23 +519,17 @@
     <script src="../shared/audio-player.js"></script>
     <script src="../shared/navigation.js"></script>
     <script>
-        // Optional: Dynamic thread expansion/collapse
-        document.querySelectorAll('.thread-entry:not(.expanded) .thread-title a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Add your own navigation logic here if needed
-                // For now, this is just a placeholder for future expansion/collapse functionality
-            });
+        // Ensure audio player initializes in paused/hidden state on blog page
+        document.addEventListener('DOMContentLoaded', () => {
+            if (window.jarchivePlayer) {
+                // Hide the player on load
+                const playerElement = document.getElementById('jarchive-player');
+                if (playerElement) {
+                    playerElement.style.display = 'none';
+                }
+            }
         });
     </script>
 
-</body>
-</html>
-                backToTopButton.style.display = "none";
-            }
-        };
-        backToTopButton.onclick = function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        };
-    </script>
 </body>
 </html>
