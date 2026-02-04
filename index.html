@@ -31,10 +31,20 @@
       overflow-x:hidden;
       padding-bottom: 110px; /* room for fixed audio player */
     }
-    /* Hide all site content when locked */
-    #site { display: block; }
+    /* CRITICAL: Default state is LOCKED - site hidden, gate visible */
+    #site { display: none; } /* Hidden by default until unlocked */
+    #gate { display: grid; } /* Visible by default */
+    body { overflow: hidden; position: fixed; width: 100%; } /* Locked by default */
+    
+    /* When unlocked, show site and hide gate */
+    body:not(.is-locked) #site { display: block !important; }
+    body:not(.is-locked) #gate { display: none !important; }
+    body:not(.is-locked) { overflow: visible; position: static; width: auto; }
+    
+    /* Explicit locked state reinforcement */
     body.is-locked #site { display: none !important; }
-    body.is-locked { overflow: hidden !important; }
+    body.is-locked #gate { display: grid !important; }
+    body.is-locked { overflow: hidden !important; position: fixed !important; width: 100% !important; }
 
     /* --- Mitigation: Only .effects-on enables backdrop-filter, and only if prefers-reduced-motion is off --- */
     .top-brand,
@@ -816,6 +826,14 @@
       document.documentElement.style.overflow = "";
       document.documentElement.style.height = "";
       removeScrollBlockers();
+      
+      // Initialize audio player and navigation AFTER unlock
+      if (typeof window.initJArchivePlayer === 'function') {
+        window.initJArchivePlayer();
+      }
+      if (typeof window.initJArchiveNav === 'function') {
+        window.initJArchiveNav();
+      }
     }
 
     // Gate form logic
@@ -846,19 +864,25 @@
       };
     }
 
-    // On load, check gate state
-    document.addEventListener('DOMContentLoaded', () => {
+    // CRITICAL: Check gate state SYNCHRONOUSLY before any other scripts run
+    // This prevents audio player and navigation from initializing before gate check
+    (function initGateState() {
       if (localStorage.getItem(GATE_KEY) === "1") {
-        unlockSite();
+        // Site should be unlocked - but wait for DOM to be ready
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', unlockSite);
+        } else {
+          unlockSite();
+        }
       } else {
-        lockSite();
+        // Site should be locked - apply immediately
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', lockSite);
+        } else {
+          lockSite();
+        }
       }
-    });
-
-    // Defensive: if user reloads after unlock, show logout button
-    if (localStorage.getItem(GATE_KEY) === "1" && logoutBtn) {
-      logoutBtn.style.display = "block";
-    }
+    })();
 
     /* ===== Page logic ===== */
     function playLatestTrack() {

@@ -519,12 +519,28 @@ class JArchiveAudioPlayer {
                 this.elements.repeatBtn.classList.toggle('active', this.isRepeating);
                 this.updateVolumeIcon();
                 
-                // Restore track if it was playing
-                if (state.currentTrackIndex !== undefined && state.currentTrackIndex >= 0) {
-                    this.playTrack(state.currentTrackIndex);
+                // Restore track metadata WITHOUT auto-playing
+                if (state.currentTrackIndex !== undefined && state.currentTrackIndex >= 0 && state.currentTrackIndex < this.playlist.length) {
+                    this.currentTrackIndex = state.currentTrackIndex;
+                    const track = this.playlist[this.currentTrackIndex];
+                    
+                    // Load track metadata without playing
+                    this.audio.src = track.src;
+                    this.audio.volume = this.volume;
+                    this.elements.title.textContent = track.title;
+                    this.elements.artist.textContent = track.artist;
+                    this.elements.cover.src = track.cover;
+                    this.elements.cover.alt = `${track.title} cover`;
+                    
+                    // Restore playback position without playing
                     if (state.currentTime) {
                         this.audio.currentTime = state.currentTime;
                     }
+                    
+                    // Ensure player is in paused state
+                    this.isPlaying = false;
+                    this.updatePlayButton();
+                    this.showPlayer();
                 }
             } catch (e) {
                 console.error('Error loading player state:', e);
@@ -533,7 +549,21 @@ class JArchiveAudioPlayer {
     }
 }
 
-// Initialize player when DOM is loaded
+// Initialize player when DOM is loaded AND site is unlocked
+function initJArchivePlayer() {
+    if (!window.jarchivePlayer) {
+        window.jarchivePlayer = new JArchiveAudioPlayer();
+    }
+}
+
+// Only auto-initialize if site is already unlocked
 document.addEventListener('DOMContentLoaded', () => {
-    window.jarchivePlayer = new JArchiveAudioPlayer();
+    const GATE_KEY = 'jarchive_gate_ok_v1';
+    // Only initialize if unlocked, otherwise wait for manual init
+    if (localStorage.getItem(GATE_KEY) === '1') {
+        initJArchivePlayer();
+    }
 });
+
+// Expose initialization function globally for manual init after unlock
+window.initJArchivePlayer = initJArchivePlayer;

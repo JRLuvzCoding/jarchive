@@ -109,14 +109,28 @@ class JArchiveNavigation {
     }
 }
 
-// Initialize navigation when DOM is loaded
+// Initialize navigation when DOM is loaded AND site is unlocked
+function initJArchiveNav() {
+    if (!window.jarchiveNav) {
+        window.jarchiveNav = new JArchiveNavigation();
+        
+        // Update paths based on current page depth
+        const pathSegments = window.location.pathname.split('/').filter(Boolean);
+        if (pathSegments.length > 1) {
+            const basePath = '../'.repeat(pathSegments.length - 1);
+            window.jarchiveNav.updatePaths(basePath);
+        }
+    }
+}
+
+// Only auto-initialize if site is already unlocked
 document.addEventListener('DOMContentLoaded', () => {
-    window.jarchiveNav = new JArchiveNavigation();
-    
-    // Update paths based on current page depth
-    const pathSegments = window.location.pathname.split('/').filter(Boolean);
-    if (pathSegments.length > 1) {
-        const basePath = '../'.repeat(pathSegments.length - 1);
-        window.jarchiveNav.updatePaths(basePath);
+    const GATE_KEY = 'jarchive_gate_ok_v1';
+    // Only initialize if unlocked, otherwise wait for manual init
+    if (localStorage.getItem(GATE_KEY) === '1') {
+        initJArchiveNav();
     }
 });
+
+// Expose initialization function globally for manual init after unlock
+window.initJArchiveNav = initJArchiveNav;

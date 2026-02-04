@@ -8,316 +8,496 @@
     <link rel="stylesheet" href="../shared/audio-player.css">
     <link rel="stylesheet" href="../shared/navigation.css">
     <style>
-        body {
-            background-image: url('../file-qNJ2r3YByA3LbPQnduwxrQUF.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: white;
-            font-family: 'Courier New', Courier, monospace;
+        /* ========================================
+           FORUM-INSPIRED BLOG STRUCTURE
+           Minimal layout-focused CSS
+           ======================================== */
+        
+        * {
             margin: 0;
             padding: 0;
-            overflow-y: scroll;
+            box-sizing: border-box;
         }
 
-        header {
-            position: relative;
-            padding: 20px;
-            border-bottom: 2px solid white;
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(10px);
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+            padding-bottom: 120px; /* Space for audio player */
         }
 
-        .jarchive-dot-net {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            font-size: 2.5em;
-            color: white;
+        /* FORUM HEADER (Forum Title Area) */
+        .forum-header {
+            padding: 1.5rem 2rem;
+            text-align: center;
+        }
+
+        .forum-title {
+            font-size: 1.5rem;
             text-transform: uppercase;
-            text-shadow: 0 0 10px red;
-            z-index: 1;
-            border: 2px solid red;
-            padding: 10px;
-            transition: all 0.3s ease;
+            letter-spacing: 0.2em;
+            margin-bottom: 0.5rem;
         }
 
-        .jarchive-dot-net:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-        }
-
-        .glitch {
-            position: relative;
-            letter-spacing: 2px;
+        .forum-subtitle {
+            font-size: 0.875rem;
             text-transform: uppercase;
-            color: white;
-            display: inline-block;
-            overflow: visible;
+            letter-spacing: 0.1em;
+            opacity: 0.7;
         }
 
-        h1.glitch {
-            font-size: 2.5em;
-            color: red;
-            text-shadow: 0 0 10px red;
+        /* MAIN LAYOUT (Forum Body) */
+        .forum-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
 
-        .glitch::before, .glitch::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: black;
-            overflow: visible;
-            clip: rect(0, 900px, 0, 0);
+        /* Optional: Two-column layout for sidebar */
+        .forum-container.with-sidebar {
+            grid-template-columns: 1fr 250px;
         }
 
-        .glitch::before {
-            left: 2px;
-            text-shadow: -2px 0 red;
-            animation: glitch-anim 2s infinite linear alternate-reverse;
-        }
-
-        .glitch::after {
-            left: -2px;
-            text-shadow: -2px 0 blue;
-            animation: glitch-anim2 2s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(0, 9999px, 0, 0); }
-            10% { clip: rect(10px, 9999px, 40px, 0); }
-            20% { clip: rect(10px, 9999px, 60px, 0); }
-            30% { clip: rect(30px, 9999px, 70px, 0); }
-            40% { clip: rect(30px, 9999px, 90px, 0); }
-            50% { clip: rect(50px, 9999px, 110px, 0); }
-            60% { clip: rect(50px, 9999px, 130px, 0); }
-            70% { clip: rect(70px, 9999px, 150px, 0); }
-            80% { clip: rect(90px, 9999px, 170px, 0); }
-            90% { clip: rect(110px, 9999px, 190px, 0); }
-            100% { clip: rect(130px, 9999px, 210px, 0); }
-        }
-
-        @keyframes glitch-anim2 {
-            0% { clip: rect(0, 9999px, 0, 0); }
-            10% { clip: rect(15px, 9999px, 50px, 0); }
-            20% { clip: rect(25px, 9999px, 70px, 0); }
-            30% { clip: rect(35px, 9999px, 90px, 0); }
-            40% { clip: rect(45px, 9999px, 110px, 0); }
-            50% { clip: rect(55px, 9999px, 130px, 0); }
-            60% { clip: rect(65px, 9999px, 150px, 0); }
-            70% { clip: rect(75px, 9999px, 170px, 0); }
-            80% { clip: rect(85px, 9999px, 190px, 0); }
-            90% { clip: rect(95px, 9999px, 210px, 0); }
-            100% { clip: rect(105px, 9999px, 230px, 0); }
-        }
-
-        .content {
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            min-height: 100vh;
+        /* THREAD LIST (Main Content Area) */
+        .thread-list {
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
+            gap: 0;
         }
 
-        .blog-header {
-            text-align: center;
-            margin-bottom: 40px;
+        /* SECTION HEADER (Category/Section Title) */
+        .section-header {
+            padding: 0.75rem 1rem;
+            margin-bottom: 0;
         }
 
-        .blog-header h1 {
-            font-size: 3em;
-            color: #ff0000;
-            text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
-            margin-bottom: 20px;
+        .section-title {
+            font-size: 0.875rem;
             text-transform: uppercase;
-            letter-spacing: 3px;
+            letter-spacing: 0.15em;
+            font-weight: bold;
         }
 
-        .blog-header p {
-            font-size: 1.2em;
-            color: #cccccc;
-            max-width: 600px;
-            margin: 0 auto;
+        /* THREAD ENTRY (Individual Blog Post = Forum Thread) */
+        .thread-entry {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            padding: 1rem;
+            align-items: start;
         }
 
-        .blog-posts {
-            width: 80%;
-            max-width: 800px;
+        .thread-entry + .thread-entry {
+            border-top: 1px solid;
         }
 
-        .blog-post {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 0, 0, 0.3);
-            border-radius: 15px;
-            padding: 30px;
-            margin-bottom: 40px;
-            transition: all 0.3s ease;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.1);
-        }
-
-        .blog-post:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 0, 0, 0.3);
-            border-color: rgba(255, 0, 0, 0.5);
-        }
-
-        .blog-post h2 {
-            font-size: 1.8em;
-            color: red;
-            text-shadow: 0 0 10px red;
-            margin-bottom: 15px;
-            border-bottom: 2px solid rgba(255, 0, 0, 0.3);
-            padding-bottom: 10px;
-        }
-
-        .blog-post p {
-            font-size: 1.2em;
-            line-height: 1.8;
-            color: #ffffff;
-            text-shadow: 0 0 5px rgba(255, 255, 255, 0.3);
-        }
-
-        .blog-meta {
-            font-size: 0.9em;
-            color: #cccccc;
-            margin-bottom: 15px;
-            font-style: italic;
-        }
-
-        footer {
+        /* Thread Meta Column (Left) */
+        .thread-meta {
+            min-width: 80px;
             text-align: center;
-            padding: 40px 20px;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: red;
-            border-top: 2px solid red;
-            margin-top: 60px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
-        #backToTop {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: rgba(255, 0, 0, 0.2);
-            color: white;
-            border: 2px solid #ff0000;
-            padding: 15px;
-            cursor: pointer;
-            display: none;
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
-            transition: all 0.3s ease;
-            z-index: 1000;
+        .thread-number {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
         }
 
-        #backToTop:hover {
-            background: rgba(255, 0, 0, 0.4);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 25px rgba(255, 0, 0, 0.7);
+        .thread-tag {
+            opacity: 0.6;
+            margin-top: 0.25rem;
         }
 
-        /* Responsive Design */
+        /* Thread Content Column (Center) */
+        .thread-content {
+            min-width: 0; /* Allows text to wrap properly in grid */
+        }
+
+        .thread-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .thread-title a {
+            text-decoration: none;
+        }
+
+        .thread-excerpt {
+            font-size: 0.875rem;
+            line-height: 1.5;
+            margin-top: 0.5rem;
+            opacity: 0.85;
+        }
+
+        .thread-body {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            margin-top: 0.75rem;
+        }
+
+        .thread-body p + p {
+            margin-top: 1rem;
+        }
+
+        /* Thread Stats Column (Right) */
+        .thread-stats {
+            text-align: right;
+            font-size: 0.75rem;
+            min-width: 120px;
+        }
+
+        .thread-date {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .thread-time {
+            opacity: 0.6;
+        }
+
+        .thread-author {
+            margin-top: 0.5rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            opacity: 0.5;
+        }
+
+        /* EXPANDED THREAD (Full Post View) */
+        .thread-entry.expanded {
+            grid-template-columns: auto 1fr;
+            gap: 1.5rem;
+            padding: 1.5rem;
+        }
+
+        .thread-entry.expanded .thread-stats {
+            display: none; /* Stats integrated into meta in expanded view */
+        }
+
+        .thread-entry.expanded .thread-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        /* SIDEBAR (Optional - Archives, Categories) */
+        .forum-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .sidebar-section {
+            padding: 1rem;
+        }
+
+        .sidebar-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
+
+        .sidebar-list {
+            list-style: none;
+            font-size: 0.875rem;
+        }
+
+        .sidebar-list li {
+            padding: 0.375rem 0;
+        }
+
+        .sidebar-list a {
+            text-decoration: none;
+        }
+
+        /* PAGINATION (Forum-style page navigation) */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 2rem 0;
+            font-size: 0.875rem;
+        }
+
+        .pagination-item {
+            padding: 0.5rem 0.75rem;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .pagination-item.active {
+            font-weight: bold;
+        }
+
+        /* FOOTER */
+        .forum-footer {
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 3rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+        }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            .jarchive-dot-net {
-                font-size: 1.8em;
-                padding: 8px;
+            .forum-container.with-sidebar {
+                grid-template-columns: 1fr;
             }
 
-            .blog-header h1 {
-                font-size: 2.5em;
+            .thread-entry {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
             }
 
-            .blog-posts {
-                width: 95%;
+            .thread-meta,
+            .thread-stats {
+                text-align: left;
+                min-width: auto;
             }
 
-            .blog-post {
-                padding: 20px;
+            .thread-stats {
+                display: flex;
+                gap: 1rem;
+                font-size: 0.75rem;
             }
 
-            .blog-post h2 {
-                font-size: 1.5em;
-            }
-
-            .blog-post p {
-                font-size: 1.1em;
+            .thread-entry.expanded {
+                grid-template-columns: 1fr;
             }
         }
 
-        @media (max-width: 480px) {
-            .blog-header h1 {
-                font-size: 2em;
-            }
+        /* ========================================
+           MINIMAL THEMING (For visibility only)
+           Replace with your own theme
+           ======================================== */
+        
+        body {
+            background: #000;
+            color: #fff;
+        }
 
-            .blog-post {
-                padding: 15px;
-            }
+        .forum-header {
+            background: rgba(0, 0, 0, 0.9);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-            .blog-post h2 {
-                font-size: 1.3em;
-            }
+        .section-header {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
 
-            .blog-post p {
-                font-size: 1em;
-            }
+        .thread-entry {
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .thread-entry:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .thread-title a {
+            color: inherit;
+        }
+
+        .thread-title a:hover {
+            opacity: 0.8;
+        }
+
+        .sidebar-section {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .sidebar-list a {
+            color: inherit;
+            opacity: 0.7;
+        }
+
+        .sidebar-list a:hover {
+            opacity: 1;
+        }
+
+        .pagination-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: inherit;
+        }
+
+        .pagination-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .pagination-item.active {
+            background: rgba(255, 255, 255, 0.15);
         }
     </style>
 </head>
 <body>
-    <header>
-        <a href="../">
-            <div class="jarchive-dot-net glitch" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-        </a>
-        <h1 class="glitch" data-text="Blog">Blog</h1>
+    
+    <!-- FORUM HEADER (Site Title) -->
+    <header class="forum-header">
+        <h1 class="forum-title">JARCHIVE Blog</h1>
+        <p class="forum-subtitle">Development Log & Updates</p>
     </header>
 
-    <div class="content">
-        <div class="blog-header">
-            <h1>Blog</h1>
-            <p>Thoughts, updates, and behind-the-scenes from JARCHIVE</p>
-        </div>
-
-        <div class="blog-posts">
-            <!-- Blog Post 1 -->
-            <div class="blog-post">
-                <div class="blog-meta">April 15, 2025 • 10:44am</div>
-                <h2>#1 :)</h2>
-                <p>
-                    The goal for this week is to get out another mix and also a song by friday. The only thing thats really in the way from now on is school. So I whole heartedly believe Ill be able to start getting more content out for the website. After a few months we'll start posting on social media and other music sharing platforms.
-                </p>
-                <p>
-                    Me and Sam (Ditty) Have been planning something big. Something beyond our control and were excited to finally start bringing these plans into fruition its going to be a good next couple of years in terms of creativity and productivity. AMEN
-                </p>
-            </div>
+    <!-- MAIN FORUM CONTAINER -->
+    <div class="forum-container">
+        
+        <!-- THREAD LIST (Main Content) -->
+        <main class="thread-list">
             
-            <!-- Add more blog posts as needed -->
-        </div>
+            <!-- SECTION HEADER (Category) -->
+            <div class="section-header">
+                <h2 class="section-title">Recent Entries</h2>
+            </div>
+
+            <!-- THREAD ENTRY #1 (Expanded - Full Post) -->
+            <article class="thread-entry expanded" id="post-1">
+                <aside class="thread-meta">
+                    <div class="thread-number">#001</div>
+                    <div class="thread-date">Apr 15</div>
+                    <div class="thread-time">10:44am</div>
+                    <div class="thread-tag">Update</div>
+                </aside>
+                
+                <div class="thread-content">
+                    <h3 class="thread-title">
+                        <a href="#post-1">Plans for the Week :)</a>
+                    </h3>
+                    
+                    <div class="thread-body">
+                        <p>
+                            The goal for this week is to get out another mix and also a song by friday. The only thing thats really in the way from now on is school. So I whole heartedly believe Ill be able to start getting more content out for the website. After a few months we'll start posting on social media and other music sharing platforms.
+                        </p>
+                        <p>
+                            Me and Sam (Ditty) Have been planning something big. Something beyond our control and were excited to finally start bringing these plans into fruition its going to be a good next couple of years in terms of creativity and productivity. AMEN
+                        </p>
+                    </div>
+                </div>
+            </article>
+
+            <!-- THREAD ENTRY #2 (Collapsed - Preview) -->
+            <article class="thread-entry" id="post-2">
+                <aside class="thread-meta">
+                    <div class="thread-number">#002</div>
+                    <div class="thread-tag">News</div>
+                </aside>
+                
+                <div class="thread-content">
+                    <h3 class="thread-title">
+                        <a href="#post-2">New Track Incoming</a>
+                    </h3>
+                    <p class="thread-excerpt">
+                        Working on something special for next week. Stay tuned...
+                    </p>
+                </div>
+                
+                <aside class="thread-stats">
+                    <div class="thread-date">Apr 22</div>
+                    <div class="thread-time">3:15pm</div>
+                    <div class="thread-author">by JARCHIVE</div>
+                </aside>
+            </article>
+
+            <!-- THREAD ENTRY #3 (Collapsed - Preview) -->
+            <article class="thread-entry" id="post-3">
+                <aside class="thread-meta">
+                    <div class="thread-number">#003</div>
+                    <div class="thread-tag">Thoughts</div>
+                </aside>
+                
+                <div class="thread-content">
+                    <h3 class="thread-title">
+                        <a href="#post-3">On Creative Process</a>
+                    </h3>
+                    <p class="thread-excerpt">
+                        Been thinking about the relationship between constraints and creativity. Sometimes limitations force you to...
+                    </p>
+                </div>
+                
+                <aside class="thread-stats">
+                    <div class="thread-date">Apr 29</div>
+                    <div class="thread-time">11:20am</div>
+                    <div class="thread-author">by JARCHIVE</div>
+                </aside>
+            </article>
+
+            <!-- Add more thread entries as needed -->
+
+        </main>
+
+        <!-- OPTIONAL SIDEBAR (Archives, Categories) -->
+        <!-- Uncomment and add class "with-sidebar" to .forum-container to enable -->
+        <!--
+        <aside class="forum-sidebar">
+            
+            <section class="sidebar-section">
+                <h3 class="sidebar-title">Archives</h3>
+                <ul class="sidebar-list">
+                    <li><a href="#">April 2025</a></li>
+                    <li><a href="#">March 2025</a></li>
+                    <li><a href="#">February 2025</a></li>
+                </ul>
+            </section>
+
+            <section class="sidebar-section">
+                <h3 class="sidebar-title">Categories</h3>
+                <ul class="sidebar-list">
+                    <li><a href="#">Updates</a></li>
+                    <li><a href="#">News</a></li>
+                    <li><a href="#">Thoughts</a></li>
+                    <li><a href="#">Behind the Scenes</a></li>
+                </ul>
+            </section>
+
+        </aside>
+        -->
+
     </div>
 
-    <footer>
+    <!-- PAGINATION (Forum-style) -->
+    <!-- Uncomment when needed -->
+    <!--
+    <nav class="pagination">
+        <a href="#" class="pagination-item">« Prev</a>
+        <a href="#" class="pagination-item active">1</a>
+        <a href="#" class="pagination-item">2</a>
+        <a href="#" class="pagination-item">3</a>
+        <a href="#" class="pagination-item">Next »</a>
+    </nav>
+    -->
+
+    <!-- FOOTER -->
+    <footer class="forum-footer">
         <p>© 2024 JARCHIVE. All rights reserved.</p>
     </footer>
 
-    <button id="backToTop" title="Back to Top">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
+    <!-- Shared scripts -->
     <script src="../shared/audio-player.js"></script>
     <script src="../shared/navigation.js"></script>
     <script>
-        // Back to top button functionality
-        const backToTopButton = document.getElementById('backToTop');
-        window.onscroll = function() {
-            if (document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {
-                backToTopButton.style.display = "block";
-            } else {
+        // Optional: Dynamic thread expansion/collapse
+        document.querySelectorAll('.thread-entry:not(.expanded) .thread-title a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Add your own navigation logic here if needed
+                // For now, this is just a placeholder for future expansion/collapse functionality
+            });
+        });
+    </script>
+
+</body>
+</html>
                 backToTopButton.style.display = "none";
             }
         };
