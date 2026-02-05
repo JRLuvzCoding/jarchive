@@ -518,18 +518,6 @@
     <!-- Shared scripts -->
     <script src="../shared/audio-player.js"></script>
     <script src="../shared/navigation.js"></script>
-    <script>
-        // Ensure audio player initializes in paused/hidden state on blog page
-        document.addEventListener('DOMContentLoaded', () => {
-            if (window.jarchivePlayer) {
-                // Hide the player on load
-                const playerElement = document.getElementById('jarchive-player');
-                if (playerElement) {
-                    playerElement.style.display = 'none';
-                }
-            }
-        });
-    </script>
 
 </body>
 </html>

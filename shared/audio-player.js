@@ -1,6 +1,13 @@
+// PERSISTENT AUDIO ELEMENT - survives page navigation
+// Store the audio element globally so it persists across page loads
+if (!window.jarchivePersistentAudio) {
+    window.jarchivePersistentAudio = new Audio();
+}
+
 class JArchiveAudioPlayer {
     constructor() {
-        this.audio = new Audio();
+        // Use the persistent global audio element instead of creating a new one
+        this.audio = window.jarchivePersistentAudio;
         this.playlist = [];
         this.currentTrackIndex = 0;
         this.isShuffled = false;
@@ -95,6 +102,9 @@ class JArchiveAudioPlayer {
             currentTime: document.getElementById('current-time'),
             totalTime: document.getElementById('total-time')
         };
+        
+        // CRITICAL: Hide player by default - only show when playback starts
+        this.hidePlayer();
     }
 
     loadPlaylist() {
@@ -221,21 +231,44 @@ class JArchiveAudioPlayer {
     }
 
     setupEventListeners() {
-        // Audio events
-        this.audio.addEventListener('loadedmetadata', () => {
-            this.elements.totalTime.textContent = this.formatTime(this.audio.duration);
-        });
+        // CRITICAL: Only attach audio element listeners once
+        // Check if we've already attached listeners to the persistent audio element
+        if (!this.audio.jarchiveListenersAttached) {
+            // Audio events
+            this.audio.addEventListener('loadedmetadata', () => {
+                this.elements.totalTime.textContent = this.formatTime(this.audio.duration);
+            });
 
-        this.audio.addEventListener('timeupdate', () => {
-            const progress = (this.audio.currentTime / this.audio.duration) * 100;
-            this.elements.progressBar.value = progress;
-            this.elements.progressFill.style.width = progress + '%';
-            this.elements.currentTime.textContent = this.formatTime(this.audio.currentTime);
-        });
+            this.audio.addEventListener('timeupdate', () => {
+                const progress = (this.audio.currentTime / this.audio.duration) * 100;
+                this.elements.progressBar.value = progress;
+                this.elements.progressFill.style.width = progress + '%';
+                this.elements.currentTime.textContent = this.formatTime(this.audio.currentTime);
+                
+                // Persist playback position during playback
+                this.saveState();
+            });
 
-        this.audio.addEventListener('ended', () => {
-            this.nextTrack();
-        });
+            this.audio.addEventListener('ended', () => {
+                this.nextTrack();
+            });
+            
+            // CRITICAL: Show player only when audio actually starts playing
+            this.audio.addEventListener('play', () => {
+                this.isPlaying = true;
+                this.updatePlayButton();
+                this.showPlayer();
+            });
+            
+            // Update state when audio is paused
+            this.audio.addEventListener('pause', () => {
+                this.isPlaying = false;
+                this.updatePlayButton();
+            });
+            
+            // Mark that listeners are attached
+            this.audio.jarchiveListenersAttached = true;
+        }
 
         // Control buttons
         this.elements.playBtn.addEventListener('click', () => this.togglePlay());
@@ -299,10 +332,10 @@ class JArchiveAudioPlayer {
         this.elements.cover.src = track.cover;
         this.elements.cover.alt = `${track.title} cover`;
         
+        // Player will show automatically via 'play' event listener
         this.audio.play().then(() => {
             this.isPlaying = true;
             this.updatePlayButton();
-            this.showPlayer();
         }).catch(err => {
             console.error('Error playing track:', err);
         });
@@ -519,29 +552,45 @@ class JArchiveAudioPlayer {
                 this.elements.repeatBtn.classList.toggle('active', this.isRepeating);
                 this.updateVolumeIcon();
                 
-                // Restore track metadata WITHOUT auto-playing
+                // Restore track metadata and playback state
                 if (state.currentTrackIndex !== undefined && state.currentTrackIndex >= 0 && state.currentTrackIndex < this.playlist.length) {
                     this.currentTrackIndex = state.currentTrackIndex;
                     const track = this.playlist[this.currentTrackIndex];
                     
-                    // Load track metadata without playing
-                    this.audio.src = track.src;
+                    // CRITICAL: Check if audio is already playing (persistent element)
+                    const audioWasPlaying = !this.audio.paused;
+                    
+                    // Only set src if it's different (to avoid restarting playback)
+                    if (this.audio.src !== window.location.origin + track.src) {
+                        this.audio.src = track.src;
+                    }
+                    
                     this.audio.volume = this.volume;
                     this.elements.title.textContent = track.title;
                     this.elements.artist.textContent = track.artist;
                     this.elements.cover.src = track.cover;
                     this.elements.cover.alt = `${track.title} cover`;
                     
-                    // Restore playback position without playing
-                    if (state.currentTime) {
+                    // Restore playback position if not already playing
+                    if (!audioWasPlaying && state.currentTime) {
                         this.audio.currentTime = state.currentTime;
                     }
                     
-                    // Ensure player is in paused state
-                    this.isPlaying = false;
-                    this.updatePlayButton();
-                    this.showPlayer();
+                    // CRITICAL: Restore playing state from actual audio element
+                    // If audio is already playing, keep it playing and show player
+                    if (audioWasPlaying) {
+                        this.isPlaying = true;
+                        this.updatePlayButton();
+                        this.showPlayer();
+                    } else {
+                        // Audio not playing - keep hidden until user plays
+                        this.isPlaying = false;
+                        this.updatePlayButton();
+                    }
                 }
+            } catch (e) {
+                console.error('Error loading player state:', e);
+            }
             } catch (e) {
                 console.error('Error loading player state:', e);
             }
