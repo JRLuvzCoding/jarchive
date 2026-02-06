@@ -2,380 +2,422 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>JARCHIVE.NET - Media Collage</title>
+    <title>JARCHIVE.NET - Media</title>
     <link rel="icon" href="../Icons/Icon website.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../shared/audio-player.css">
-    <link rel="stylesheet" href="../shared/navigation.css">
     <style>
-        body {
-            background-image: url('./CollageBackground.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            color: rgb(255, 255, 255);
-            font-family: 'Courier New', Courier, monospace;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
+        body {
+            background: #000;
+            font-family: 'Courier New', Courier, monospace;
+            overflow-x: hidden;
+        }
+
+        /* Minimal Header */
         header {
-            position: relative;
-            padding: 20px;
-            border-bottom: 2px solid rgb(255, 255, 255);
-            background-color: rgba(0, 0, 0, 0.9);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 80px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 15px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
         }
 
-        .jarchive-dot-net {
-            font-size: 2.5em;
+        .header-link {
+            display: inline-block;
             color: white;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            text-shadow: 0 0 5px red, 0 0 10px white, 0 0 20px red, 0 0 40px red;
-            border: 1px solid white;
-            padding: 5px;
-            position: relative;
-            width: max-content;
-            transition: all 0.3s ease;
-        }
-
-        .jarchive-dot-net:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-        }
-
-        .jarchive-dot-net::before,
-        .jarchive-dot-net::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            width: 100%;
-            background: transparent;
-        }
-
-        .jarchive-dot-net::before {
-            top: -2px;
-            text-shadow: 2px 0 red, -2px 0 cyan;
-            clip-path: inset(0 0 50% 0);
-            animation: glitch-chaotic-original-1 0.9s infinite linear alternate-reverse;
-        }
-
-        .jarchive-dot-net::after {
-            top: 2px;
-            text-shadow: -2px 0 lime, 2px -2px yellow;
-            clip-path: inset(50% 0 0 0);
-            animation: glitch-chaotic-original-2 0.9s infinite linear alternate-reverse;
-        }
-
-        .middle-header {
-            font-size: 1.8em;
-            color: white;
-            text-shadow: 0 0 10px white;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: max-content;
-        }
-
-        .middle-header::before,
-        .middle-header::after {
-            content: attr(data-text);
-            position: absolute;
-            left: 0;
-            width: 100%;
-            background: transparent;
-        }
-
-        .middle-header::before {
-            top: -2px;
-            text-shadow: 2px 0 yellow, -2px 0 blue;
-            clip-path: inset(0 0 50% 0);
-            animation: glitch-chaotic-original-1 1s infinite linear alternate-reverse;
-        }
-
-        .middle-header::after {
-            top: 2px;
-            text-shadow: -2px 0 magenta, 2px -2px cyan;
-            clip-path: inset(50% 0 0 0);
-            animation: glitch-chaotic-original-2 1s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-chaotic-original-1 {
-            0% {
-                clip-path: inset(10% 0 85% 0);
-                transform: translate(-2px, -2px);
-            }
-            25% {
-                clip-path: inset(20% 0 75% 0);
-                transform: translate(2px, 1px);
-            }
-            50% {
-                clip-path: inset(30% 0 65% 0);
-                transform: translate(-1px, 3px);
-            }
-            75% {
-                clip-path: inset(40% 0 55% 0);
-                transform: translate(3px, -1px);
-            }
-            100% {
-                clip-path: inset(50% 0 45% 0);
-                transform: translate(0, 0);
-            }
-        }
-
-        @keyframes glitch-chaotic-original-2 {
-            0% {
-                clip-path: inset(85% 0 10% 0);
-                transform: translate(2px, -1px);
-            }
-            25% {
-                clip-path: inset(75% 0 20% 0);
-                transform: translate(-2px, -2px);
-            }
-            50% {
-                clip-path: inset(65% 0 30% 0);
-                transform: translate(3px, 2px);
-            }
-            75% {
-                clip-path: inset(55% 0 40% 0);
-                transform: translate(-1px, 1px);
-            }
-            100% {
-                clip-path: inset(45% 0 50% 0);
-                transform: translate(0, -2px);
-            }
-        }
-
-        .content {
-            padding: 20px;
-            background-color: rgba(0, 0, 0, 0.8);
-            min-height: calc(100vh - 160px);
-        }
-
-        .media-header {
-            text-align: center;
-            margin-bottom: 40px;
-        }
-
-        .media-header h1 {
-            font-size: 3em;
-            color: #ffffff;
-            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-        }
-
-        .media-header p {
+            text-decoration: none;
             font-size: 1.2em;
-            color: #cccccc;
-            max-width: 600px;
-            margin: 0 auto;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: opacity 0.3s ease;
         }
 
+        .header-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Edge-to-Edge Masonry Gallery */
         .media-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 25px;
-            margin: 40px 0;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
+            margin-top: 60px;
+            column-count: 4;
+            column-gap: 0;
+            line-height: 0;
         }
 
         .media-item {
-            position: relative;
-            border-radius: 15px;
-            overflow: hidden;
-            border: 2px solid transparent;
-            transition: all 0.3s ease;
-            background: rgba(0, 0, 0, 0.5);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+            break-inside: avoid;
+            display: block;
+            width: 100%;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
         }
 
         .media-item:hover {
-            border-color: #ffffff;
-            transform: scale(1.05);
-            box-shadow: 0 0 40px rgba(255, 255, 255, 0.3);
+            opacity: 0.85;
         }
 
-        .media-item img,
-        .media-item video {
+        .media-item img {
             width: 100%;
-            height: 250px;
-            object-fit: cover;
+            height: auto;
             display: block;
+            object-fit: cover;
+        }
+
+        /* Fullscreen Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+        }
+
+        /* Navigation Arrows */
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 2em;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            user-select: none;
+        }
+
+        .modal-nav:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        /* Close Button */
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-size: 1.5em;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
             transition: all 0.3s ease;
         }
 
-        .media-item:hover img,
-        .media-item:hover video {
-            transform: scale(1.1);
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
         }
 
-        .media-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
-            padding: 25px;
-            transform: translateY(100%);
-            transition: transform 0.3s ease;
+        /* Responsive Columns */
+        @media (max-width: 1400px) {
+            .media-gallery {
+                column-count: 3;
+            }
         }
 
-        .media-item:hover .media-overlay {
-            transform: translateY(0);
+        @media (max-width: 900px) {
+            .media-gallery {
+                column-count: 2;
+            }
         }
 
-        .media-title {
-            color: #ffffff;
-            font-size: 1.2em;
-            margin-bottom: 8px;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-            font-weight: bold;
-        }
+        @media (max-width: 600px) {
+            .media-gallery {
+                column-count: 1;
+            }
 
-        .media-type {
-            color: #ff0000;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            text-shadow: 0 0 5px rgba(255, 0, 0, 0.5);
-        }
-
-        .media-description {
-            color: #cccccc;
-            font-size: 0.9em;
-            margin-top: 8px;
-            line-height: 1.4;
-        }
-
-        footer {
-            text-align: center;
-            padding: 40px 20px;
-            background-color: rgba(0, 0, 0, 0.9);
-            color: white;
-            border-top: 2px solid white;
-            margin-top: 60px;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .jarchive-dot-net {
+            .modal-nav {
+                width: 50px;
+                height: 50px;
                 font-size: 1.5em;
-                padding: 5px 10px;
             }
 
-            .middle-header {
-                font-size: 1.2em;
+            .modal-prev {
+                left: 10px;
             }
 
-            .media-header h1 {
-                font-size: 2.5em;
-            }
-
-            .media-gallery {
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 20px;
-            }
-
-            .media-item img,
-            .media-item video {
-                height: 200px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .media-header h1 {
-                font-size: 2em;
-            }
-
-            .media-gallery {
-                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-                gap: 15px;
-            }
-
-            .media-item img,
-            .media-item video {
-                height: 150px;
-            }
-
-            .media-overlay {
-                padding: 15px;
-            }
-
-            .media-title {
-                font-size: 1em;
+            .modal-next {
+                right: 10px;
             }
         }
     </style>
 </head>
 <body>
+
 <header>
-    <a href="../">
-        <div class="jarchive-dot-net" data-text="JARCHIVE.NET">JARCHIVE.NET</div>
-    </a>
-    <div class="middle-header" data-text="Media Collage">Media Collage</div>
+    <a href="../" class="header-link">JARCHIVE.NET</a>
 </header>
 
-<div class="content">
-    <div class="media-header">
-        <h1>Media Collection</h1>
-        <p>Here's a collection of all the photos and videos that define my music journey.</p>
+<div class="media-gallery" id="gallery">
+    <div class="media-item" data-index="0">
+        <img src="Photos/A3CC6994-776D-4FEE-B7B8-FEFC45E5C165 2.PNG" alt="Media" loading="lazy">
     </div>
-
-    <div class="media-gallery">
-        <div class="media-item">
-            <img src="Photos/macBook.jpeg" alt="Studio Setup">
-            <div class="media-overlay">
-                <div class="media-title">Studio Setup</div>
-                <div class="media-type">Photo</div>
-                <div class="media-description">Behind the scenes of the creative process</div>
-            </div>
-        </div>
-        
-        <div class="media-item">
-            <img src="Photos/mix.png" alt="Mixing Session">
-            <div class="media-overlay">
-                <div class="media-title">Mixing Session</div>
-                <div class="media-type">Photo</div>
-                <div class="media-description">Perfecting the sound in the studio</div>
-            </div>
-        </div>
-        
-        <div class="media-item">
-            <video src="Videos/g6early.mp4" controls></video>
-            <div class="media-overlay">
-                <div class="media-title">G6 Early</div>
-                <div class="media-type">Video</div>
-                <div class="media-description">Early stages of track development</div>
-            </div>
-        </div>
-        
-        <div class="media-item">
-            <img src="Photos/weLit.png" alt="We Lit">
-            <div class="media-overlay">
-                <div class="media-title">We Lit</div>
-                <div class="media-type">Photo</div>
-                <div class="media-description">Capturing the energy and vibe</div>
-            </div>
-        </div>
+    <div class="media-item" data-index="1">
+        <img src="Photos/IMG_0010_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="2">
+        <img src="Photos/IMG_0039_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="3">
+        <img src="Photos/IMG_0047_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="4">
+        <img src="Photos/IMG_0054.JPG" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="5">
+        <img src="Photos/IMG_0054_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="6">
+        <img src="Photos/IMG_0061_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="7">
+        <img src="Photos/IMG_0064_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="8">
+        <img src="Photos/IMG_0070_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="9">
+        <img src="Photos/IMG_0078_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="10">
+        <img src="Photos/IMG_0087_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="11">
+        <img src="Photos/IMG_0090_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="12">
+        <img src="Photos/IMG_0113_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="13">
+        <img src="Photos/IMG_0154_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="14">
+        <img src="Photos/IMG_0156_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="15">
+        <img src="Photos/IMG_0194_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="16">
+        <img src="Photos/IMG_0212_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="17">
+        <img src="Photos/IMG_0213_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="18">
+        <img src="Photos/IMG_0589.JPG" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="19">
+        <img src="Photos/IMG_2601.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="20">
+        <img src="Photos/IMG_7742.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="21">
+        <img src="Photos/IMG_7831.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="22">
+        <img src="Photos/IMG_7845.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="23">
+        <img src="Photos/IMG_8070.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="24">
+        <img src="Photos/IMG_8176.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="25">
+        <img src="Photos/IMG_8348.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="26">
+        <img src="Photos/IMG_8576.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="27">
+        <img src="Photos/IMG_8579.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="28">
+        <img src="Photos/IMG_8666.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="29">
+        <img src="Photos/IMG_8675.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="30">
+        <img src="Photos/IMG_8677.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="31">
+        <img src="Photos/IMG_8706.WEBP" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="32">
+        <img src="Photos/IMG_8802.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="33">
+        <img src="Photos/IMG_8813_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="34">
+        <img src="Photos/IMG_8824_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="35">
+        <img src="Photos/IMG_8841_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="36">
+        <img src="Photos/IMG_8855 2.PNG" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="37">
+        <img src="Photos/IMG_8944_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="38">
+        <img src="Photos/IMG_9057_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="39">
+        <img src="Photos/IMG_9159_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="40">
+        <img src="Photos/IMG_9232_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="41">
+        <img src="Photos/IMG_9855_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="42">
+        <img src="Photos/IMG_9861_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="43">
+        <img src="Photos/IMG_9924_2.jpg" alt="Media" loading="lazy">
+    </div>
+    <div class="media-item" data-index="44">
+        <img src="Photos/Screenshot 2025-10-20 at 10.54.57 PM 2.jpg" alt="Media" loading="lazy">
     </div>
 </div>
 
-<footer>
-    <p>© 2024 JARCHIVE.NET. All rights reserved.</p>
-</footer>
+<!-- Fullscreen Modal -->
+<div class="modal" id="modal">
+    <div class="modal-close" id="closeModal">×</div>
+    <div class="modal-nav modal-prev" id="prevBtn">‹</div>
+    <div class="modal-content">
+        <img class="modal-image" id="modalImage" src="" alt="">
+    </div>
+    <div class="modal-nav modal-next" id="nextBtn">›</div>
+</div>
 
-<script src="../shared/audio-player.js"></script>
-<script src="../shared/navigation.js"></script>
+<script>
+    // Modal Navigation System
+    const modal = document.getElementById('modal');
+    const modalImage = document.getElementById('modalImage');
+    const closeModal = document.getElementById('closeModal');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const mediaItems = document.querySelectorAll('.media-item');
+
+    let currentIndex = 0;
+    const totalItems = mediaItems.length;
+
+    // Build media sources array
+    const mediaSources = Array.from(mediaItems).map(item => {
+        return item.querySelector('img').src;
+    });
+
+    // Open modal
+    function openModal(index) {
+        currentIndex = index;
+        modalImage.src = mediaSources[currentIndex];
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal
+    function closeModalFunc() {
+        modal.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Navigate to previous image
+    function showPrev() {
+        currentIndex = (currentIndex - 1 + totalItems) % totalItems;
+        modalImage.src = mediaSources[currentIndex];
+    }
+
+    // Navigate to next image
+    function showNext() {
+        currentIndex = (currentIndex + 1) % totalItems;
+        modalImage.src = mediaSources[currentIndex];
+    }
+
+    // Event Listeners
+    mediaItems.forEach((item, index) => {
+        item.addEventListener('click', () => openModal(index));
+    });
+
+    closeModal.addEventListener('click', closeModalFunc);
+    prevBtn.addEventListener('click', showPrev);
+    nextBtn.addEventListener('click', showNext);
+
+    // Click outside image to close
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            closeModalFunc();
+        }
+    });
+
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('active')) return;
+
+        if (e.key === 'Escape') {
+            closeModalFunc();
+        } else if (e.key === 'ArrowLeft') {
+            showPrev();
+        } else if (e.key === 'ArrowRight') {
+            showNext();
+        }
+    });
+</script>
+
 </body>
 </html>
