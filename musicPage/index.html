@@ -34,6 +34,143 @@
             color: #fff;
         }
 
+        /* ========================================
+           BACKGROUND IMAGE SYSTEM
+           Fixed container with absolute layers
+           ======================================== */
+
+        /* Fixed wrapper - sits behind all content */
+        .bg-wrap {
+            position: fixed;
+            inset: 0;
+            z-index: -3;
+            pointer-events: none;
+        }
+
+        /* Layer container for image */
+        .bg-layer {
+            position: absolute;
+            inset: 0;
+            z-index: -2;
+            transform: translateZ(0); /* GPU acceleration */
+        }
+
+        /* Background image using <img> for performance */
+        .bg-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            z-index: -2;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        /* Vignette overlay for readability */
+        .bg-vignette {
+            position: absolute;
+            inset: 0;
+            z-index: -1;
+            background: radial-gradient(
+                circle at 50% 40%,
+                rgba(0,0,0,0) 0%,
+                rgba(0,0,0,.65) 70%,
+                rgba(0,0,0,.9) 100%
+            );
+            pointer-events: none;
+        }
+
+        /* ========================================
+           ATMOSPHERIC ENHANCEMENTS
+           Cinematic depth layers
+           ======================================== */
+
+        /* Film grain texture overlay */
+        .film-grain {
+            position: fixed;
+            inset: 0;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.06;
+            mix-blend-mode: overlay;
+            background-image: 
+                repeating-conic-gradient(
+                    from 0deg at 50% 50%,
+                    rgba(255,255,255,0.03) 0deg,
+                    rgba(0,0,0,0.05) 0.5deg,
+                    rgba(255,255,255,0.02) 1deg,
+                    rgba(0,0,0,0.04) 1.5deg,
+                    rgba(255,255,255,0.03) 2deg
+                ),
+                repeating-linear-gradient(
+                    45deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(255,255,255,0.02) 2px,
+                    rgba(255,255,255,0.02) 3px
+                );
+            background-size: 200px 200px, 4px 4px;
+            animation: grain-shift 8s steps(10) infinite;
+        }
+
+        @keyframes grain-shift {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-2%, -2%); }
+            20% { transform: translate(1%, -1%); }
+            30% { transform: translate(-1%, 2%); }
+            40% { transform: translate(2%, 1%); }
+            50% { transform: translate(-2%, 1%); }
+            60% { transform: translate(1%, -2%); }
+            70% { transform: translate(-1%, -1%); }
+            80% { transform: translate(2%, -2%); }
+            90% { transform: translate(-2%, 2%); }
+        }
+
+        /* Content darkener - sits behind music container */
+        .content-darkener {
+            position: fixed;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(2200px, 100%);
+            height: 100vh;
+            background: linear-gradient(
+                180deg,
+                rgba(0,0,0,0.4) 0%,
+                rgba(0,0,0,0.6) 20%,
+                rgba(0,0,0,0.7) 50%,
+                rgba(0,0,0,0.75) 100%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Cinematic bottom fade */
+        .cinematic-fade {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40vh;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0,0,0,0.3) 30%,
+                rgba(0,0,0,0.6) 70%,
+                rgba(0,0,0,0.85) 100%
+            );
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Ensure main content sits above atmospheric layers */
+        .music-container {
+            position: relative;
+            z-index: 2;
+        }
+
         /* SIDEBAR NAVIGATION */
         .jr-side-nav {
             position: fixed;
@@ -104,6 +241,8 @@
             margin: 0 auto;
             padding: 3.5rem 2rem;
             flex: 1;
+            position: relative;
+            z-index: 2;
         }
 
         /* SECTION HEADER */
@@ -257,6 +396,277 @@
             font-size: 0.75rem;
             text-transform: uppercase;
             letter-spacing: 0.15em;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ========================================
+           COLLAPSIBLE ARCHIVE SECTIONS
+           ======================================== */
+
+        /* Archive section container */
+        .archive-section {
+            margin-bottom: 0;
+        }
+
+        /* Section dropdown header */
+        .archive-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 1.125rem 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-bottom: none;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            font-family: inherit;
+            color: inherit;
+            text-align: left;
+            user-select: none;
+        }
+
+        .archive-section-header:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .archive-section-header:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.3);
+            outline-offset: -2px;
+        }
+
+        /* Header title */
+        .archive-section-title {
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            font-weight: bold;
+        }
+
+        /* Chevron indicator */
+        .archive-section-chevron {
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 6px solid rgba(255, 255, 255, 0.6);
+            transition: transform 0.3s ease;
+            margin-left: 1rem;
+        }
+
+        .archive-section-header[aria-expanded="true"] .archive-section-chevron {
+            transform: rotate(180deg);
+        }
+
+        /* Content wrapper for animation */
+        .archive-section-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.35s ease;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-top: none;
+        }
+
+        .archive-section-header[aria-expanded="true"] + .archive-section-content {
+            grid-template-rows: 1fr;
+        }
+
+        /* Inner wrapper to handle overflow */
+        .archive-section-inner {
+            overflow: hidden;
+        }
+
+        /* Track list within section */
+        .archive-section .track-list {
+            border: none;
+        }
+
+        /* ========================================
+           GLITCH ANIMATION EFFECTS
+           Digital archive aesthetic
+           ======================================== */
+
+        /* Glitch title wrapper with pseudo-elements for RGB split */
+        .archive-section-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        /* RGB split layers (hidden by default) */
+        .archive-section-header.is-glitching-expand .archive-section-title::before,
+        .archive-section-header.is-glitching-expand .archive-section-title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.8;
+        }
+
+        .archive-section-header.is-glitching-expand .archive-section-title::before {
+            animation: glitch-expand-red 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            color: rgba(255, 0, 0, 0.5);
+            z-index: -1;
+        }
+
+        .archive-section-header.is-glitching-expand .archive-section-title::after {
+            animation: glitch-expand-cyan 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            color: rgba(0, 255, 255, 0.5);
+            z-index: -2;
+        }
+
+        /* Main title jitter on expand */
+        .archive-section-header.is-glitching-expand .archive-section-title {
+            animation: glitch-jitter 0.3s steps(4);
+        }
+
+        /* Scanline overlay effect on expand */
+        .archive-section-header.is-glitching-expand::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(255, 255, 255, 0.03) 0px,
+                rgba(0, 0, 0, 0.05) 1px,
+                transparent 2px,
+                transparent 4px
+            );
+            pointer-events: none;
+            animation: glitch-scanline 0.3s linear;
+            z-index: 1;
+        }
+
+        /* Collapse glitch: signal cut + skew */
+        .archive-section-header.is-glitching-collapse {
+            animation: glitch-collapse 0.25s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+        }
+
+        .archive-section-header.is-glitching-collapse .archive-section-title {
+            animation: glitch-signal-cut 0.25s steps(3);
+        }
+
+        /* ========================================
+           KEYFRAME DEFINITIONS
+           ======================================== */
+
+        /* Expand: RGB split - Red channel */
+        @keyframes glitch-expand-red {
+            0%, 100% {
+                transform: translate(0);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(-2px, 1px);
+                opacity: 0.8;
+            }
+            40% {
+                transform: translate(-1px, -1px);
+                opacity: 0.6;
+            }
+            60% {
+                transform: translate(1px, 1px);
+                opacity: 0.4;
+            }
+        }
+
+        /* Expand: RGB split - Cyan channel */
+        @keyframes glitch-expand-cyan {
+            0%, 100% {
+                transform: translate(0);
+                opacity: 0;
+            }
+            20% {
+                transform: translate(2px, -1px);
+                opacity: 0.8;
+            }
+            40% {
+                transform: translate(1px, 1px);
+                opacity: 0.6;
+            }
+            60% {
+                transform: translate(-1px, -1px);
+                opacity: 0.4;
+            }
+        }
+
+        /* Expand: Main text jitter */
+        @keyframes glitch-jitter {
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+            25% {
+                transform: translate(-1px, 2px);
+            }
+            50% {
+                transform: translate(1px, -1px);
+            }
+            75% {
+                transform: translate(-1px, -2px);
+            }
+        }
+
+        /* Expand: Scanline sweep */
+        @keyframes glitch-scanline {
+            0% {
+                opacity: 0;
+                transform: translateY(-100%);
+            }
+            50% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100%);
+            }
+        }
+
+        /* Collapse: Signal cut flicker */
+        @keyframes glitch-signal-cut {
+            0%, 100% {
+                opacity: 1;
+                transform: translate(0);
+            }
+            30% {
+                opacity: 0.3;
+                transform: translate(-2px, 0);
+            }
+            60% {
+                opacity: 0.7;
+                transform: translate(1px, 0);
+            }
+        }
+
+        /* Collapse: Main header skew + fade */
+        @keyframes glitch-collapse {
+            0% {
+                transform: skewX(0deg);
+                opacity: 1;
+            }
+            50% {
+                transform: skewX(-1deg);
+                opacity: 0.7;
+            }
+            100% {
+                transform: skewX(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* Performance optimization */
+        .archive-section-header.is-glitching-expand,
+        .archive-section-header.is-glitching-collapse {
+            will-change: transform, opacity;
+        }
+
+        .archive-section-header.is-glitching-expand .archive-section-title,
+        .archive-section-header.is-glitching-collapse .archive-section-title {
+            will-change: transform;
         }
 
         /* RESPONSIVE */
@@ -286,6 +696,20 @@
         }
     </style>
 </head>
+<body>
+
+    <!-- Background wrapper: fixed container with absolute layers for performance -->
+    <div class="bg-wrap" aria-hidden="true">
+        <div class="bg-layer" aria-hidden="true">
+            <img class="bg-img" src="../Hiya.jpg" alt="Background" draggable="false" />
+        </div>
+        <div class="bg-vignette" aria-hidden="true"></div>
+    </div>
+
+    <!-- Atmospheric enhancement layers -->
+    <div class="content-darkener" aria-hidden="true"></div>
+    <div class="cinematic-fade" aria-hidden="true"></div>
+    <div class="film-grain" aria-hidden="true"></div>
 
     <!-- SIDEBAR NAVIGATION -->
     <nav class="jr-side-nav" aria-label="Primary">
@@ -304,8 +728,27 @@
             <h2 class="section-title">Track Archive</h2>
         </div>
 
-        <!-- TRACK LIST -->
-        <div class="track-list">
+        <!-- ARCHIVE SECTION: 2024-2025 -->
+        <section class="archive-section">
+            <!-- Collapsible header -->
+            <button 
+                class="archive-section-header" 
+                aria-expanded="false"
+                aria-controls="section-2024-2025"
+                onclick="toggleArchiveSection(this)">
+                <span class="archive-section-title" data-text="2024–2025">2024–2025</span>
+                <span class="archive-section-chevron" aria-hidden="true"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div 
+                class="archive-section-content" 
+                id="section-2024-2025"
+                role="region"
+                aria-labelledby="section-2024-2025">
+                <div class="archive-section-inner">
+                    <!-- TRACK LIST -->
+                    <div class="track-list">
             
             <!-- Track: WARINTHEATMOSPHERE -->
             <div class="track-entry" data-track="WARINTHEATMOSPHERE">
@@ -619,7 +1062,12 @@
                 </div>
             </div>
 
-        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END ARCHIVE SECTION -->
+
     </div>
 
     <!-- FOOTER -->
@@ -631,6 +1079,61 @@
     <script src="../shared/audio-player.js"></script>
     <script src="../shared/navigation.js"></script>
     <script>
+        /* ========================================
+           COLLAPSIBLE ARCHIVE SECTION TOGGLE
+           ======================================== */
+        
+        /**
+         * Toggle archive section open/closed with glitch animation
+         * @param {HTMLButtonElement} button - The clicked header button
+         */
+        function toggleArchiveSection(button) {
+            const isExpanded = button.getAttribute('aria-expanded') === 'true';
+            const glitchClass = isExpanded ? 'is-glitching-collapse' : 'is-glitching-expand';
+            
+            // Add glitch animation class
+            button.classList.add(glitchClass);
+            
+            // Toggle aria-expanded state
+            button.setAttribute('aria-expanded', !isExpanded);
+            
+            // Clean up glitch class after animation completes
+            // Use the longest animation duration (300ms for expand, 250ms for collapse)
+            const animationDuration = isExpanded ? 250 : 300;
+            
+            // Remove glitch class after animation
+            const cleanup = () => {
+                button.classList.remove(glitchClass);
+                button.removeEventListener('animationend', cleanup);
+            };
+            
+            // Listen for animation end on the button itself
+            button.addEventListener('animationend', cleanup);
+            
+            // Fallback timeout in case animationend doesn't fire
+            setTimeout(() => {
+                button.classList.remove(glitchClass);
+            }, animationDuration + 50);
+        }
+
+        /**
+         * Keyboard accessibility: Toggle on Enter/Space
+         */
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.archive-section-header').forEach(header => {
+                header.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        toggleArchiveSection(header);
+                    }
+                });
+            });
+        });
+
+        /* ========================================
+           TRACK PLAYBACK
+           ======================================== */
+
         function playTrack(title) {
             if (window.jarchivePlayer) {
                 // Update now-playing indicators
