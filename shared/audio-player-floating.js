@@ -21,17 +21,22 @@ class FloatingAudioPlayer {
             trackIndex: 0
         };
         
-        this.init();
+        // Do NOT call init() here - it must be called externally with await
     }
     
-    init() {
-        this.loadPlaylist();
+    async init() {
+        // Load playlist first (async)
+        await this.loadPlaylist();
+        
+        // Then create UI and bind events (sync)
         this.createPlayerUI();
         this.bindElements();
         this.attachEventListeners();
         this.loadState();
         this.initializeDrag();
         this.initializeResize();
+        
+        console.log('[FloatingAudioPlayer] Initialized with', this.playlist.length, 'tracks');
     }
     
     // ========================================
@@ -40,15 +45,15 @@ class FloatingAudioPlayer {
     
     async loadPlaylist() {
         try {
-            const response = await fetch('../shared/content.json');
+            const response = await fetch('/shared/content.json');
             const data = await response.json();
             
             if (data.music && Array.isArray(data.music)) {
                 this.playlist = data.music.map(track => ({
                     title: track.title,
                     artist: track.artist || 'JARCHIVE',
-                    cover: `../${track.cover}`,
-                    audio: `../${track.audio}`,
+                    cover: `/${track.cover}`,
+                    audio: `/${track.audio}`,
                     date: track.date
                 }));
                 
@@ -66,7 +71,7 @@ class FloatingAudioPlayer {
     
     createPlayerUI() {
         const playerHTML = `
-            <div class="jarchive-floating-player" id="floating-player">
+            <div class="jarchive-floating-player hidden" id="floating-player">
                 <!-- Minimized icon (hidden by default) -->
                 <div class="minimized-icon">
                     <i class="fas fa-music"></i>
@@ -164,6 +169,21 @@ class FloatingAudioPlayer {
             resizeHandle: document.querySelector('.resize-handle'),
             minimizedIcon: document.querySelector('.minimized-icon')
         };
+        
+        // Verify all critical elements were found
+        const missing = [];
+        for (const [key, element] of Object.entries(this.elements)) {
+            if (!element) {
+                missing.push(key);
+            }
+        }
+        
+        if (missing.length > 0) {
+            console.error('[FloatingAudioPlayer] Missing elements:', missing);
+            throw new Error(`Failed to bind elements: ${missing.join(', ')}`);
+        }
+        
+        console.log('[FloatingAudioPlayer] All elements bound successfully');
     }
     
     // ========================================
@@ -171,18 +191,41 @@ class FloatingAudioPlayer {
     // ========================================
     
     attachEventListeners() {
+        console.log('[FloatingAudioPlayer] Attaching event listeners...');
+        
         // Traffic light controls
-        this.elements.closeBtn.addEventListener('click', () => this.hide());
-        this.elements.minimizeBtn.addEventListener('click', () => this.toggleMinimize());
-        this.elements.expandBtn.addEventListener('click', () => this.toggleCompact());
+        this.elements.closeBtn.addEventListener('click', () => {
+            console.log('[FloatingAudioPlayer] Close button clicked');
+            this.hide();
+        });
+        this.elements.minimizeBtn.addEventListener('click', () => {
+            console.log('[FloatingAudioPlayer] Minimize button clicked');
+            this.toggleMinimize();
+        });
+        this.elements.expandBtn.addEventListener('click', () => {
+            console.log('[FloatingAudioPlayer] Expand button clicked');
+            this.toggleCompact();
+        });
         
         // Minimized icon click to restore
-        this.elements.minimizedIcon.addEventListener('click', () => this.toggleMinimize());
+        this.elements.minimizedIcon.addEventListener('click', () => {
+            console.log('[FloatingAudioPlayer] Minimized icon clicked');
+            this.toggleMinimize();
+        });
         
         // Playback controls
-        this.elements.playBtn.addEventListener('click', () => this.togglePlay());
-        this.elements.prevBtn.addEventListener('click', () => this.previousTrack());
-        this.elements.nextBtn.addEventListener('click', () => this.nextTrack());
+        this.elements.playBtn.addEventListener('click', () => {
+            console.log('[FloatingAudioPlayer] Play button clicked');
+            this.togglePlay();
+        });
+        this.elements.prevBtn.addEventListener('click', () => {
+            console.log('[FloatingAudioPlayer] Previous button clicked');
+            this.previousTrack();
+        });
+        this.elements.nextBtn.addEventListener('click', () => {
+            console.log('[FloatingAudioPlayer] Next button clicked');
+            this.nextTrack();
+        });
         
         // Progress bar
         this.elements.progressBar.addEventListener('click', (e) => this.seekTo(e));
@@ -200,6 +243,8 @@ class FloatingAudioPlayer {
         
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboard(e));
+        
+        console.log('[FloatingAudioPlayer] Event listeners attached successfully');
     }
     
     // ========================================
@@ -207,34 +252,86 @@ class FloatingAudioPlayer {
     // ========================================
     
     playTrackByTitle(title) {
+        console.log('[FloatingAudioPlayer] playTrackByTitle called:', title);
+        console.log('[FloatingAudioPlayer] Playlist has', this.playlist.length, 'tracks');
+        
         const index = this.playlist.findIndex(track => track.title === title);
         if (index !== -1) {
+            console.log('[FloatingAudioPlayer] Track found at index:', index);
             this.loadTrack(index);
             this.play();
             this.show();
+        } else {
+            console.warn('[FloatingAudioPlayer] Track not found:', title);
+            console.warn('[FloatingAudioPlayer] Available tracks:', this.playlist.map(t => t.title));
         }
     }
     
     loadTrack(index) {
-        if (index < 0 || index >= this.playlist.length) return;
+        if (index < 0 || index >= this.playlist.length) {
+            console.error('[FloatingAudioPlayer] Invalid track index:', index);
+            return;
+        }
         
+        console.log('[FloatingAudioPlayer] Loading track:', this.playlist[index].title);
         this.currentTrackIndex = index;
         const track = this.playlist[index];
         
+        // Stop current playback
+        this.audio.pause();
+        
+        // Reset audio element
+        this.audio.currentTime = 0;
+        
+        // Load new track
         this.audio.src = track.audio;
+        this.audio.load(); // Explicitly load the new source
+        
+        // Update UI
         this.elements.cover.src = track.cover;
         this.elements.title.textContent = track.title;
         this.elements.artist.textContent = track.artist;
+        
+        // Reset progress
+        this.elements.progressFill.style.width = '0%';
+        this.elements.currentTime.textContent = '0:00';
+        
+        console.log('[FloatingAudioPlayer] Track loaded successfully:', track.audio);
         
         this.saveState();
     }
     
     play() {
-        this.audio.play().catch(err => console.error('Playback failed:', err));
-        this.isPlaying = true;
+        console.log('[FloatingAudioPlayer] play() called');
+        
+        if (!this.audio.src) {
+            console.warn('[FloatingAudioPlayer] No audio source set');
+            if (this.playlist.length > 0) {
+                console.log('[FloatingAudioPlayer] Loading first track');
+                this.loadTrack(0);
+            } else {
+                console.error('[FloatingAudioPlayer] Playlist is empty');
+                return;
+            }
+        }
+        
+        const playPromise = this.audio.play();
+        
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    console.log('[FloatingAudioPlayer] Playback started successfully');
+                    this.isPlaying = true;
+                })
+                .catch(err => {
+                    console.error('[FloatingAudioPlayer] Playback failed:', err);
+                    this.isPlaying = false;
+                });
+        }
     }
     
     pause() {
+        console.log('[FloatingAudioPlayer] pause() called');
         this.audio.pause();
         this.isPlaying = false;
     }
@@ -295,18 +392,31 @@ class FloatingAudioPlayer {
     }
     
     updateDuration() {
-        this.elements.totalTime.textContent = this.formatTime(this.audio.duration);
+        if (this.audio.duration && !isNaN(this.audio.duration)) {
+            this.elements.totalTime.textContent = this.formatTime(this.audio.duration);
+        }
     }
     
     seekTo(e) {
+        if (!this.audio.duration || isNaN(this.audio.duration)) {
+            console.warn('[FloatingAudioPlayer] Cannot seek - no duration');
+            return;
+        }
+        
         const rect = this.elements.progressBar.getBoundingClientRect();
-        const percent = (e.clientX - rect.left) / rect.width;
-        this.audio.currentTime = percent * this.audio.duration;
+        const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        const newTime = percent * this.audio.duration;
+        
+        console.log('[FloatingAudioPlayer] Seeking to', newTime.toFixed(2), 'seconds');
+        this.audio.currentTime = newTime;
     }
     
     setVolume(e) {
         const rect = this.elements.volumeSlider.getBoundingClientRect();
         const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        
+        console.log('[FloatingAudioPlayer] Setting volume to', (percent * 100).toFixed(0), '%');
+        
         this.volume = percent;
         this.audio.volume = percent;
         this.isMuted = false;
@@ -317,6 +427,7 @@ class FloatingAudioPlayer {
     toggleMute() {
         this.isMuted = !this.isMuted;
         this.audio.volume = this.isMuted ? 0 : this.volume;
+        console.log('[FloatingAudioPlayer] Mute toggled:', this.isMuted);
         this.updateVolumeUI();
     }
     
@@ -370,11 +481,15 @@ class FloatingAudioPlayer {
     // ========================================
     
     initializeDrag() {
+        console.log('[FloatingAudioPlayer] Initializing drag functionality...');
+        
         let isDragging = false;
         let startX, startY, initialX, initialY;
         
-        this.elements.header.addEventListener('mousedown', (e) => {
+        const onMouseDown = (e) => {
+            // Don't drag if clicking traffic lights or other controls
             if (e.target.closest('.traffic-lights')) return;
+            if (e.target.closest('button:not(.player-header)')) return;
             
             isDragging = true;
             this.elements.player.classList.add('dragging');
@@ -386,10 +501,17 @@ class FloatingAudioPlayer {
             initialX = rect.left;
             initialY = rect.top;
             
+            console.log('[FloatingAudioPlayer] Drag started at', startX, startY);
             e.preventDefault();
-        });
+            e.stopPropagation();
+            
+            // Use pointer capture if available for better tracking
+            if (this.elements.header.setPointerCapture && e.pointerId !== undefined) {
+                this.elements.header.setPointerCapture(e.pointerId);
+            }
+        };
         
-        document.addEventListener('mousemove', (e) => {
+        const onMouseMove = (e) => {
             if (!isDragging) return;
             
             const deltaX = e.clientX - startX;
@@ -400,22 +522,49 @@ class FloatingAudioPlayer {
             
             // Constrain to viewport
             const rect = this.elements.player.getBoundingClientRect();
-            newX = Math.max(0, Math.min(window.innerWidth - rect.width, newX));
-            newY = Math.max(0, Math.min(window.innerHeight - rect.height, newY));
+            const maxX = window.innerWidth - rect.width;
+            const maxY = window.innerHeight - rect.height;
+            
+            newX = Math.max(0, Math.min(maxX, newX));
+            newY = Math.max(0, Math.min(maxY, newY));
             
             this.elements.player.style.left = `${newX}px`;
             this.elements.player.style.top = `${newY}px`;
             this.elements.player.style.right = 'auto';
             this.elements.player.style.bottom = 'auto';
-        });
+            
+            e.preventDefault();
+        };
         
-        document.addEventListener('mouseup', () => {
-            if (isDragging) {
-                isDragging = false;
-                this.elements.player.classList.remove('dragging');
-                this.saveState();
+        const onMouseUp = (e) => {
+            if (!isDragging) return;
+            
+            isDragging = false;
+            this.elements.player.classList.remove('dragging');
+            console.log('[FloatingAudioPlayer] Drag ended');
+            this.saveState();
+            
+            // Release pointer capture
+            if (this.elements.header.releasePointerCapture && e.pointerId !== undefined) {
+                try {
+                    this.elements.header.releasePointerCapture(e.pointerId);
+                } catch (err) {
+                    // Ignore if pointer was already released
+                }
             }
-        });
+        };
+        
+        // Attach events to header for mousedown
+        this.elements.header.addEventListener('mousedown', onMouseDown);
+        this.elements.header.addEventListener('pointerdown', onMouseDown);
+        
+        // Attach move and up to entire document to catch mouse leaving player
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('pointermove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+        document.addEventListener('pointerup', onMouseUp);
+        
+        console.log('[FloatingAudioPlayer] Drag functionality initialized');
     }
     
     // ========================================
@@ -423,10 +572,12 @@ class FloatingAudioPlayer {
     // ========================================
     
     initializeResize() {
+        console.log('[FloatingAudioPlayer] Initializing resize functionality...');
+        
         let isResizing = false;
         let startX, startY, startWidth, startHeight;
         
-        this.elements.resizeHandle.addEventListener('mousedown', (e) => {
+        const onMouseDown = (e) => {
             isResizing = true;
             this.elements.player.classList.add('resizing');
             
@@ -437,11 +588,17 @@ class FloatingAudioPlayer {
             startWidth = rect.width;
             startHeight = rect.height;
             
+            console.log('[FloatingAudioPlayer] Resize started');
             e.preventDefault();
             e.stopPropagation();
-        });
+            
+            // Use pointer capture
+            if (this.elements.resizeHandle.setPointerCapture && e.pointerId !== undefined) {
+                this.elements.resizeHandle.setPointerCapture(e.pointerId);
+            }
+        };
         
-        document.addEventListener('mousemove', (e) => {
+        const onMouseMove = (e) => {
             if (!isResizing) return;
             
             const deltaX = e.clientX - startX;
@@ -456,15 +613,39 @@ class FloatingAudioPlayer {
             
             this.elements.player.style.width = `${newWidth}px`;
             this.elements.player.style.height = `${newHeight}px`;
-        });
+            
+            e.preventDefault();
+        };
         
-        document.addEventListener('mouseup', () => {
-            if (isResizing) {
-                isResizing = false;
-                this.elements.player.classList.remove('resizing');
-                this.saveState();
+        const onMouseUp = (e) => {
+            if (!isResizing) return;
+            
+            isResizing = false;
+            this.elements.player.classList.remove('resizing');
+            console.log('[FloatingAudioPlayer] Resize ended');
+            this.saveState();
+            
+            // Release pointer capture
+            if (this.elements.resizeHandle.releasePointerCapture && e.pointerId !== undefined) {
+                try {
+                    this.elements.resizeHandle.releasePointerCapture(e.pointerId);
+                } catch (err) {
+                    // Ignore
+                }
             }
-        });
+        };
+        
+        // Attach events to resize handle
+        this.elements.resizeHandle.addEventListener('mousedown', onMouseDown);
+        this.elements.resizeHandle.addEventListener('pointerdown', onMouseDown);
+        
+        // Attach move and up to document
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('pointermove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+        document.addEventListener('pointerup', onMouseUp);
+        
+        console.log('[FloatingAudioPlayer] Resize functionality initialized');
     }
     
     // ========================================
@@ -519,9 +700,11 @@ class FloatingAudioPlayer {
                 this.updateVolumeUI();
             }
             
-            // Restore track (don't autoplay)
+            // Restore track but DON'T auto-show player
+            // Player should only appear when user clicks a track
             if (state.trackIndex !== undefined && this.playlist[state.trackIndex]) {
                 this.loadTrack(state.trackIndex);
+                // DO NOT call this.show() here - player must remain hidden until user interaction
             }
         } catch (error) {
             console.error('Failed to load player state:', error);
@@ -559,18 +742,25 @@ class FloatingAudioPlayer {
     getLatestTrack() {
         return this.playlist[0];
     }
+    
+    // Debug method to test player functionality
+    test() {
+        console.log('=== Player Test ===');
+        console.log('Player visible:', !this.elements.player.classList.contains('hidden'));
+        console.log('Playlist tracks:', this.playlist.length);
+        console.log('Current track:', this.currentTrackIndex);
+        console.log('Is playing:', this.isPlaying);
+        console.log('Elements bound:', !!this.elements.playBtn);
+        console.log('Play button:', this.elements.playBtn);
+        console.log('Header draggable:', this.elements.header);
+        
+        // Test click on play button
+        console.log('Attempting to click play button...');
+        this.elements.playBtn.click();
+        
+        return 'Test complete - check console for results';
+    }
 }
-
-// ========================================
-// INITIALIZE ON DOM READY
-// ========================================
-
-let jarchivePlayer = null;
-
-document.addEventListener('DOMContentLoaded', () => {
-    jarchivePlayer = new FloatingAudioPlayer();
-    window.jarchivePlayer = jarchivePlayer;
-});
 
 // Export for global access
 window.FloatingAudioPlayer = FloatingAudioPlayer;

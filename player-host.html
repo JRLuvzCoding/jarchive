@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JArchive Audio Player Host</title>
+    
+    <!-- Audio Player Styles -->
+    <link rel="stylesheet" href="/shared/audio-player-floating.css">
+    
+    <style>
+        /* Make iframe container transparent and borderless */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: transparent;
+            pointer-events: none; /* Allow clicks to pass through to parent */
+        }
+        
+        /* CRITICAL: Re-enable pointer events on the player and all its children */
+        .jarchive-floating-player,
+        .jarchive-floating-player * {
+            pointer-events: auto !important;
+        }
+        
+        /* But disable on the body so clicks go through empty space */
+        body {
+            pointer-events: none;
+        }
+        
+        /* Adjust player positioning for iframe context */
+        .jarchive-floating-player {
+            bottom: 20px;
+            right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Player will be injected here by the JS -->
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Audio Player Script -->
+    <script src="/shared/audio-player-floating.js"></script>
+    
+    <script>
+        // ============================
+        // Iframe Host Communication Layer
+        // ============================
+        
+        let playerInstance = null;
+        
+        // Initialize player when DOM is ready
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                console.log('[Player Host] Starting initialization...');
+                
+                // Initialize the floating player
+                playerInstance = new FloatingAudioPlayer();
+                console.log('[Player Host] Player instance created');
+                
+                await playerInstance.init();
+                console.log('[Player Host] Player initialization complete');
+                
+                // Expose to window for debugging
+                window.jarchivePlayer = playerInstance;
+                
+                // Verify elements are bound
+                if (!playerInstance.elements || !playerInstance.elements.playBtn) {
+                    console.error('[Player Host] Elements not properly bound!');
+                    return;
+                }
+                
+                console.log('[Player Host] Audio player initialized successfully');
+                console.log('[Player Host] Playlist has', playerInstance.playlist.length, 'tracks');
+                
+                // Send ready signal to parent
+                notifyParent({
+                    type: 'PLAYER_READY',
+                    timestamp: Date.now()
+                });
+            } catch (error) {
+                console.error('[Player Host] Initialization failed:', error);
+            }
+        });
+        
+        // ============================
+        // Message Handling from Parent Pages
+        // ============================
+        
+        window.addEventListener('message', (event) => {
+            // Security: Validate origin if needed
+            // For now, accept any origin since this is a local site
+            
+            const { type, data } = event.data;
+            
+            console.log('[Player Host] Received message:', type, data);
+            
+            switch (type) {
+                case 'PLAY_TRACK':
+                    handlePlayTrack(data);
+                    break;
+                    
+                case 'PLAY':
+                    if (playerInstance) {
+                        playerInstance.play();
+                    }
+                    break;
+                    
+                case 'PAUSE':
+                    if (playerInstance) {
+                        playerInstance.pause();
+                    }
+                    break;
+                    
+                case 'TOGGLE_PLAY':
+                    if (playerInstance) {
+                        playerInstance.togglePlay();
+                    }
+                    break;
+                    
+                case 'NEXT_TRACK':
+                    if (playerInstance) {
+                        playerInstance.nextTrack();
+                    }
+                    break;
+                    
+                case 'PREV_TRACK':
+                    if (playerInstance) {
+                        playerInstance.prevTrack();
+                    }
+                    break;
+                    
+                case 'SET_VOLUME':
+                    if (playerInstance && data.volume !== undefined) {
+                        playerInstance.setVolume(data.volume);
+                    }
+                    break;
+                    
+                case 'GET_STATE':
+                    sendCurrentState();
+                    break;
+                    
+                default:
+                    console.warn('[Player Host] Unknown message type:', type);
+            }
+        });
+        
+        // ============================
+        // Command Handlers
+        // ============================
+        
+        async function handlePlayTrack(data) {
+            if (!playerInstance) {
+                console.error('[Player Host] Player not initialized');
+                return;
+            }
+            
+            const { title } = data;
+            if (!title) {
+                console.error('[Player Host] No track title provided');
+                return;
+            }
+            
+            try {
+                // Use the existing playTrackByTitle method
+                await playerInstance.playTrackByTitle(title);
+                
+                // Notify parent of successful track load
+                notifyParent({
+                    type: 'TRACK_LOADED',
+                    track: {
+                        title: playerInstance.playlist[playerInstance.currentTrackIndex]?.title,
+                        index: playerInstance.currentTrackIndex
+                    }
+                });
+            } catch (error) {
+                console.error('[Player Host] Failed to play track:', error);
+                notifyParent({
+                    type: 'ERROR',
+                    error: error.message
+                });
+            }
+        }
+        
+        // ============================
+        // State Broadcasting to Parent
+        // ============================
+        
+        function sendCurrentState() {
+            if (!playerInstance) return;
+            
+            const track = playerInstance.playlist[playerInstance.currentTrackIndex];
+            
+            notifyParent({
+                type: 'STATE_UPDATE',
+                state: {
+                    isPlaying: !playerInstance.audio?.paused,
+                    currentTime: playerInstance.audio?.currentTime || 0,
+                    duration: playerInstance.audio?.duration || 0,
+                    volume: playerInstance.volume,
+                    track: track ? {
+                        title: track.title,
+                        artist: track.artist,
+                        index: playerInstance.currentTrackIndex
+                    } : null
+                }
+            });
+        }
+        
+        // Send state updates to parent on key events
+        function setupStateSync() {
+            if (!playerInstance || !playerInstance.audio) return;
+            
+            const audio = playerInstance.audio;
+            
+            audio.addEventListener('play', () => {
+                notifyParent({ type: 'PLAYBACK_STARTED' });
+                sendCurrentState();
+            });
+            
+            audio.addEventListener('pause', () => {
+                notifyParent({ type: 'PLAYBACK_PAUSED' });
+                sendCurrentState();
+            });
+            
+            audio.addEventListener('ended', () => {
+                notifyParent({ type: 'TRACK_ENDED' });
+                sendCurrentState();
+            });
+            
+            audio.addEventListener('timeupdate', throttle(() => {
+                sendCurrentState();
+            }, 1000)); // Send time updates every second
+            
+            audio.addEventListener('volumechange', () => {
+                notifyParent({
+                    type: 'VOLUME_CHANGED',
+                    volume: playerInstance.volume
+                });
+            });
+        }
+        
+        // Initialize state sync after player is ready
+        setTimeout(() => {
+            if (playerInstance) {
+                setupStateSync();
+            }
+        }, 1000);
+        
+        // ============================
+        // Helper Functions
+        // ============================
+        
+        function notifyParent(message) {
+            // Send to parent window (works across pages)
+            if (window.parent && window.parent !== window) {
+                window.parent.postMessage(message, '*');
+            }
+        }
+        
+        function throttle(func, delay) {
+            let lastCall = 0;
+            return function(...args) {
+                const now = Date.now();
+                if (now - lastCall >= delay) {
+                    lastCall = now;
+                    func(...args);
+                }
+            };
+        }
+        
+        // ============================
+        // Debug Helpers (exposed to console)
+        // ============================
+        
+        window.debugPlayerHost = {
+            getPlayer: () => playerInstance,
+            sendState: () => sendCurrentState(),
+            testNotify: (msg) => notifyParent({ type: 'TEST', message: msg })
+        };
+    </script>
+</body>
+</html>

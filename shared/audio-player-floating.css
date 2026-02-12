@@ -23,14 +23,16 @@
     overflow: hidden;
     backdrop-filter: blur(40px);
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                visibility 0.3s;
 }
 
-/* Hidden state */
+/* Hidden state - starts invisible until first track is played */
 .jarchive-floating-player.hidden {
-    transform: translateY(20px);
     opacity: 0;
+    visibility: hidden;
     pointer-events: none;
+    transform: translateY(20px);
 }
 
 /* Minimized state (dock bubble) */
@@ -89,8 +91,13 @@
     height: 38px;
     background: rgba(255, 255, 255, 0.02);
     border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    cursor: move;
+    cursor: grab;
     user-select: none;
+}
+
+/* Change cursor when dragging */
+.jarchive-floating-player.dragging .player-header {
+    cursor: grabbing;
 }
 
 /* macOS traffic lights */
@@ -320,6 +327,7 @@
     height: 24px;
     cursor: nwse-resize;
     z-index: 10;
+    pointer-events: auto !important; /* Ensure it's always clickable */
 }
 
 .resize-handle::after {
@@ -329,12 +337,18 @@
     right: 4px;
     width: 12px;
     height: 12px;
-    border-right: 2px solid rgba(255, 255, 255, 0.15);
-    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+    border-right: 2px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    transition: border-color 0.2s ease;
 }
 
 .resize-handle:hover::after {
-    border-color: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Make resize handle more visible when player is being resized */
+.jarchive-floating-player.resizing .resize-handle::after {
+    border-color: rgba(255, 255, 255, 0.8);
 }
 
 /* Dragging state */

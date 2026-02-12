@@ -6,8 +6,8 @@
     <title>JARCHIVE.NET - Music</title>
     <link rel="icon" href="../Icons/Icon website.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../shared/audio-player-floating.css">
     <link rel="stylesheet" href="../shared/navigation.css">
+    <link rel="stylesheet" href="../shared/audio-player-floating.css">
     <style>
         /* ========================================
            FORUM-INSPIRED MUSIC ARCHIVE
@@ -770,7 +770,7 @@
                     <div class="track-length">4:01</div>
                 </div>
                 <div class="track-actions">
-                    <button class="action-btn" onclick="playTrack('11:59')" title="Play">
+                    <button class="action-btn" onclick="playTrack('Lorde Master')" title="Play">
                         <i class="fas fa-play"></i> Play
                     </button>
                     <a href="Songs/lorde master.wav" class="action-btn" download>
@@ -794,7 +794,7 @@
                     <div class="track-length">43:52</div>
                 </div>
                 <div class="track-actions">
-                    <button class="action-btn" onclick="playTrack('Mix 3')" title="Play">
+                    <button class="action-btn" onclick="playTrack('Mix of the Century')" title="Play">
                         <i class="fas fa-play"></i> Play
                     </button>
                     <a href="Songs/RECORDED MIX.mp3" class="action-btn" download>
@@ -827,13 +827,13 @@
                 </div>
             </div>
 
-            <!-- Track: g66_Track -->
-            <div class="track-entry" data-track="g66_Track">
-                <img src="songCovers/G6.jpeg" alt="G6" class="track-cover" onclick="playTrack('g66_Track')">
+            <!-- Track: G6 Track -->
+            <div class="track-entry" data-track="G6 Track">
+                <img src="songCovers/G6.jpeg" alt="G6 Track" class="track-cover" onclick="playTrack('G6 Track')">
                 <div class="track-info">
                     <div class="track-title">
                         <span class="now-playing-indicator" style="display: none;"></span>
-                        g66_Track
+                        G6 Track
                     </div>
                     <div class="track-artist">JARCHIVE</div>
                 </div>
@@ -842,7 +842,7 @@
                     <div class="track-length">2:57</div>
                 </div>
                 <div class="track-actions">
-                    <button class="action-btn" onclick="playTrack('g66_Track')" title="Play">
+                    <button class="action-btn" onclick="playTrack('G6 Track')\" title="Play">
                         <i class="fas fa-play"></i> Play
                     </button>
                     <a href="Songs/g66_Track.wav" class="action-btn" download>
@@ -890,7 +890,7 @@
                     <div class="track-length">2:13</div>
                 </div>
                 <div class="track-actions">
-                    <button class="action-btn" onclick="playTrack('Flames & Fire /With Kevy/')" title="Play">
+                    <button class="action-btn" onclick="playTrack('Flames & Fire')" title="Play">
                         <i class="fas fa-play"></i> Play
                     </button>
                     <a href="Songs/Flames Fire2.wav" class="action-btn" download>
@@ -938,7 +938,7 @@
                     <div class="track-length">2:18</div>
                 </div>
                 <div class="track-actions">
-                    <button class="action-btn" onclick="playTrack('The Demo I been Poppin Since!')" title="Play">
+                    <button class="action-btn" onclick="playTrack('The Demo I Been Poppin Since!')" title="Play">
                         <i class="fas fa-play"></i> Play
                     </button>
                     <a href="Songs/theDemoIBeenPoppinSince.wav" class="action-btn" download>
@@ -1057,7 +1057,6 @@
     </footer>
 
     <!-- Shared scripts -->
-    <script src="../shared/audio-player-floating.js"></script>
     <script src="../shared/navigation.js"></script>
     <script>
         /* ========================================
@@ -1112,56 +1111,55 @@
         });
 
         /* ========================================
-           TRACK PLAYBACK
+           TRACK PLAYBACK (iframe bridge)
            ======================================== */
 
         function playTrack(title) {
-            // Wait for player to be ready
-            const attemptPlay = () => {
-                if (window.jarchivePlayer) {
-                    // Update now-playing indicators
-                    const row = document.querySelector(`.track-entry[data-track="${title}"]`);
-                    if (row) {
-                        row.classList.add('playing');
-                        const indicator = row.querySelector('.now-playing-indicator');
-                        if (indicator) {
-                            indicator.style.display = 'inline-block';
-                        }
-                    }
-                    
-                    // Remove playing state from other tracks
-                    document.querySelectorAll('.track-entry.playing').forEach(entry => {
-                        if (entry !== row) {
-                            entry.classList.remove('playing');
-                            const otherIndicator = entry.querySelector('.now-playing-indicator');
-                            if (otherIndicator) {
-                                otherIndicator.style.display = 'none';
-                            }
-                        }
-                    });
-                    
-                    // Play the track
-                    window.jarchivePlayer.playTrackByTitle(title);
-                } else {
-                    // Retry after short delay if player not ready
-                    setTimeout(attemptPlay, 100);
-                }
-            };
+            console.log('[Music Page] playTrack called:', title);
             
-            attemptPlay();
+            // Update now-playing indicators
+            const row = document.querySelector(`.track-entry[data-track="${title}"]`);
+            if (row) {
+                row.classList.add('playing');
+                const indicator = row.querySelector('.now-playing-indicator');
+                if (indicator) {
+                    indicator.style.display = 'inline-block';
+                }
+            }
+            
+            // Remove playing state from other tracks
+            document.querySelectorAll('.track-entry.playing').forEach(entry => {
+                if (entry !== row) {
+                    entry.classList.remove('playing');
+                    const otherIndicator = entry.querySelector('.now-playing-indicator');
+                    if (otherIndicator) {
+                        otherIndicator.style.display = 'none';
+                    }
+                }
+            });
+            
+            // Play track directly using the player instance
+            if (window.jarchivePlayer) {
+                console.log('[Music Page] Calling player.playTrackByTitle');
+                window.jarchivePlayer.playTrackByTitle(title);
+            } else {
+                console.error('[Music Page] Player not initialized yet, retrying...');
+                setTimeout(() => playTrack(title), 100);
+            }
         }
 
-        // Update playing indicator when audio player state changes
+        // Listen for audio events to update UI
         document.addEventListener('DOMContentLoaded', () => {
-            // Give player time to initialize
+            // Wait for player to be ready
             setTimeout(() => {
                 if (window.jarchivePlayer && window.jarchivePlayer.audio) {
                     const audio = window.jarchivePlayer.audio;
                     
                     audio.addEventListener('play', () => {
+                        console.log('[Music Page] Audio play event');
                         const currentTrack = window.jarchivePlayer.playlist[window.jarchivePlayer.currentTrackIndex];
                         if (currentTrack) {
-                            // Update indicator for currently playing track
+                            // Update indicators
                             document.querySelectorAll('.track-entry').forEach(entry => {
                                 const isCurrentTrack = entry.dataset.track === currentTrack.title;
                                 entry.classList.toggle('playing', isCurrentTrack);
@@ -1184,9 +1182,33 @@
                         });
                     });
                 }
-            }, 500);
+            }, 1000);
+        });
+    </script>
+
+    <!-- Audio Player (Direct - No Iframe) -->
+    <script src="../shared/audio-player-floating.js"></script>
+    <script>
+        // Initialize player directly on page
+        let playerInstance = null;
+        
+        document.addEventListener('DOMContentLoaded', async () => {
+            console.log('[Music Page] Initializing audio player...');
+            
+            try {
+                playerInstance = new FloatingAudioPlayer();
+                await playerInstance.init();
+                
+                // Expose globally
+                window.jarchivePlayer = playerInstance;
+                
+                console.log('[Music Page] Player initialized with', playerInstance.playlist.length, 'tracks');
+            } catch (error) {
+                console.error('[Music Page] Player initialization failed:', error);
+            }
         });
     </script>
 
 </body>
 </html>
+
