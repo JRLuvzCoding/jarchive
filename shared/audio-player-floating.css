@@ -1,0 +1,375 @@
+/* ========================================
+   FLOATING AUDIO PLAYER - macOS Style
+   Draggable, resizable window
+   ======================================== */
+
+/* Floating player window container */
+.jarchive-floating-player {
+    position: fixed;
+    bottom: 80px;
+    right: 40px;
+    width: 420px;
+    min-width: 320px;
+    min-height: 180px;
+    background: #0b0b0b;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    box-shadow: 
+        0 12px 48px rgba(0, 0, 0, 0.8),
+        0 0 0 0.5px rgba(255, 255, 255, 0.08);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(40px);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hidden state */
+.jarchive-floating-player.hidden {
+    transform: translateY(20px);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Minimized state (dock bubble) */
+.jarchive-floating-player.minimized {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    min-width: 72px;
+    min-height: 72px;
+    overflow: hidden;
+}
+
+.jarchive-floating-player.minimized .player-header,
+.jarchive-floating-player.minimized .player-body,
+.jarchive-floating-player.minimized .resize-handle {
+    display: none;
+}
+
+.jarchive-floating-player.minimized .minimized-icon {
+    display: flex !important;
+}
+
+/* Minimized icon display */
+.minimized-icon {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    font-size: 24px;
+    color: rgba(255, 255, 255, 0.8);
+    cursor: pointer;
+}
+
+.minimized-icon:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+/* Compact mode */
+.jarchive-floating-player.compact {
+    width: 280px;
+    height: auto;
+}
+
+.jarchive-floating-player.compact .player-controls-extended,
+.jarchive-floating-player.compact .player-progress-full {
+    display: none;
+}
+
+/* Player header (draggable area) */
+.player-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    height: 38px;
+    background: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    cursor: move;
+    user-select: none;
+}
+
+/* macOS traffic lights */
+.traffic-lights {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.traffic-light {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease, filter 0.2s ease;
+    opacity: 1;
+}
+
+.traffic-light:hover {
+    opacity: 0.8;
+    filter: brightness(1.1);
+}
+
+.traffic-light.close-btn {
+    background: #ff5f57;
+}
+
+.traffic-light.minimize-btn {
+    background: #ffbd2e;
+}
+
+.traffic-light.expand-btn {
+    background: #28c840;
+}
+
+/* Header title */
+.player-header-title {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 600;
+}
+
+/* Player body */
+.player-body {
+    padding: 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    overflow-y: auto;
+}
+
+/* Track info section */
+.player-track-info {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.player-track-cover {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.player-track-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.player-track-title {
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.95);
+    margin-bottom: 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.player-track-artist {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+/* Controls section */
+.player-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+}
+
+.player-control-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 14px;
+}
+
+.player-control-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 1);
+}
+
+.player-control-btn.play-btn {
+    width: 44px;
+    height: 44px;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.player-control-btn.active {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.25);
+}
+
+/* Progress section */
+.player-progress {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.player-times {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.player-progress-bar {
+    position: relative;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.player-progress-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+    transition: width 0.1s linear;
+}
+
+.player-progress-bar:hover .player-progress-fill {
+    background: rgba(255, 255, 255, 0.9);
+}
+
+/* Volume section */
+.player-volume {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.player-volume-icon {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.player-volume-icon:hover {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.player-volume-slider {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
+}
+
+.player-volume-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 2px;
+    transition: width 0.1s ease;
+}
+
+.player-volume-slider:hover .player-volume-fill {
+    background: rgba(255, 255, 255, 0.7);
+}
+
+/* Resize handle */
+.resize-handle {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 24px;
+    height: 24px;
+    cursor: nwse-resize;
+    z-index: 10;
+}
+
+.resize-handle::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    width: 12px;
+    height: 12px;
+    border-right: 2px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+.resize-handle:hover::after {
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Dragging state */
+.jarchive-floating-player.dragging {
+    transition: none !important;
+}
+
+/* Resizing state */
+.jarchive-floating-player.resizing {
+    transition: none !important;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .jarchive-floating-player {
+        width: calc(100vw - 32px);
+        max-width: 420px;
+        bottom: 16px;
+        right: 16px;
+        left: 16px;
+        margin: 0 auto;
+    }
+    
+    .resize-handle {
+        display: none;
+    }
+}
+
+/* Accessibility */
+.player-control-btn:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+.traffic-light:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}

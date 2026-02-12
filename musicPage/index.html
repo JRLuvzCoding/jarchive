@@ -6,7 +6,7 @@
     <title>JARCHIVE.NET - Music</title>
     <link rel="icon" href="../Icons/Icon website.png" type="image/png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../shared/audio-player.css">
+    <link rel="stylesheet" href="../shared/audio-player-floating.css">
     <link rel="stylesheet" href="../shared/navigation.css">
     <style>
         /* ========================================
@@ -22,6 +22,8 @@
 
         html {
             height: 100%;
+            overflow-x: hidden;
+            scroll-behavior: auto;
         }
 
         body {
@@ -32,6 +34,10 @@
             flex-direction: column;
             background: #000;
             color: #fff;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overscroll-behavior: none;
         }
 
         /* ========================================
@@ -45,6 +51,8 @@
             inset: 0;
             z-index: -3;
             pointer-events: none;
+            contain: paint;
+            will-change: auto;
         }
 
         /* Layer container for image */
@@ -66,6 +74,7 @@
             z-index: -2;
             pointer-events: none;
             user-select: none;
+            backface-visibility: hidden;
         }
 
         /* Vignette overlay for readability */
@@ -80,6 +89,8 @@
                 rgba(0,0,0,.9) 100%
             );
             pointer-events: none;
+            transform: translateZ(0);
+            backface-visibility: hidden;
         }
 
         /* ========================================
@@ -93,39 +104,15 @@
             inset: 0;
             z-index: 1;
             pointer-events: none;
-            opacity: 0.06;
-            mix-blend-mode: overlay;
-            background-image: 
-                repeating-conic-gradient(
-                    from 0deg at 50% 50%,
-                    rgba(255,255,255,0.03) 0deg,
-                    rgba(0,0,0,0.05) 0.5deg,
-                    rgba(255,255,255,0.02) 1deg,
-                    rgba(0,0,0,0.04) 1.5deg,
-                    rgba(255,255,255,0.03) 2deg
-                ),
-                repeating-linear-gradient(
-                    45deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(255,255,255,0.02) 2px,
-                    rgba(255,255,255,0.02) 3px
-                );
-            background-size: 200px 200px, 4px 4px;
-            animation: grain-shift 8s steps(10) infinite;
+            opacity: 0;
+            display: none;
         }
 
         @keyframes grain-shift {
-            0%, 100% { transform: translate(0, 0); }
-            10% { transform: translate(-2%, -2%); }
-            20% { transform: translate(1%, -1%); }
-            30% { transform: translate(-1%, 2%); }
-            40% { transform: translate(2%, 1%); }
-            50% { transform: translate(-2%, 1%); }
-            60% { transform: translate(1%, -2%); }
-            70% { transform: translate(-1%, -1%); }
-            80% { transform: translate(2%, -2%); }
-            90% { transform: translate(-2%, 2%); }
+            0%, 100% { transform: translateZ(0) translate(0, 0); }
+            25% { transform: translateZ(0) translate(-1px, 1px); }
+            50% { transform: translateZ(0) translate(1px, -1px); }
+            75% { transform: translateZ(0) translate(-1px, -1px); }
         }
 
         /* Content darkener - sits behind music container */
@@ -133,18 +120,14 @@
             position: fixed;
             top: 0;
             left: 50%;
-            transform: translateX(-50%);
-            width: min(2200px, 100%);
+            width: 75vw;
             height: 100vh;
-            background: linear-gradient(
-                180deg,
-                rgba(0,0,0,0.4) 0%,
-                rgba(0,0,0,0.6) 20%,
-                rgba(0,0,0,0.7) 50%,
-                rgba(0,0,0,0.75) 100%
-            );
+            background: rgba(0,0,0,0.6);
             pointer-events: none;
             z-index: 0;
+            transform: translateX(-50%) translateZ(0);
+            backface-visibility: hidden;
+            contain: paint;
         }
 
         /* Cinematic bottom fade */
@@ -157,12 +140,13 @@
             background: linear-gradient(
                 to bottom,
                 transparent 0%,
-                rgba(0,0,0,0.3) 30%,
-                rgba(0,0,0,0.6) 70%,
-                rgba(0,0,0,0.85) 100%
+                rgba(0,0,0,0.6) 100%
             );
             pointer-events: none;
             z-index: 0;
+            transform: translateZ(0);
+            backface-visibility: hidden;
+            contain: paint;
         }
 
         /* Ensure main content sits above atmospheric layers */
@@ -237,12 +221,13 @@
 
         /* MAIN CONTAINER */
         .music-container {
-            max-width: 2200px;
+            max-width: 75vw;
             margin: 0 auto;
             padding: 3.5rem 2rem;
             flex: 1;
             position: relative;
             z-index: 2;
+            backface-visibility: hidden;
         }
 
         /* SECTION HEADER */
@@ -250,7 +235,6 @@
             padding: 1rem 1.25rem;
             margin-bottom: 0;
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .section-title {
@@ -275,7 +259,6 @@
             padding: 1.125rem 1.25rem;
             align-items: center;
             background: rgba(255, 255, 255, 0.02);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
             transition: background 0.2s ease;
         }
 
@@ -407,6 +390,7 @@
         /* Archive section container */
         .archive-section {
             margin-bottom: 0;
+            contain: layout style;
         }
 
         /* Section dropdown header */
@@ -417,8 +401,6 @@
             width: 100%;
             padding: 1.125rem 1.25rem;
             background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-bottom: none;
             cursor: pointer;
             transition: background 0.2s ease;
             font-family: inherit;
@@ -464,8 +446,6 @@
             display: grid;
             grid-template-rows: 0fr;
             transition: grid-template-rows 0.35s ease;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-top: none;
         }
 
         .archive-section-header[aria-expanded="true"] + .archive-section-content {
@@ -1076,7 +1056,7 @@
     </footer>
 
     <!-- Shared scripts -->
-    <script src="../shared/audio-player.js"></script>
+    <script src="../shared/audio-player-floating.js"></script>
     <script src="../shared/navigation.js"></script>
     <script>
         /* ========================================
@@ -1135,61 +1115,75 @@
            ======================================== */
 
         function playTrack(title) {
-            if (window.jarchivePlayer) {
-                // Update now-playing indicators
-                const row = document.querySelector(`.track-entry[data-track="${title}"]`);
-                if (row) {
-                    row.classList.add('playing');
-                    const indicator = row.querySelector('.now-playing-indicator');
-                    if (indicator) {
-                        indicator.style.display = 'inline-block';
-                    }
-                }
-                
-                // Remove playing state from other tracks
-                document.querySelectorAll('.track-entry.playing').forEach(entry => {
-                    if (entry !== row) {
-                        entry.classList.remove('playing');
-                        const otherIndicator = entry.querySelector('.now-playing-indicator');
-                        if (otherIndicator) {
-                            otherIndicator.style.display = 'none';
+            // Wait for player to be ready
+            const attemptPlay = () => {
+                if (window.jarchivePlayer) {
+                    // Update now-playing indicators
+                    const row = document.querySelector(`.track-entry[data-track="${title}"]`);
+                    if (row) {
+                        row.classList.add('playing');
+                        const indicator = row.querySelector('.now-playing-indicator');
+                        if (indicator) {
+                            indicator.style.display = 'inline-block';
                         }
                     }
-                });
-                
-                window.jarchivePlayer.playTrackByTitle(title);
-            }
+                    
+                    // Remove playing state from other tracks
+                    document.querySelectorAll('.track-entry.playing').forEach(entry => {
+                        if (entry !== row) {
+                            entry.classList.remove('playing');
+                            const otherIndicator = entry.querySelector('.now-playing-indicator');
+                            if (otherIndicator) {
+                                otherIndicator.style.display = 'none';
+                            }
+                        }
+                    });
+                    
+                    // Play the track
+                    window.jarchivePlayer.playTrackByTitle(title);
+                } else {
+                    // Retry after short delay if player not ready
+                    setTimeout(attemptPlay, 100);
+                }
+            };
+            
+            attemptPlay();
         }
 
         // Update playing indicator when audio player state changes
         document.addEventListener('DOMContentLoaded', () => {
-            if (window.jarchivePlayer) {
-                const audio = window.jarchivePlayer.audio;
-                
-                audio.addEventListener('play', () => {
-                    const currentTrack = window.jarchivePlayer.playlist[window.jarchivePlayer.currentTrackIndex];
-                    if (currentTrack) {
-                        const row = document.querySelector(`.track-entry[data-track="${currentTrack.title}"]`);
-                        if (row) {
-                            row.classList.add('playing');
-                            const indicator = row.querySelector('.now-playing-indicator');
-                            if (indicator) {
-                                indicator.style.display = 'inline-block';
-                            }
-                        }
-                    }
-                });
-                
-                audio.addEventListener('pause', () => {
-                    document.querySelectorAll('.track-entry.playing').forEach(entry => {
-                        entry.classList.remove('playing');
-                        const indicator = entry.querySelector('.now-playing-indicator');
-                        if (indicator) {
-                            indicator.style.display = 'none';
+            // Give player time to initialize
+            setTimeout(() => {
+                if (window.jarchivePlayer && window.jarchivePlayer.audio) {
+                    const audio = window.jarchivePlayer.audio;
+                    
+                    audio.addEventListener('play', () => {
+                        const currentTrack = window.jarchivePlayer.playlist[window.jarchivePlayer.currentTrackIndex];
+                        if (currentTrack) {
+                            // Update indicator for currently playing track
+                            document.querySelectorAll('.track-entry').forEach(entry => {
+                                const isCurrentTrack = entry.dataset.track === currentTrack.title;
+                                entry.classList.toggle('playing', isCurrentTrack);
+                                
+                                const indicator = entry.querySelector('.now-playing-indicator');
+                                if (indicator) {
+                                    indicator.style.display = isCurrentTrack ? 'inline-block' : 'none';
+                                }
+                            });
                         }
                     });
-                });
-            }
+                    
+                    audio.addEventListener('pause', () => {
+                        document.querySelectorAll('.track-entry.playing').forEach(entry => {
+                            entry.classList.remove('playing');
+                            const indicator = entry.querySelector('.now-playing-indicator');
+                            if (indicator) {
+                                indicator.style.display = 'none';
+                            }
+                        });
+                    });
+                }
+            }, 500);
         });
     </script>
 
