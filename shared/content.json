@@ -55,6 +55,41 @@
       "date": "2025-11-20T04:00:00Z",
       "cover": "musicPage/songCovers/theDemoIBeenPoppingSince.jpg",
       "audio": "musicPage/Songs/theDemoIBeenPoppinSince.wav"
+    },
+    {
+      "title": "SomethingsKnocking",
+      "artist": "JARCHIVE",
+      "date": "2025-11-15T03:00:00Z",
+      "cover": "musicPage/songCovers/Something's Knocking.jpg",
+      "audio": "musicPage/Songs/somethingsKnocking.mp3"
+    },
+    {
+      "title": "Happening",
+      "artist": "JARCHIVE",
+      "date": "2025-11-10T02:00:00Z",
+      "cover": "musicPage/songCovers/regular-show-dark-space-t9uyayx1rb89f2o8.png",
+      "audio": "musicPage/Songs/SONDER THINGS KEEP HAPPENING.wav"
+    },
+    {
+      "title": "Bash_50",
+      "artist": "JARCHIVE",
+      "date": "2025-11-05T01:00:00Z",
+      "cover": "musicPage/songCovers/AI Kins.jpg",
+      "audio": "musicPage/Songs/Bash_55_mp3.mp3"
+    },
+    {
+      "title": "Mix1",
+      "artist": "JARCHIVE",
+      "date": "2025-11-01T00:00:00Z",
+      "cover": "musicPage/songCovers/Dubstep.png",
+      "audio": "musicPage/Songs/THE MIX.mp3"
+    },
+    {
+      "title": "The Second Mix Of The Century",
+      "artist": "JARCHIVE",
+      "date": "2025-10-28T00:00:00Z",
+      "cover": "musicPage/songCovers/mix2.jpg",
+      "audio": "musicPage/Songs/RECORDED MIX.mp3"
     }
   ],
   "media": [
