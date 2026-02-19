@@ -29,6 +29,9 @@
             padding: 15px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .header-link {
@@ -45,12 +48,61 @@
             opacity: 0.7;
         }
 
+        /* Tab Navigation - Skrillex Inspired */
+        .tab-nav {
+            display: flex;
+            gap: 30px;
+            position: relative;
+        }
+
+        .tab-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1em;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            padding: 5px 0;
+            opacity: 0.5;
+            transition: opacity 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn:hover {
+            opacity: 0.8;
+        }
+
+        .tab-btn.active {
+            opacity: 1;
+        }
+
+        /* Animated Underline */
+        .tab-underline {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            height: 1px;
+            background: white;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
         /* Edge-to-Edge Masonry Gallery */
-        .media-gallery {
+        .photo-gallery,
+        .video-gallery {
             margin-top: 60px;
             column-count: 4;
             column-gap: 0;
             line-height: 0;
+            opacity: 1;
+            transition: opacity 0.3s ease;
+        }
+
+        /* Hide inactive gallery */
+        .photo-gallery.hidden,
+        .video-gallery.hidden {
+            display: none;
         }
 
         .media-item {
@@ -65,7 +117,8 @@
             opacity: 0.85;
         }
 
-        .media-item img {
+        .media-item img,
+        .media-item video {
             width: 100%;
             height: auto;
             display: block;
@@ -103,6 +156,12 @@
             max-width: 100%;
             max-height: 90vh;
             object-fit: contain;
+            box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-video {
+            max-width: 100%;
+            max-height: 90vh;
             box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
         }
 
@@ -161,20 +220,42 @@
 
         /* Responsive Columns */
         @media (max-width: 1400px) {
-            .media-gallery {
+            .photo-gallery,
+            .video-gallery {
                 column-count: 3;
             }
         }
 
         @media (max-width: 900px) {
-            .media-gallery {
+            .photo-gallery,
+            .video-gallery {
                 column-count: 2;
+            }
+
+            .tab-nav {
+                gap: 20px;
+            }
+
+            .tab-btn {
+                font-size: 0.9em;
+                letter-spacing: 2px;
             }
         }
 
         @media (max-width: 600px) {
-            .media-gallery {
+            .photo-gallery,
+            .video-gallery {
                 column-count: 1;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+                align-items: flex-start;
+            }
+
+            .tab-nav {
+                gap: 15px;
             }
 
             .modal-nav {
@@ -197,16 +278,19 @@
 
 <header>
     <a href="../" class="header-link">JARCHIVE.NET</a>
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="photo">PHOTO</button>
+        <button class="tab-btn" data-tab="video">VIDEO</button>
+        <div class="tab-underline"></div>
+    </nav>
 </header>
 
-<div class="media-gallery" id="gallery">
+<!-- Photo Gallery -->
+<div class="photo-gallery" id="photoGallery">
     <div class="media-item" data-index="0">
         <img src="Photos/IMG_3167.jpeg" alt="Media" loading="lazy">
     </div>
     <div class="media-item" data-index="1">
-        <img src="Photos/IMG_0426.jpg" alt="Media" loading="lazy">
-    </div>
-    <div class="media-item" data-index="2">
         <img src="Photos/IMG_0422.JPG" alt="Media" loading="lazy">
     </div>
     <div class="media-item" data-index="3">
@@ -373,79 +457,215 @@
     </div>
 </div>
 
+<!-- Video Gallery -->
+<div class="video-gallery hidden" id="videoGallery">
+    <!-- Videos will be added here when available -->
+    <!-- Example structure:
+    <div class="media-item" data-index="0" data-type="video">
+        <video src="Videos/video1.mp4" preload="metadata" muted></video>
+    </div>
+    -->
+</div>
+
 <!-- Fullscreen Modal -->
 <div class="modal" id="modal">
     <div class="modal-close" id="closeModal">×</div>
     <div class="modal-nav modal-prev" id="prevBtn">‹</div>
     <div class="modal-content">
-        <img class="modal-image" id="modalImage" src="" alt="">
+        <img class="modal-image" id="modalImage" src="" alt="" style="display: none;">
+        <video class="modal-video" id="modalVideo" controls style="display: none;"></video>
     </div>
     <div class="modal-nav modal-next" id="nextBtn">›</div>
 </div>
 
 <script>
-    // Modal Navigation System
+    // ========================================
+    // TAB NAVIGATION SYSTEM
+    // ========================================
+    
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabUnderline = document.querySelector('.tab-underline');
+    const photoGallery = document.getElementById('photoGallery');
+    const videoGallery = document.getElementById('videoGallery');
+    
+    let currentTab = 'photo';
+    
+    // Initialize underline position
+    function initUnderline() {
+        const activeBtn = document.querySelector('.tab-btn.active');
+        if (activeBtn) {
+            updateUnderline(activeBtn);
+        }
+    }
+    
+    // Update underline position
+    function updateUnderline(button) {
+        const btnRect = button.getBoundingClientRect();
+        const navRect = button.parentElement.getBoundingClientRect();
+        const left = btnRect.left - navRect.left;
+        const width = btnRect.width;
+        
+        tabUnderline.style.left = `${left}px`;
+        tabUnderline.style.width = `${width}px`;
+    }
+    
+    // Switch tabs
+    function switchTab(tabName) {
+        if (currentTab === tabName) return;
+        
+        currentTab = tabName;
+        
+        // Update button states
+        tabButtons.forEach(btn => {
+            if (btn.dataset.tab === tabName) {
+                btn.classList.add('active');
+                updateUnderline(btn);
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+        
+        // Switch galleries smoothly
+        if (tabName === 'photo') {
+            videoGallery.classList.add('hidden');
+            photoGallery.classList.remove('hidden');
+        } else {
+            photoGallery.classList.add('hidden');
+            videoGallery.classList.remove('hidden');
+        }
+        
+        // Re-initialize modal for active gallery
+        initializeModalForActiveGallery();
+    }
+    
+    // Tab button event listeners
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            switchTab(btn.dataset.tab);
+        });
+    });
+    
+    // Initialize on load
+    window.addEventListener('load', initUnderline);
+    window.addEventListener('resize', () => {
+        const activeBtn = document.querySelector('.tab-btn.active');
+        if (activeBtn) updateUnderline(activeBtn);
+    });
+    
+    // ========================================
+    // MODAL NAVIGATION SYSTEM
+    // ========================================
+    
     const modal = document.getElementById('modal');
     const modalImage = document.getElementById('modalImage');
+    const modalVideo = document.getElementById('modalVideo');
     const closeModal = document.getElementById('closeModal');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const mediaItems = document.querySelectorAll('.media-item');
-
+    
     let currentIndex = 0;
-    const totalItems = mediaItems.length;
-
-    // Build media sources array
-    const mediaSources = Array.from(mediaItems).map(item => {
-        return item.querySelector('img').src;
-    });
-
+    let currentMediaItems = [];
+    let currentMediaSources = [];
+    let currentMediaTypes = [];
+    
+    // Initialize modal for active gallery
+    function initializeModalForActiveGallery() {
+        const activeGallery = currentTab === 'photo' ? photoGallery : videoGallery;
+        currentMediaItems = Array.from(activeGallery.querySelectorAll('.media-item'));
+        
+        // Build sources and types arrays
+        currentMediaSources = currentMediaItems.map(item => {
+            const img = item.querySelector('img');
+            const video = item.querySelector('video');
+            return img ? img.src : (video ? video.src : '');
+        });
+        
+        currentMediaTypes = currentMediaItems.map(item => {
+            return item.dataset.type || 'image';
+        });
+        
+        // Re-attach click listeners
+        currentMediaItems.forEach((item, index) => {
+            // Remove old listeners by cloning
+            const newItem = item.cloneNode(true);
+            item.parentNode.replaceChild(newItem, item);
+            currentMediaItems[index] = newItem;
+            
+            newItem.addEventListener('click', () => openModal(index));
+        });
+    }
+    
     // Open modal
     function openModal(index) {
         currentIndex = index;
-        modalImage.src = mediaSources[currentIndex];
+        displayMedia(currentIndex);
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
     }
-
+    
+    // Display media (image or video)
+    function displayMedia(index) {
+        const mediaType = currentMediaTypes[index];
+        const mediaSrc = currentMediaSources[index];
+        
+        if (mediaType === 'video') {
+            modalImage.style.display = 'none';
+            modalVideo.style.display = 'block';
+            modalVideo.src = mediaSrc;
+            modalVideo.load();
+        } else {
+            modalVideo.style.display = 'none';
+            modalImage.style.display = 'block';
+            modalImage.src = mediaSrc;
+        }
+    }
+    
     // Close modal
     function closeModalFunc() {
         modal.classList.remove('active');
         document.body.style.overflow = 'auto';
+        
+        // Pause video if playing
+        if (modalVideo.style.display === 'block') {
+            modalVideo.pause();
+            modalVideo.currentTime = 0;
+        }
     }
-
-    // Navigate to previous image
+    
+    // Navigate to previous media
     function showPrev() {
+        const totalItems = currentMediaItems.length;
+        if (totalItems === 0) return;
+        
         currentIndex = (currentIndex - 1 + totalItems) % totalItems;
-        modalImage.src = mediaSources[currentIndex];
+        displayMedia(currentIndex);
     }
-
-    // Navigate to next image
+    
+    // Navigate to next media
     function showNext() {
+        const totalItems = currentMediaItems.length;
+        if (totalItems === 0) return;
+        
         currentIndex = (currentIndex + 1) % totalItems;
-        modalImage.src = mediaSources[currentIndex];
+        displayMedia(currentIndex);
     }
-
+    
     // Event Listeners
-    mediaItems.forEach((item, index) => {
-        item.addEventListener('click', () => openModal(index));
-    });
-
     closeModal.addEventListener('click', closeModalFunc);
     prevBtn.addEventListener('click', showPrev);
     nextBtn.addEventListener('click', showNext);
-
-    // Click outside image to close
+    
+    // Click outside to close
     modal.addEventListener('click', (e) => {
         if (e.target === modal) {
             closeModalFunc();
         }
     });
-
+    
     // Keyboard navigation
     document.addEventListener('keydown', (e) => {
         if (!modal.classList.contains('active')) return;
-
+        
         if (e.key === 'Escape') {
             closeModalFunc();
         } else if (e.key === 'ArrowLeft') {
@@ -453,6 +673,11 @@
         } else if (e.key === 'ArrowRight') {
             showNext();
         }
+    });
+    
+    // Initialize modal on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        initializeModalForActiveGallery();
     });
 </script>
 
