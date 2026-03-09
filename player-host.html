@@ -21,18 +21,17 @@
             height: 100%;
             overflow: hidden;
             background: transparent;
-            pointer-events: none; /* Allow clicks to pass through to parent */
         }
         
-        /* CRITICAL: Re-enable pointer events on the player and all its children */
+        /* Default: everything passes through clicks */
+        * {
+            pointer-events: none !important;
+        }
+        
+        /* CRITICAL: Re-enable pointer events ONLY on player window */
         .jarchive-floating-player,
         .jarchive-floating-player * {
             pointer-events: auto !important;
-        }
-        
-        /* But disable on the body so clicks go through empty space */
-        body {
-            pointer-events: none;
         }
         
         /* Adjust player positioning for iframe context */
@@ -70,6 +69,9 @@
                 await playerInstance.init();
                 console.log('[Player Host] Player initialization complete');
                 
+                // State restoration is now handled automatically by init() -> loadState()
+                // and setupAutoSave() will handle future persistence
+                
                 // Expose to window for debugging
                 window.jarchivePlayer = playerInstance;
                 
@@ -82,10 +84,12 @@
                 console.log('[Player Host] Audio player initialized successfully');
                 console.log('[Player Host] Playlist has', playerInstance.playlist.length, 'tracks');
                 
-                // Send ready signal to parent
+                // Send ready signal to parent with current state
+                const sessionState = sessionStorage.getItem('jarchive-player-state');
                 notifyParent({
                     type: 'PLAYER_READY',
-                    timestamp: Date.now()
+                    timestamp: Date.now(),
+                    hasRestoredState: !!sessionState
                 });
             } catch (error) {
                 console.error('[Player Host] Initialization failed:', error);
@@ -147,6 +151,12 @@
                     
                 case 'GET_STATE':
                     sendCurrentState();
+                    break;
+                    
+                case 'RESTORE':
+                    if (playerInstance) {
+                        playerInstance.toggleMinimize();
+                    }
                     break;
                     
                 default:

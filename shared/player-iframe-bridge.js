@@ -37,6 +37,14 @@
             // Set up message listener
             window.addEventListener('message', (event) => this.handleMessage(event));
             
+            // Set up restore button click handler
+            const restoreBtn = document.getElementById('restore-player-btn');
+            if (restoreBtn) {
+                restoreBtn.addEventListener('click', () => {
+                    this.sendCommand('RESTORE');
+                });
+            }
+            
             // Wait for iframe to load
             this.iframe.addEventListener('load', () => {
                 console.log('[Player Bridge] Iframe loaded, waiting for player ready signal...');
@@ -67,6 +75,11 @@
                 this.readyCallbacks = [];
             }
             
+            // Handle minimize state updates
+            if (type === 'MINIMIZE_STATE') {
+                this.updateRestoreButton(event.data.isMinimized);
+            }
+            
             // Call registered handlers
             if (this.messageHandlers[type]) {
                 this.messageHandlers[type].forEach(handler => handler(event.data));
@@ -75,6 +88,21 @@
             // Log state updates (optional, for debugging)
             if (type === 'STATE_UPDATE') {
                 // console.log('[Player Bridge] State:', event.data.state);
+            }
+        },
+        
+        // ============================
+        // Restore Button Management
+        // ============================
+        
+        updateRestoreButton(isMinimized) {
+            const restoreBtn = document.getElementById('restore-player-btn');
+            if (restoreBtn) {
+                if (isMinimized) {
+                    restoreBtn.classList.remove('hidden');
+                } else {
+                    restoreBtn.classList.add('hidden');
+                }
             }
         },
         

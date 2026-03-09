@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="../shared/audio-player.css">
     <link rel="stylesheet" href="../shared/navigation.css">
-    <link rel="stylesheet" href="../shared/loading-overlay.css">
-    <style>
+    <link rel="stylesheet" href="../shared/loading-overlay.css">    <link rel="stylesheet" href="/shared/audio-player-floating.css">    <style>
         /* ========================================
            FORUM-INSPIRED BLOG STRUCTURE
            Minimal layout-focused CSS
@@ -530,8 +529,8 @@
             position: fixed;
             bottom: 0;
             right: 0;
-            width: 600px;
-            height: 400px;
+            width: 100vw;
+            height: 100vh;
             border: none;
             background: transparent;
             pointer-events: none;
@@ -540,6 +539,12 @@
         allow="autoplay"
         loading="eager">
     </iframe>
+
+    <!-- Restore button (outside iframe) -->
+    <button class="jarchive-restore-button hidden" id="restore-player-btn" style="z-index: 9999999; pointer-events: auto;">
+        <i class="fas fa-music"></i>
+        <span>Jarchive Player</span>
+    </button>
 
     <!-- Player Communication Bridge -->
     <script src="/shared/player-iframe-bridge.js"></script>

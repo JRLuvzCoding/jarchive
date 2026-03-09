@@ -35,6 +35,7 @@ class FloatingAudioPlayer {
         this.loadState();
         this.initializeDrag();
         this.initializeResize();
+        this.setupAutoSave(); // Enable automatic state persistence
         
         console.log('[FloatingAudioPlayer] Initialized with', this.playlist.length, 'tracks');
     }
@@ -137,6 +138,12 @@ class FloatingAudioPlayer {
                 <!-- Resize handle -->
                 <div class="resize-handle"></div>
             </div>
+            
+            <!-- Restore button (appears when minimized) -->
+            <button class="jarchive-restore-button hidden" id="restore-player-btn">
+                <i class="fas fa-music"></i>
+                <span>Jarchive Player</span>
+            </button>
         `;
         
         document.body.insertAdjacentHTML('beforeend', playerHTML);
@@ -469,6 +476,14 @@ class FloatingAudioPlayer {
     toggleMinimize() {
         this.isMinimized = !this.isMinimized;
         this.elements.player.classList.toggle('minimized');
+        
+        // Notify parent window of minimize state change
+        if (window.parent !== window) {
+            window.parent.postMessage({
+                type: 'MINIMIZE_STATE',
+                isMinimized: this.isMinimized
+            }, '*');
+        }
     }
     
     toggleCompact() {
@@ -649,11 +664,13 @@ class FloatingAudioPlayer {
     }
     
     // ========================================
-    // STATE PERSISTENCE
+    // STATE PERSISTENCE (ENHANCED FOR CROSS-PAGE)
     // ========================================
     
     saveState() {
         const rect = this.elements.player.getBoundingClientRect();
+        const isHidden = this.elements.player.classList.contains('hidden');
+        
         const state = {
             position: {
                 x: rect.left,
@@ -664,21 +681,47 @@ class FloatingAudioPlayer {
                 height: rect.height
             },
             volume: this.volume,
-            trackIndex: this.currentTrackIndex
+            trackIndex: this.currentTrackIndex,
+            currentTime: this.audio.currentTime || 0,
+            isPlaying: !this.audio.paused,
+            isMinimized: this.isMinimized,
+            isCompact: this.isCompact,
+            wasVisible: !isHidden, // Track if player was visible
+            timestamp: Date.now()
         };
         
-        localStorage.setItem('jarchive-player-state', JSON.stringify(state));
+        // Use sessionStorage for cross-page persistence within same session
+        sessionStorage.setItem('jarchive-player-state', JSON.stringify(state));
+        // Also save to localStorage for longer-term preference (position, volume)
+        localStorage.setItem('jarchive-player-prefs', JSON.stringify({
+            position: state.position,
+            size: state.size,
+            volume: state.volume
+        }));
+        
+        console.log('[FloatingAudioPlayer] State saved:', state);
     }
     
     loadState() {
-        const saved = localStorage.getItem('jarchive-player-state');
-        if (!saved) return;
+        // Try sessionStorage first (cross-page state within session)
+        let saved = sessionStorage.getItem('jarchive-player-state');
+        let isSessionRestore = false;
+        
+        if (saved) {
+            isSessionRestore = true;
+        } else {
+            // Fall back to localStorage for preferences only
+            saved = localStorage.getItem('jarchive-player-prefs');
+        }
+        
+        if (!saved) return null;
         
         try {
             const state = JSON.parse(saved);
+            console.log('[FloatingAudioPlayer] Loading state:', state, 'from', isSessionRestore ? 'session' : 'prefs');
             
             // Restore position
-            if (state.position.x !== null) {
+            if (state.position && state.position.x !== null) {
                 this.elements.player.style.left = `${state.position.x}px`;
                 this.elements.player.style.top = `${state.position.y}px`;
                 this.elements.player.style.right = 'auto';
@@ -686,11 +729,13 @@ class FloatingAudioPlayer {
             }
             
             // Restore size
-            if (state.size.width) {
-                this.elements.player.style.width = `${state.size.width}px`;
-            }
-            if (state.size.height) {
-                this.elements.player.style.height = `${state.size.height}px`;
+            if (state.size) {
+                if (state.size.width) {
+                    this.elements.player.style.width = `${state.size.width}px`;
+                }
+                if (state.size.height) {
+                    this.elements.player.style.height = `${state.size.height}px`;
+                }
             }
             
             // Restore volume
@@ -700,15 +745,98 @@ class FloatingAudioPlayer {
                 this.updateVolumeUI();
             }
             
-            // Restore track but DON'T auto-show player
-            // Player should only appear when user clicks a track
-            if (state.trackIndex !== undefined && this.playlist[state.trackIndex]) {
-                this.loadTrack(state.trackIndex);
-                // DO NOT call this.show() here - player must remain hidden until user interaction
+            // Only restore playback state if from sessionStorage (recent navigation)
+            if (isSessionRestore) {
+                // Restore minimized/compact states
+                if (state.isMinimized) {
+                    this.isMinimized = true;
+                    this.elements.player.classList.add('minimized');
+                    // Notify parent window
+                    if (window.parent !== window) {
+                        window.parent.postMessage({
+                            type: 'MINIMIZE_STATE',
+                            isMinimized: true
+                        }, '*');
+                    }
+                }
+                if (state.isCompact) {
+                    this.isCompact = true;
+                    this.elements.player.classList.add('compact');
+                }
+                
+                // Restore track and playback position
+                if (state.trackIndex !== undefined && this.playlist[state.trackIndex]) {
+                    this.loadTrack(state.trackIndex);
+                    
+                    // Restore playback position after track loads
+                    if (state.currentTime > 0) {
+                        this.audio.addEventListener('loadedmetadata', () => {
+                            this.audio.currentTime = state.currentTime;
+                            console.log('[FloatingAudioPlayer] Restored playback position:', state.currentTime);
+                        }, { once: true });
+                    }
+                    
+                    // Show player if it was visible before navigation
+                    if (state.wasVisible) {
+                        this.show();
+                        
+                        // Auto-resume if was playing (check timestamp to avoid stale state)
+                        const timeSinceLastSave = Date.now() - (state.timestamp || 0);
+                        if (state.isPlaying && timeSinceLastSave < 30000) { // 30 second window
+                            console.log('[FloatingAudioPlayer] Auto-resuming playback');
+                            // Small delay to ensure audio is ready
+                            setTimeout(() => {
+                                this.play();
+                            }, 100);
+                        }
+                    }
+                }
+                
+                return state;
             }
+            
+            return null;
         } catch (error) {
-            console.error('Failed to load player state:', error);
+            console.error('[FloatingAudioPlayer] Failed to load player state:', error);
+            return null;
         }
+    }
+    
+    // Auto-save state when important changes happen
+    setupAutoSave() {
+        // Save on pause/play
+        this.audio.addEventListener('play', () => this.saveState());
+        this.audio.addEventListener('pause', () => this.saveState());
+        
+        // Save periodically during playback (every 2 seconds)
+        this.audio.addEventListener('timeupdate', () => {
+            if (!this.audio.paused && this.audio.currentTime > 0) {
+                // Throttle saves
+                if (!this._lastSaveTime || Date.now() - this._lastSaveTime > 2000) {
+                    this.saveState();
+                    this._lastSaveTime = Date.now();
+                }
+            }
+        });
+        
+        // Save on track change
+        const originalLoadTrack = this.loadTrack.bind(this);
+        this.loadTrack = function(index) {
+            originalLoadTrack(index);
+            this.saveState();
+        };
+        
+        // Save on window close/navigation
+        window.addEventListener('beforeunload', () => {
+            this.saveState();
+        });
+        
+        // Save on visibility change (tab switch)
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) {
+                this.saveState();
+            }
+        });
     }
     
     // ========================================

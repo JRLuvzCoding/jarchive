@@ -5,6 +5,7 @@
     <title>JARCHIVE.NET - Media</title>
     <link rel="icon" href="../Icons/Icon website.png" type="image/png">
     <link rel="stylesheet" href="../shared/loading-overlay.css">
+    <link rel="stylesheet" href="../shared/audio-player-floating.css">
     <style>
         * {
             margin: 0;
@@ -18,13 +19,22 @@
             overflow-x: hidden;
         }
 
+        /* Main content areas above iframe */
+        header,
+        .photo-gallery,
+        .video-gallery {
+            position: relative;
+            z-index: 10000;
+            pointer-events: auto;
+        }
+
         /* Minimal Header */
         header {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
-            z-index: 100;
+            z-index: 99999;
             background: rgba(0, 0, 0, 0.95);
             padding: 15px 20px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
@@ -42,6 +52,9 @@
             letter-spacing: 2px;
             text-transform: uppercase;
             transition: opacity 0.3s ease;
+            position: relative;
+            z-index: 99999;
+            pointer-events: auto;
         }
 
         .header-link:hover {
@@ -68,6 +81,8 @@
             opacity: 0.5;
             transition: opacity 0.3s ease;
             position: relative;
+            z-index: 99999;
+            pointer-events: auto;
         }
 
         .tab-btn:hover {
@@ -111,6 +126,9 @@
             width: 100%;
             cursor: pointer;
             transition: opacity 0.2s ease;
+            position: relative;
+            z-index: 10001;
+            pointer-events: auto;
         }
 
         .media-item:hover {
@@ -134,7 +152,7 @@
             width: 100%;
             height: 100%;
             background: rgba(0, 0, 0, 0.98);
-            z-index: 1000;
+            z-index: 999999;
             align-items: center;
             justify-content: center;
         }
@@ -982,8 +1000,8 @@
         position: fixed;
         bottom: 0;
         right: 0;
-        width: 600px;
-        height: 400px;
+        width: 100vw;
+        height: 100vh;
         border: none;
         background: transparent;
         pointer-events: none;
@@ -992,6 +1010,12 @@
     allow="autoplay"
     loading="eager">
 </iframe>
+
+<!-- Restore button (outside iframe) -->
+<button class="jarchive-restore-button hidden" id="restore-player-btn" style="z-index: 9999999; pointer-events: auto;">
+    <i class="fas fa-music"></i>
+    <span>Jarchive Player</span>
+</button>
 
 <!-- Player Communication Bridge -->
 <script src="/shared/player-iframe-bridge.js"></script>

@@ -35,24 +35,19 @@
     transform: translateY(20px);
 }
 
-/* Minimized state (dock bubble) */
+/* Minimized state - completely hidden, only restore button visible */
 .jarchive-floating-player.minimized {
-    width: 72px;
-    height: 72px;
-    border-radius: 50%;
-    min-width: 72px;
-    min-height: 72px;
-    overflow: hidden;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: scale(0);
 }
 
 .jarchive-floating-player.minimized .player-header,
 .jarchive-floating-player.minimized .player-body,
-.jarchive-floating-player.minimized .resize-handle {
-    display: none;
-}
-
+.jarchive-floating-player.minimized .resize-handle,
 .jarchive-floating-player.minimized .minimized-icon {
-    display: flex !important;
+    display: none;
 }
 
 /* Minimized icon display */
@@ -384,6 +379,67 @@
 }
 
 .traffic-light:focus-visible {
+    outline: 2px solid rgba(255, 255, 255, 0.5);
+    outline-offset: 2px;
+}
+
+/* ========================================
+   RESTORE BUTTON (Bottom-Left Corner)
+   Appears when player is minimized
+   ======================================== */
+
+.jarchive-restore-button {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    background: rgba(11, 11, 11, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 25px;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    z-index: 10001;
+    backdrop-filter: blur(40px);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.6),
+        0 0 0 0.5px rgba(255, 255, 255, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto !important;
+}
+
+.jarchive-restore-button i {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.jarchive-restore-button:hover {
+    background: rgba(20, 20, 20, 0.98);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 
+        0 12px 40px rgba(0, 0, 0, 0.8),
+        0 0 0 0.5px rgba(255, 255, 255, 0.12);
+}
+
+.jarchive-restore-button:active {
+    transform: translateY(0);
+}
+
+.jarchive-restore-button.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transform: translateY(10px);
+}
+
+.jarchive-restore-button:focus-visible {
     outline: 2px solid rgba(255, 255, 255, 0.5);
     outline-offset: 2px;
 }
