@@ -23,16 +23,8 @@
             background: transparent;
         }
         
-        /* Default: everything passes through clicks */
-        * {
-            pointer-events: none !important;
-        }
-        
-        /* CRITICAL: Re-enable pointer events ONLY on player window */
-        .jarchive-floating-player,
-        .jarchive-floating-player * {
-            pointer-events: auto !important;
-        }
+        /* All elements interactive — pointer-events are controlled on the
+           iframe element itself from the parent page via JS mouse tracking */
         
         /* Adjust player positioning for iframe context */
         .jarchive-floating-player {

@@ -23,6 +23,7 @@
         isReady: false,
         readyCallbacks: [],
         messageHandlers: {},
+        playerBounds: null, // Updated by player via PLAYER_BOUNDS postMessage
         
         // Initialize the iframe (called automatically on page load)
         init() {
@@ -36,6 +37,24 @@
             
             // Set up message listener
             window.addEventListener('message', (event) => this.handleMessage(event));
+            
+            // CORE FIX: Track mouse position and toggle iframe pointer-events dynamically.
+            // When cursor is over the player area -> iframe is interactive.
+            // When cursor is elsewhere -> iframe is click-through (pointer-events: none).
+            window.addEventListener('mousemove', (e) => {
+                if (!this.iframe) return;
+                const b = this.playerBounds;
+                if (b && e.clientX >= b.left && e.clientX <= b.right &&
+                            e.clientY >= b.top  && e.clientY <= b.bottom) {
+                    if (this.iframe.style.pointerEvents !== 'auto') {
+                        this.iframe.style.pointerEvents = 'auto';
+                    }
+                } else {
+                    if (this.iframe.style.pointerEvents !== 'none') {
+                        this.iframe.style.pointerEvents = 'none';
+                    }
+                }
+            });
             
             // Set up restore button click handler
             const restoreBtn = document.getElementById('restore-player-btn');
@@ -78,6 +97,11 @@
             // Handle minimize state updates
             if (type === 'MINIMIZE_STATE') {
                 this.updateRestoreButton(event.data.isMinimized);
+            }
+            
+            // Handle player position/size updates — drives pointer-events toggling
+            if (type === 'PLAYER_BOUNDS') {
+                this.playerBounds = event.data.bounds; // null when hidden/minimized
             }
             
             // Call registered handlers

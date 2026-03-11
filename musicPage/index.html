@@ -1154,84 +1154,58 @@
                 }
             });
             
-            // Use the iframe bridge to play track
-            if (window.JArchivePlayerBridge) {
-                console.log('[Music Page] Playing track via iframe bridge');
-                window.JArchivePlayerBridge.playTrack(title);
+            // Use the player directly
+            if (window.jarchivePlayer) {
+                console.log('[Music Page] Playing track:', title);
+                window.jarchivePlayer.playTrackByTitle(title);
             } else {
-                console.error('[Music Page] Player bridge not initialized yet, retrying...');
-                setTimeout(() => playTrack(title), 100);
+                console.error('[Music Page] Player not initialized yet, retrying...');
+                setTimeout(() => playTrack(title), 200);
             }
         }
 
-        // Listen for playback events from iframe to update UI
+        // Listen for track changes to update UI indicators
         document.addEventListener('DOMContentLoaded', () => {
-            // When the player bridge receives messages, update UI
-            if (window.JArchivePlayerBridge) {
-                window.JArchivePlayerBridge.on('PLAYBACK_STARTED', () => {
-                    console.log('[Music Page] Playback started via bridge');
-                    // UI updates will happen via TRACK_LOADED event
-                });
-                
-                window.JArchivePlayerBridge.on('TRACK_LOADED', (data) => {
-                    console.log('[Music Page] Track loaded via bridge:', data.track);
-                    if (data.track && data.track.title) {
-                        // Update indicators based on track title
+            // Poll for when player is ready, then watch for track changes
+            const waitForPlayer = setInterval(() => {
+                if (window.jarchivePlayer) {
+                    clearInterval(waitForPlayer);
+                    window.jarchivePlayer.audio.addEventListener('play', () => {
+                        const currentTitle = window.jarchivePlayer.playlist[window.jarchivePlayer.currentTrackIndex]?.title;
+                        if (!currentTitle) return;
                         document.querySelectorAll('.track-entry').forEach(entry => {
-                            const isCurrentTrack = entry.dataset.track === data.track.title;
+                            const isCurrentTrack = entry.dataset.track === currentTitle;
                             entry.classList.toggle('playing', isCurrentTrack);
-                            
                             const indicator = entry.querySelector('.now-playing-indicator');
-                            if (indicator) {
-                                indicator.style.display = isCurrentTrack ? 'inline-block' : 'none';
-                            }
+                            if (indicator) indicator.style.display = isCurrentTrack ? 'inline-block' : 'none';
                         });
-                    }
-                });
-                
-                window.JArchivePlayerBridge.on('PLAYBACK_PAUSED', () => {
-                    console.log('[Music Page] Playback paused via bridge');
-                    document.querySelectorAll('.track-entry.playing').forEach(entry => {
-                        entry.classList.remove('playing');
-                        const indicator = entry.querySelector('.now-playing-indicator');
-                        if (indicator) {
-                            indicator.style.display = 'none';
-                        }
                     });
-                });
-            }
+                    window.jarchivePlayer.audio.addEventListener('pause', () => {
+                        document.querySelectorAll('.track-entry.playing').forEach(entry => {
+                            entry.classList.remove('playing');
+                            const indicator = entry.querySelector('.now-playing-indicator');
+                            if (indicator) indicator.style.display = 'none';
+                        });
+                    });
+                }
+            }, 100);
         });
     </script>
 
     <!-- ============================
-         Persistent Audio Player Iframe
+         Floating Audio Player
          ============================ -->
-    <iframe 
-        id="jarchive-player-iframe"
-        src="/player-host.html"
-        style="
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            background: transparent;
-            pointer-events: none;
-            z-index: 999999;
-        "
-        allow="autoplay"
-        loading="eager">
-    </iframe>
-
-    <!-- Restore button (outside iframe) -->
-    <button class="jarchive-restore-button hidden" id="restore-player-btn" style="z-index: 9999999; pointer-events: auto;">
-        <i class="fas fa-music"></i>
-        <span>Jarchive Player</span>
-    </button>
-
-    <!-- Player Communication Bridge -->
-    <script src="/shared/player-iframe-bridge.js"></script>
+    <script src="../shared/audio-player-floating.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                window.jarchivePlayer = new FloatingAudioPlayer();
+                await window.jarchivePlayer.init();
+            } catch(e) {
+                console.error('[Music] Player init failed:', e);
+            }
+        });
+    </script>
 
     <!-- Loading Overlay -->
     <script src="../shared/loading-overlay.js"></script>

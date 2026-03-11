@@ -4,10 +4,11 @@
     <meta charset="UTF-8">
     <title>JARCHIVE - Blog</title>
     <link rel="icon" href="../Icons/Icon website.png" type="image/png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="../shared/audio-player.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="../shared/navigation.css">
-    <link rel="stylesheet" href="../shared/loading-overlay.css">    <link rel="stylesheet" href="/shared/audio-player-floating.css">    <style>
+    <link rel="stylesheet" href="../shared/loading-overlay.css">
+    <link rel="stylesheet" href="../shared/audio-player-floating.css">
+    <style>
         /* ========================================
            FORUM-INSPIRED BLOG STRUCTURE
            Minimal layout-focused CSS
@@ -437,6 +438,35 @@
                 <h2 class="section-title">Blog</h2>
             </div>
 
+            <!-- THREAD ENTRY #2 -->
+            <article class="thread-entry" id="post-2">
+                <aside class="thread-meta">
+                    <div class="thread-number">#002</div>
+                    <div class="thread-tag">Update</div>
+                </aside>
+                
+                <div class="thread-content">
+                    <h3 class="thread-title">
+                        <a href="#post-2">Hello, Long time no see!</a>
+                    </h3>
+                    <div class="thread-body">
+                        <p>
+                            It's my first blog post In a good while. A good good while. It's been over a year since I last was active on the website I am very proud to announce that this website has been totally reimagined. I hope y'all love these updates I've made as much as I do and all we have right now is just the matter of finishing it. It's hard as fuck to code. Funny fucking thing is I literally don't know how to! Ive gone through a lot through this passed year and today I've left myself little to no excuse for not improving every day I'm still on this planet.
+                        </p>
+                        <p>
+                            God has been on my side and always has been and It's really just a matter of listening to the Good Orderly Direction. Music production has been slow but oh boy do I have some remixes to kick off the second official launch of Jarchive! Ive had a lot of expenses going towards my car issues and work just hasn't really allowed the time for me that I need to express myself as creativity as I've been wanting to. Just a brief depression that I won't allow to continue anymore. It's about to get real. I'm really exited to show y'all when Ive been working on.
+                        </p>
+                        <p>&lt;3 JR</p>
+                    </div>
+                </div>
+                
+                <aside class="thread-stats">
+                    <div class="thread-date">Mar 11</div>
+                    <div class="thread-time">3:43pm</div>
+                    <div class="thread-author">by JARCHIVE</div>
+                </aside>
+            </article>
+
             <!-- THREAD ENTRY #1 -->
             <article class="thread-entry" id="post-1">
                 <aside class="thread-meta">
@@ -520,37 +550,22 @@
     <script src="../shared/navigation.js"></script>
 
     <!-- ============================
-         Persistent Audio Player Iframe
+         Floating Audio Player
          ============================ -->
-    <iframe 
-        id="jarchive-player-iframe"
-        src="/player-host.html"
-        style="
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            width: 100vw;
-            height: 100vh;
-            border: none;
-            background: transparent;
-            pointer-events: none;
-            z-index: 999999;
-        "
-        allow="autoplay"
-        loading="eager">
-    </iframe>
-
-    <!-- Restore button (outside iframe) -->
-    <button class="jarchive-restore-button hidden" id="restore-player-btn" style="z-index: 9999999; pointer-events: auto;">
-        <i class="fas fa-music"></i>
-        <span>Jarchive Player</span>
-    </button>
-
-    <!-- Player Communication Bridge -->
-    <script src="/shared/player-iframe-bridge.js"></script>
+    <script src="../shared/audio-player-floating.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            try {
+                window.jarchivePlayer = new FloatingAudioPlayer();
+                await window.jarchivePlayer.init();
+            } catch(e) {
+                console.error('[Blog] Player init failed:', e);
+            }
+        });
+    </script>
 
     <!-- Loading Overlay -->
-    <script src="/shared/loading-overlay.js"></script>
+    <script src="../shared/loading-overlay.js"></script>
 
 </body>
 </html>

@@ -35,7 +35,11 @@ class FloatingAudioPlayer {
         this.loadState();
         this.initializeDrag();
         this.initializeResize();
-        this.setupAutoSave(); // Enable automatic state persistence
+        this.setupAutoSave();
+        this.startBoundsPolling();
+        
+        // Player stays hidden until a track is played.
+        // loadState() will call show() if restoring a previous session where it was visible.
         
         console.log('[FloatingAudioPlayer] Initialized with', this.playlist.length, 'tracks');
     }
@@ -103,13 +107,13 @@ class FloatingAudioPlayer {
                     <!-- Controls -->
                     <div class="player-controls">
                         <button class="player-control-btn" id="floating-prev" title="Previous" aria-label="Previous track">
-                            <i class="fas fa-step-backward"></i>
+                            <i class="fas fa-backward-step"></i>
                         </button>
                         <button class="player-control-btn play-btn" id="floating-play" title="Play" aria-label="Play/Pause">
                             <i class="fas fa-play"></i>
                         </button>
                         <button class="player-control-btn" id="floating-next" title="Next" aria-label="Next track">
-                            <i class="fas fa-step-forward"></i>
+                            <i class="fas fa-forward-step"></i>
                         </button>
                     </div>
                     
@@ -127,7 +131,7 @@ class FloatingAudioPlayer {
                     <!-- Volume -->
                     <div class="player-volume">
                         <div class="player-volume-icon" id="floating-volume-icon">
-                            <i class="fas fa-volume-up"></i>
+                            <i class="fas fa-volume-high"></i>
                         </div>
                         <div class="player-volume-slider" id="floating-volume-slider">
                             <div class="player-volume-fill" id="floating-volume-fill"></div>
@@ -141,7 +145,7 @@ class FloatingAudioPlayer {
             
             <!-- Restore button (appears when minimized) -->
             <button class="jarchive-restore-button hidden" id="restore-player-btn">
-                <i class="fas fa-music"></i>
+                <i class="fas fa-cross"></i>
                 <span>Jarchive Player</span>
             </button>
         `;
@@ -174,7 +178,8 @@ class FloatingAudioPlayer {
             volumeSlider: document.getElementById('floating-volume-slider'),
             volumeFill: document.getElementById('floating-volume-fill'),
             resizeHandle: document.querySelector('.resize-handle'),
-            minimizedIcon: document.querySelector('.minimized-icon')
+            minimizedIcon: document.querySelector('.minimized-icon'),
+            restoreBtn: document.getElementById('restore-player-btn')
         };
         
         // Verify all critical elements were found
@@ -217,6 +222,12 @@ class FloatingAudioPlayer {
         // Minimized icon click to restore
         this.elements.minimizedIcon.addEventListener('click', () => {
             console.log('[FloatingAudioPlayer] Minimized icon clicked');
+            this.toggleMinimize();
+        });
+        
+        // Restore button click
+        this.elements.restoreBtn.addEventListener('click', () => {
+            console.log('[FloatingAudioPlayer] Restore button clicked');
             this.toggleMinimize();
         });
         
@@ -443,14 +454,14 @@ class FloatingAudioPlayer {
         this.elements.volumeFill.style.width = `${displayVolume * 100}%`;
         
         const icon = this.elements.volumeIcon.querySelector('i');
-        icon.classList.remove('fa-volume-up', 'fa-volume-down', 'fa-volume-mute');
+        icon.classList.remove('fa-volume-high', 'fa-volume-low', 'fa-volume-xmark');
         
         if (this.isMuted || displayVolume === 0) {
-            icon.classList.add('fa-volume-mute');
+            icon.classList.add('fa-volume-xmark');
         } else if (displayVolume < 0.5) {
-            icon.classList.add('fa-volume-down');
+            icon.classList.add('fa-volume-low');
         } else {
-            icon.classList.add('fa-volume-up');
+            icon.classList.add('fa-volume-high');
         }
     }
     
@@ -467,23 +478,65 @@ class FloatingAudioPlayer {
     
     show() {
         this.elements.player.classList.remove('hidden');
+        this.broadcastBounds();
     }
     
     hide() {
         this.elements.player.classList.add('hidden');
+        this.broadcastBounds();
     }
     
     toggleMinimize() {
         this.isMinimized = !this.isMinimized;
         this.elements.player.classList.toggle('minimized');
         
-        // Notify parent window of minimize state change
-        if (window.parent !== window) {
-            window.parent.postMessage({
-                type: 'MINIMIZE_STATE',
-                isMinimized: this.isMinimized
-            }, '*');
+        // Show/hide the restore button that lives alongside the player in the DOM
+        if (this.isMinimized) {
+            this.elements.restoreBtn.classList.remove('hidden');
+        } else {
+            this.elements.restoreBtn.classList.add('hidden');
         }
+        
+        this.broadcastBounds();
+    }
+    
+    // ========================================
+    // BOUNDS BROADCASTING
+    // ========================================
+    
+    broadcastBounds() {
+        if (window.parent === window) return; // Not in an iframe
+        
+        const hidden = this.elements.player.classList.contains('hidden');
+        const minimized = this.isMinimized;
+        
+        let boundsPayload = null;
+        
+        if (!hidden && !minimized) {
+            const rect = this.elements.player.getBoundingClientRect();
+            // Add a generous hit buffer so edge of player is easy to grab
+            const BUFFER = 8;
+            boundsPayload = {
+                left:   rect.left   - BUFFER,
+                top:    rect.top    - BUFFER,
+                right:  rect.right  + BUFFER,
+                bottom: rect.bottom + BUFFER
+            };
+        }
+        
+        window.parent.postMessage({
+            type: 'PLAYER_BOUNDS',
+            bounds: boundsPayload
+        }, '*');
+    }
+    
+    startBoundsPolling() {
+        // Poll every 100ms to keep parent in sync during drags/resizes
+        setInterval(() => {
+            if (window.parent !== window) {
+                this.broadcastBounds();
+            }
+        }, 100);
     }
     
     toggleCompact() {
@@ -558,6 +611,7 @@ class FloatingAudioPlayer {
             this.elements.player.classList.remove('dragging');
             console.log('[FloatingAudioPlayer] Drag ended');
             this.saveState();
+            this.broadcastBounds();
             
             // Release pointer capture
             if (this.elements.header.releasePointerCapture && e.pointerId !== undefined) {
@@ -639,6 +693,7 @@ class FloatingAudioPlayer {
             this.elements.player.classList.remove('resizing');
             console.log('[FloatingAudioPlayer] Resize ended');
             this.saveState();
+            this.broadcastBounds();
             
             // Release pointer capture
             if (this.elements.resizeHandle.releasePointerCapture && e.pointerId !== undefined) {
@@ -672,6 +727,7 @@ class FloatingAudioPlayer {
         const isHidden = this.elements.player.classList.contains('hidden');
         
         const state = {
+            version: 2,
             position: {
                 x: rect.left,
                 y: rect.top
@@ -686,14 +742,13 @@ class FloatingAudioPlayer {
             isPlaying: !this.audio.paused,
             isMinimized: this.isMinimized,
             isCompact: this.isCompact,
-            wasVisible: !isHidden, // Track if player was visible
+            wasVisible: !isHidden,
             timestamp: Date.now()
         };
         
-        // Use sessionStorage for cross-page persistence within same session
         sessionStorage.setItem('jarchive-player-state', JSON.stringify(state));
-        // Also save to localStorage for longer-term preference (position, volume)
         localStorage.setItem('jarchive-player-prefs', JSON.stringify({
+            version: 2,
             position: state.position,
             size: state.size,
             volume: state.volume
@@ -718,14 +773,30 @@ class FloatingAudioPlayer {
         
         try {
             const state = JSON.parse(saved);
+            
+            // Discard states saved by older iframe-based architecture (no version field)
+            if (!state.version || state.version < 2) {
+                console.log('[FloatingAudioPlayer] Discarding stale state from older version, starting fresh');
+                sessionStorage.removeItem('jarchive-player-state');
+                localStorage.removeItem('jarchive-player-prefs');
+                return null;
+            }
+            
             console.log('[FloatingAudioPlayer] Loading state:', state, 'from', isSessionRestore ? 'session' : 'prefs');
             
-            // Restore position
+            // Restore position (only if within visible viewport)
             if (state.position && state.position.x !== null) {
-                this.elements.player.style.left = `${state.position.x}px`;
-                this.elements.player.style.top = `${state.position.y}px`;
-                this.elements.player.style.right = 'auto';
-                this.elements.player.style.bottom = 'auto';
+                const x = state.position.x;
+                const y = state.position.y;
+                // Only restore if position is on-screen
+                if (x >= 0 && x < window.innerWidth - 100 &&
+                    y >= 0 && y < window.innerHeight - 100) {
+                    this.elements.player.style.left = `${x}px`;
+                    this.elements.player.style.top = `${y}px`;
+                    this.elements.player.style.right = 'auto';
+                    this.elements.player.style.bottom = 'auto';
+                }
+                // Otherwise keep default CSS position (bottom-right)
             }
             
             // Restore size
@@ -751,13 +822,7 @@ class FloatingAudioPlayer {
                 if (state.isMinimized) {
                     this.isMinimized = true;
                     this.elements.player.classList.add('minimized');
-                    // Notify parent window
-                    if (window.parent !== window) {
-                        window.parent.postMessage({
-                            type: 'MINIMIZE_STATE',
-                            isMinimized: true
-                        }, '*');
-                    }
+                    this.elements.restoreBtn.classList.remove('hidden');
                 }
                 if (state.isCompact) {
                     this.isCompact = true;

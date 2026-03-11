@@ -19,6 +19,66 @@
             overflow-x: hidden;
         }
 
+        /* ===== JR Side Nav (flush-left) ===== */
+        .jr-side-nav {
+            position: fixed;
+            left: 0px;
+            top: 12px;
+            transform: none;
+            display: flex !important;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100000;
+            user-select: none;
+            pointer-events: auto;
+        }
+
+        .jr-side-nav a {
+            writing-mode: vertical-rl;
+            position: relative;
+            transform: rotate(180deg);
+            color: rgba(255,255,255,.55);
+            text-decoration: none;
+            font-size: 14px;
+            letter-spacing: .35em;
+            text-transform: uppercase;
+            padding: 8px 2px;
+            border-radius: 999px;
+            transition: .2s ease;
+        }
+
+        .jr-side-nav a:hover {
+            color: rgba(255,255,255,0.82);
+            background: transparent;
+            box-shadow: none;
+        }
+
+        .jr-side-nav a.is-active {
+            color: #fff;
+            background: transparent;
+            outline: none;
+            box-shadow: none;
+        }
+
+        .jr-side-nav a.is-active::after {
+            content: "";
+            position: absolute;
+            right: -10px;
+            top: 50%;
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            transform: translateY(-50%);
+            background: rgba(255,0,0,.9);
+            box-shadow: 0 0 18px rgba(255,0,0,.55);
+            animation: navPulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes navPulse {
+            0%, 100% { transform: translateY(-50%) scale(1); opacity: .85; }
+            50% { transform: translateY(-50%) scale(1.35); opacity: 1; }
+        }
+
         /* Main content areas above iframe */
         header,
         .photo-gallery,
@@ -32,7 +92,7 @@
         header {
             position: fixed;
             top: 0;
-            left: 0;
+            left: 40px;
             right: 0;
             z-index: 99999;
             background: rgba(0, 0, 0, 0.95);
@@ -40,28 +100,11 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             backdrop-filter: blur(10px);
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
         }
 
-        .header-link {
-            display: inline-block;
-            color: white;
-            text-decoration: none;
-            font-size: 1.2em;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            transition: opacity 0.3s ease;
-            position: relative;
-            z-index: 99999;
-            pointer-events: auto;
-        }
-
-        .header-link:hover {
-            opacity: 0.7;
-        }
-
-        /* Tab Navigation - Skrillex Inspired */
+        /* Tab Navigation - Centered */
         .tab-nav {
             display: flex;
             gap: 30px;
@@ -107,6 +150,7 @@
         .photo-gallery,
         .video-gallery {
             margin-top: 60px;
+            margin-left: 40px;
             column-count: 4;
             column-gap: 0;
             line-height: 0;
@@ -245,9 +289,18 @@
         }
 
         @media (max-width: 900px) {
+            .jr-side-nav {
+                display: none !important;
+            }
+
+            header {
+                left: 0;
+            }
+
             .photo-gallery,
             .video-gallery {
                 column-count: 2;
+                margin-left: 0;
             }
 
             .tab-nav {
@@ -264,12 +317,6 @@
             .photo-gallery,
             .video-gallery {
                 column-count: 1;
-            }
-
-            header {
-                flex-direction: column;
-                gap: 15px;
-                align-items: flex-start;
             }
 
             .tab-nav {
@@ -294,8 +341,16 @@
 </head>
 <body>
 
+<!-- SIDEBAR NAVIGATION -->
+<nav class="jr-side-nav" aria-label="Primary">
+    <a href="../musicPage/">MUSIC</a>
+    <a href="../#stations">STATIONS</a>
+    <a href="../media/" class="is-active">MEDIA</a>
+    <a href="../blog/">BLOG</a>
+    <a href="../index.html">JARCHIVE</a>
+</nav>
+
 <header>
-    <a href="../" class="header-link">JARCHIVE.NET</a>
     <nav class="tab-nav">
         <button class="tab-btn active" data-tab="photo">PHOTO</button>
         <button class="tab-btn" data-tab="video">VIDEO</button>
@@ -991,37 +1046,22 @@
 </script>
 
 <!-- ============================
-     Persistent Audio Player Iframe
+     Floating Audio Player
      ============================ -->
-<iframe 
-    id="jarchive-player-iframe"
-    src="/player-host.html"
-    style="
-        position: fixed;
-        bottom: 0;
-        right: 0;
-        width: 100vw;
-        height: 100vh;
-        border: none;
-        background: transparent;
-        pointer-events: none;
-        z-index: 999999;
-    "
-    allow="autoplay"
-    loading="eager">
-</iframe>
-
-<!-- Restore button (outside iframe) -->
-<button class="jarchive-restore-button hidden" id="restore-player-btn" style="z-index: 9999999; pointer-events: auto;">
-    <i class="fas fa-music"></i>
-    <span>Jarchive Player</span>
-</button>
-
-<!-- Player Communication Bridge -->
-<script src="/shared/player-iframe-bridge.js"></script>
+<script src="../shared/audio-player-floating.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            window.jarchivePlayer = new FloatingAudioPlayer();
+            await window.jarchivePlayer.init();
+        } catch(e) {
+            console.error('[Media] Player init failed:', e);
+        }
+    });
+</script>
 
 <!-- Loading Overlay -->
-<script src="/shared/loading-overlay.js"></script>
+<script src="../shared/loading-overlay.js"></script>
 
 </body>
 </html>

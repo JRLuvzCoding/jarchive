@@ -10,10 +10,10 @@
   <link rel="preload" as="image" href="Hiya.jpg">
 
   <!-- shared -->
-  <link rel="stylesheet" href="shared/audio-player.css" />
   <link rel="stylesheet" href="shared/navigation.css" />
   <link rel="stylesheet" href="shared/loading-overlay.css" />
   <link rel="stylesheet" href="shared/audio-player-floating.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
   <style>
     :root{
@@ -762,7 +762,6 @@
     </footer>
 
     <!-- shared scripts -->
-    <script src="shared/audio-player.js"></script>
     <script src="shared/navigation.js"></script>
   </div>
 
@@ -1034,37 +1033,23 @@
   </script>
 
   <!-- ============================
-       Persistent Audio Player Iframe
+       Floating Audio Player
        ============================ -->
-  <iframe 
-      id="jarchive-player-iframe"
-      src="/player-host.html"
-      style="
-          position: fixed;
-          bottom: 0;
-          right: 0;
-          width: 100vw;
-          height: 100vh;
-          border: none;
-          background: transparent;
-          pointer-events: none;
-          z-index: 999999;
-      "
-      allow="autoplay"
-      loading="eager">
-  </iframe>
-
-  <!-- Restore button (outside iframe) -->
-  <button class="jarchive-restore-button hidden" id="restore-player-btn" style="z-index: 9999999; pointer-events: auto;">
-      <i class="fas fa-music"></i>
-      <span>Jarchive Player</span>
-  </button>
-
-  <!-- Player Communication Bridge -->
-  <script src="/shared/player-iframe-bridge.js"></script>
+  <script src="shared/audio-player-floating.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      try {
+        window.jarchivePlayer = new FloatingAudioPlayer();
+        await window.jarchivePlayer.init();
+        console.log('[Index] Player initialized successfully');
+      } catch(e) {
+        console.error('[Index] Player init failed:', e);
+      }
+    });
+  </script>
 
   <!-- Loading Overlay -->
-  <script src="/shared/loading-overlay.js"></script>
+  <script src="shared/loading-overlay.js"></script>
 
 </body>
 </html>

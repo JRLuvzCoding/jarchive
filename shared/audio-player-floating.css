@@ -3,6 +3,9 @@
    Draggable, resizable window
    ======================================== */
 
+/* Always load Font Awesome alongside the player */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css');
+
 /* Floating player window container */
 .jarchive-floating-player {
     position: fixed;
@@ -17,7 +20,7 @@
     box-shadow: 
         0 12px 48px rgba(0, 0, 0, 0.8),
         0 0 0 0.5px rgba(255, 255, 255, 0.08);
-    z-index: 10000;
+    z-index: 999998;
     display: flex;
     flex-direction: column;
     overflow: hidden;
