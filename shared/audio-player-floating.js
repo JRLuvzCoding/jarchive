@@ -208,6 +208,7 @@ class FloatingAudioPlayer {
         // Traffic light controls
         this.elements.closeBtn.addEventListener('click', () => {
             console.log('[FloatingAudioPlayer] Close button clicked');
+            this.pause();
             this.hide();
         });
         this.elements.minimizeBtn.addEventListener('click', () => {
@@ -258,6 +259,32 @@ class FloatingAudioPlayer {
         this.audio.addEventListener('loadedmetadata', () => this.updateDuration());
         this.audio.addEventListener('play', () => this.onPlay());
         this.audio.addEventListener('pause', () => this.onPause());
+
+        // Buffering: when the audio is ready to play after loading, fire any pending play
+        this.audio.addEventListener('canplay', () => {
+            if (this._pendingPlay) {
+                this._pendingPlay = false;
+                this._setLoadingState(false);
+                const p = this.audio.play();
+                if (p !== undefined) {
+                    p.then(() => { this.isPlaying = true; })
+                     .catch(err => {
+                         console.error('[FloatingAudioPlayer] Deferred playback failed:', err);
+                         this.isPlaying = false;
+                     });
+                }
+            }
+        });
+
+        // Show loading spinner while the browser is buffering mid-playback
+        this.audio.addEventListener('waiting', () => {
+            if (this.isPlaying) this._setLoadingState(true);
+        });
+
+        // Hide spinner once playback resumes after buffering
+        this.audio.addEventListener('playing', () => {
+            this._setLoadingState(false);
+        });
         
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => this.handleKeyboard(e));
@@ -332,7 +359,19 @@ class FloatingAudioPlayer {
                 return;
             }
         }
+
+        // If the browser hasn't buffered enough data yet (common with large WAV files),
+        // set a pending flag so the canplay listener will start playback when ready.
+        // readyState < 3 means HAVE_FUTURE_DATA is not yet satisfied.
+        if (this.audio.readyState < 3) {
+            console.log('[FloatingAudioPlayer] Audio not ready yet (readyState', this.audio.readyState, ') — deferring play until canplay');
+            this._pendingPlay = true;
+            this._setLoadingState(true);
+            return;
+        }
         
+        this._pendingPlay = false;
+        this._setLoadingState(false);
         const playPromise = this.audio.play();
         
         if (playPromise !== undefined) {
@@ -347,9 +386,24 @@ class FloatingAudioPlayer {
                 });
         }
     }
+
+    _setLoadingState(isLoading) {
+        if (!this.elements || !this.elements.playBtn) return;
+        const icon = this.elements.playBtn.querySelector('i');
+        if (!icon) return;
+        if (isLoading) {
+            icon.className = 'fas fa-spinner fa-spin';
+            this.elements.playBtn.disabled = true;
+        } else {
+            icon.className = this.isPlaying ? 'fas fa-pause' : 'fas fa-play';
+            this.elements.playBtn.disabled = false;
+        }
+    }
     
     pause() {
         console.log('[FloatingAudioPlayer] pause() called');
+        this._pendingPlay = false;
+        this._setLoadingState(false);
         this.audio.pause();
         this.isPlaying = false;
     }
