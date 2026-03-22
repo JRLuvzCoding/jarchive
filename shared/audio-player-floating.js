@@ -844,16 +844,8 @@ class FloatingAudioPlayer {
                     // Show player if it was visible before navigation
                     if (state.wasVisible) {
                         this.show();
-                        
-                        // Auto-resume if was playing (check timestamp to avoid stale state)
-                        const timeSinceLastSave = Date.now() - (state.timestamp || 0);
-                        if (state.isPlaying && timeSinceLastSave < 30000) { // 30 second window
-                            console.log('[FloatingAudioPlayer] Auto-resuming playback');
-                            // Small delay to ensure audio is ready
-                            setTimeout(() => {
-                                this.play();
-                            }, 100);
-                        }
+                        // Note: we intentionally do NOT auto-resume playback.
+                        // The user must press play — audio should never start unprompted.
                     }
                 }
                 
