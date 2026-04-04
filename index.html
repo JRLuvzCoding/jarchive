@@ -371,19 +371,26 @@
     .release-date{ color: rgba(255,255,255,.65); margin-bottom: 14px; }
     .release-actions{ display:flex; gap: 10px; flex-wrap:wrap; }
 
+    /* MUSIC track list */
+    #home-latest-music{ display:flex; flex-direction:column; gap:16px; }
+
     /* MEDIA */
     .media-gallery{
       display:grid;
-      grid-template-columns: repeat(auto-fit, minmax(55px, 1fr));
-      gap: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
     }
     .media-item{
       position:relative;
       overflow:hidden;
-      border-radius: 18px;
+      border-radius: 14px;
       border: 1px solid rgba(255,255,255,.10);
       background: rgba(0,0,0,.35);
       transition: .2s ease;
+      cursor: pointer;
+      display: block;
+      text-decoration: none;
+      color: inherit;
     }
     .media-item:hover{
       transform: translateY(-2px);
@@ -393,18 +400,42 @@
     .media-item img,
     .media-item video{
       width:100%;
-      height: 55px;
+      height: 200px;
       object-fit: cover;
       display:block;
     }
-    .media-overlay{
-      position:absolute;
-      left:0; right:0; bottom:0;
-      padding: 16px;
-      background: linear-gradient(to top, rgba(0,0,0,.85), rgba(0,0,0,0));
+
+    /* BLOG */
+    #home-latest-blog .blog-post{
+      border: 1px solid rgba(255,0,0,.35);
+      background: rgba(0,0,0,.45);
+      border-radius: 18px;
+      padding: 28px 32px;
     }
-    .media-title{ font-size: 14px; letter-spacing:.08em; text-transform: uppercase; }
-    .media-type{ margin-top:6px; color: rgba(255,0,0,.85); font-size: 12px; letter-spacing:.22em; text-transform: uppercase; }
+    .blog-meta{
+      display:flex;
+      gap: 10px;
+      flex-wrap:wrap;
+      font-size:12px;
+      letter-spacing:.18em;
+      text-transform:uppercase;
+      color: rgba(255,255,255,.50);
+      margin-bottom:14px;
+    }
+    .blog-meta .blog-number{ color:rgba(255,255,255,.28); }
+    .blog-meta .blog-tag{ color:rgba(255,0,0,.80); }
+    #home-latest-blog h2{
+      font-size: clamp(18px, 2.5vw, 26px);
+      letter-spacing:.06em;
+      text-transform:uppercase;
+      margin-bottom:16px;
+    }
+    .blog-body{
+      color:rgba(255,255,255,.72);
+      line-height:1.8;
+      max-width:72ch;
+    }
+    .blog-body p + p{ margin-top:1em; }
 
     /* Footer */
     footer{
@@ -966,6 +997,7 @@
         return;
       }
       music.forEach(item => {
+        const safeTitle = item.title.replace(/'/g, '&#39;');
         container.innerHTML += `
           <div class="card release-shell">
             <div class="release-card">
@@ -973,15 +1005,15 @@
               <div class="release-info">
                 <div class="release-title">${item.title}</div>
                 <div class="release-artist">${item.artist || ''}</div>
-                <div class="release-date">${new Date(item.date).toLocaleDateString()}</div>
                 <div class="release-actions">
-                  <a class="btn" href="${item.audio}" target="_blank">Listen</a>
+                  <button class="btn" onclick="if(window.jarchivePlayer){window.jarchivePlayer.playTrackByTitle('${safeTitle}')}">&#9654; Play</button>
                 </div>
               </div>
             </div>
           </div>
         `;
       });
+      container.innerHTML += `<div style="margin-top:8px;"><a class="btn" href="musicPage/index.html">View All Music</a></div>`;
     }
 
     function renderMedia(media) {
@@ -992,17 +1024,16 @@
         return;
       }
       media.forEach(item => {
+        const mediaEl = item.type === 'video'
+          ? `<video src="${item.src}" preload="metadata" muted></video>`
+          : `<img src="${item.src}" alt="Media" loading="lazy">`;
         container.innerHTML += `
-          <div class="media-item media-card">
-            ${item.type === 'Video' ? `<video src="${item.src}" controls></video>` : `<img class="media-thumb" src="${item.src}" alt="${item.title}">`}
-            <div class="media-overlay">
-              <div class="media-title">${item.title}</div>
-              <div class="media-type">${item.type}</div>
-              <div class="media-description">${item.description || ''}</div>
-            </div>
-          </div>
+          <a class="media-item" href="media/index.html">
+            ${mediaEl}
+          </a>
         `;
       });
+      container.insertAdjacentHTML('afterend', '<div style="margin-top:14px;"><a class="btn" href="media/index.html">View All Media</a></div>');
     }
 
     function renderBlog(blog) {
@@ -1013,18 +1044,30 @@
         return;
       }
       const item = blog[0];
+      const d = new Date(item.date);
+      const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      const timeStr = d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+      const paragraphs = (item.content || '').split(/\n+/).filter(Boolean).map(p => `<p>${p}</p>`).join('');
       container.innerHTML = `
         <div class="blog-post">
-          <div class="blog-meta">${new Date(item.date).toLocaleString()}${item.author ? ' • ' + item.author : ''}</div>
+          <div class="blog-meta">
+            ${item.number ? `<span class="blog-number">${item.number}</span>` : ''}
+            ${item.tag ? `<span class="blog-tag">${item.tag}</span>` : ''}
+            <span>${dateStr} &middot; ${timeStr}</span>
+            ${item.author ? `<span>by ${item.author}</span>` : ''}
+          </div>
           <h2>${item.title}</h2>
-          <p>${(item.content || '').replace(/\n/g, '<br>')}</p>
+          <div class="blog-body">${paragraphs}</div>
+        </div>
+        <div style="margin-top:18px;">
+          <a class="btn" href="blog/index.html">View All Posts</a>
         </div>
       `;
     }
 
     fetchContent().then(data => {
-      const music = (data.music || []).slice().sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,8);
-      const media = (data.media || []).slice().sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,4);
+      const music = (data.music || []).slice().sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,3);
+      const media = (data.media || []).slice().sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,6);
       const blog = (data.blog || []).slice().sort((a,b) => new Date(b.date)-new Date(a.date)).slice(0,1);
       renderMusic(music);
       renderMedia(media);

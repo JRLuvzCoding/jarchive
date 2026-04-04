@@ -1,133 +1,145 @@
 {
   "music": [
     {
-      "title": "IMissJackson",
-      "artist": "JARCHIVE",
-      "date": "2025-12-18T14:00:00Z",
-      "cover": "musicPage/songCovers/IMissJackson.jpg",
-      "audio": "musicPage/Songs/IMissJackson.mp3"
-    },
-    {
-      "title": "SuperTaq ft. andre y kess",
-      "artist": "JARCHIVE",
-      "date": "2025-12-15T10:00:00Z",
-      "cover": "musicPage/songCovers/superTaq.jpg",
-      "audio": "musicPage/Songs/SuperTaq ft. andre y kess.wav"
-    },
-    {
       "title": "WARINTHEATMOSPHERE",
-      "artist": "JARCHIVE",
-      "date": "2025-12-10T09:00:00Z",
+      "artist": "JR & FIREWOLF",
+      "date": "2025-05-28T00:00:00Z",
       "cover": "musicPage/songCovers/WarIntheAtmosphere.png",
       "audio": "musicPage/Songs/WARINTHEATMOSPHERE.wav"
     },
     {
-      "title": "Mix of the Century",
-      "artist": "JARCHIVE",
-      "date": "2025-12-05T08:00:00Z",
-      "cover": "musicPage/songCovers/Mix3.png",
-      "audio": "musicPage/Songs/mix of the century.mp3"
-    },
-    {
-      "title": "Flames & Fire",
-      "artist": "JARCHIVE",
-      "date": "2025-12-01T07:00:00Z",
-      "cover": "musicPage/songCovers/flamezfire.png",
-      "audio": "musicPage/Songs/FLAMES AND FIRE.wav"
-    },
-    {
-      "title": "G6 Track",
-      "artist": "JARCHIVE",
-      "date": "2025-11-28T06:00:00Z",
-      "cover": "musicPage/songCovers/G6.jpeg",
-      "audio": "musicPage/Songs/g66_Track.wav"
-    },
-    {
       "title": "Lorde Master",
       "artist": "JARCHIVE",
-      "date": "2025-11-25T05:00:00Z",
+      "date": "2025-05-03T12:00:00Z",
       "cover": "musicPage/songCovers/LordeCum.png",
       "audio": "musicPage/Songs/lorde master.wav"
     },
     {
-      "title": "The Demo I Been Poppin Since!",
+      "title": "Mix of the Century",
       "artist": "JARCHIVE",
-      "date": "2025-11-20T04:00:00Z",
-      "cover": "musicPage/songCovers/theDemoIBeenPoppingSince.jpg",
-      "audio": "musicPage/Songs/theDemoIBeenPoppinSince.wav"
-    },
-    {
-      "title": "SomethingsKnocking",
-      "artist": "JARCHIVE",
-      "date": "2025-11-15T03:00:00Z",
-      "cover": "musicPage/songCovers/Something's Knocking.jpg",
-      "audio": "musicPage/Songs/somethingsKnocking.mp3"
-    },
-    {
-      "title": "Happening",
-      "artist": "JARCHIVE",
-      "date": "2025-11-10T02:00:00Z",
-      "cover": "musicPage/songCovers/regular-show-dark-space-t9uyayx1rb89f2o8.png",
-      "audio": "musicPage/Songs/SONDER THINGS KEEP HAPPENING.wav"
-    },
-    {
-      "title": "Bash_50",
-      "artist": "JARCHIVE",
-      "date": "2025-11-05T01:00:00Z",
-      "cover": "musicPage/songCovers/AI Kins.jpg",
-      "audio": "musicPage/Songs/Bash_55_mp3.mp3"
-    },
-    {
-      "title": "Mix1",
-      "artist": "JARCHIVE",
-      "date": "2025-11-01T00:00:00Z",
-      "cover": "musicPage/songCovers/Dubstep.png",
-      "audio": "musicPage/Songs/THE MIX.mp3"
+      "date": "2025-05-03T00:00:00Z",
+      "cover": "musicPage/songCovers/Mix3.png",
+      "audio": "musicPage/Songs/RECORDED MIX.mp3"
     },
     {
       "title": "The Second Mix Of The Century",
       "artist": "JARCHIVE",
-      "date": "2025-10-28T00:00:00Z",
+      "date": "2025-04-25T00:00:00Z",
       "cover": "musicPage/songCovers/mix2.jpg",
-      "audio": "musicPage/Songs/RECORDED MIX.mp3"
+      "audio": "musicPage/Songs/THE MIX.mp3"
+    },
+    {
+      "title": "G6 Track",
+      "artist": "JARCHIVE",
+      "date": "2025-04-18T00:00:00Z",
+      "cover": "musicPage/songCovers/G6.jpeg",
+      "audio": "musicPage/Songs/g66_Track.wav"
+    },
+    {
+      "title": "SuperTaq ft. andre y kess",
+      "artist": "JARCHIVE",
+      "date": "2025-04-11T00:00:00Z",
+      "cover": "musicPage/songCovers/superTaq.jpg",
+      "audio": "musicPage/Songs/SuperTaq ft. andre y kess.wav"
+    },
+    {
+      "title": "Flames & Fire",
+      "artist": "JARCHIVE",
+      "date": "2025-04-04T00:00:00Z",
+      "cover": "musicPage/songCovers/flamezfire.png",
+      "audio": "musicPage/Songs/Flames Fire2.wav"
+    },
+    {
+      "title": "Mix1",
+      "artist": "JARCHIVE",
+      "date": "2025-03-28T00:00:00Z",
+      "cover": "musicPage/songCovers/Dubstep.png",
+      "audio": "musicPage/Songs/mix of the century.mp3"
+    },
+    {
+      "title": "The Demo I Been Poppin Since!",
+      "artist": "JARCHIVE",
+      "date": "2025-03-20T12:00:00Z",
+      "cover": "musicPage/songCovers/theDemoIBeenPoppingSince.jpg",
+      "audio": "musicPage/Songs/theDemoIBeenPoppinSince.wav"
+    },
+    {
+      "title": "Bash_50",
+      "artist": "JARCHIVE",
+      "date": "2025-03-20T00:00:00Z",
+      "cover": "musicPage/songCovers/AI Kins.jpg",
+      "audio": "musicPage/Songs/Bash_55_mp3.mp3"
+    },
+    {
+      "title": "Happening",
+      "artist": "JARCHIVE",
+      "date": "2025-03-14T00:00:00Z",
+      "cover": "musicPage/songCovers/regular-show-dark-space-t9uyayx1rb89f2o8.png",
+      "audio": "musicPage/Songs/SONDER THINGS KEEP HAPPENING.wav"
+    },
+    {
+      "title": "SomethingsKnocking",
+      "artist": "JARCHIVE",
+      "date": "2024-11-17T00:00:00Z",
+      "cover": "musicPage/songCovers/Something's Knocking.jpg",
+      "audio": "musicPage/Songs/somethingsKnocking.mp3"
+    },
+    {
+      "title": "IMissJackson",
+      "artist": "JARCHIVE",
+      "date": "2024-10-10T00:00:00Z",
+      "cover": "musicPage/songCovers/IMissJackson.jpg",
+      "audio": "musicPage/Songs/IMissJackson.mp3"
     }
   ],
   "media": [
     {
       "type": "photo",
-      "title": "Studio Setup",
-      "date": "2025-12-19T12:00:00Z",
-      "src": "media/Photos/macBook.jpeg",
-      "description": "Behind the scenes of the creative process"
+      "date": "2026-03-06T00:00:00Z",
+      "src": "media/Photos/IMG_7644.png"
     },
     {
       "type": "photo",
-      "title": "Mixing Session",
-      "date": "2025-12-17T11:00:00Z",
-      "src": "media/Photos/mix.png",
-      "description": "Perfecting the sound in the studio"
-    },
-    {
-      "type": "video",
-      "title": "G6 Early",
-      "date": "2025-12-15T10:00:00Z",
-      "src": "media/Videos/g6early.mp4",
-      "description": "Early stages of track development"
+      "date": "2026-03-05T00:00:00Z",
+      "src": "media/Photos/IMG_0599.JPG"
     },
     {
       "type": "photo",
-      "title": "We Lit",
-      "date": "2025-12-13T09:00:00Z",
-      "src": "media/Photos/weLit.png",
-      "description": "Capturing the energy and vibe"
+      "date": "2026-03-04T00:00:00Z",
+      "src": "media/Photos/IMG_0586.JPG"
+    },
+    {
+      "type": "photo",
+      "date": "2026-03-03T00:00:00Z",
+      "src": "media/Photos/IMG_0581.JPG"
+    },
+    {
+      "type": "photo",
+      "date": "2026-03-02T00:00:00Z",
+      "src": "media/Photos/IMG_0579.JPG"
+    },
+    {
+      "type": "photo",
+      "date": "2026-03-01T00:00:00Z",
+      "src": "media/Photos/IMG_0551.JPG"
     }
   ],
   "blog": [
     {
-      "title": "#1 :)",
-      "date": "2025-12-15T10:44:00Z",
+      "title": "Hello, Long time no see!",
+      "date": "2026-03-11T15:43:00Z",
       "author": "JARCHIVE",
-      "content": "The goal for this week is to get out another mix and also a song by friday. The only thing thats really in the way from now on is school. So I whole heartedly believe Ill be able to start getting more content out for the website. After a few months we'll start posting on social media and other music sharing platforms.\nMe and Sam (Ditty) Have been planning something big. Something beyond our control and were excited to finally start bringing these plans into fruition its going to be a good next couple of years in terms of creativity and productivity. AMEN"
+      "tag": "Update",
+      "number": "#002",
+      "content": "It's my first blog post In a good while. A good good while. It's been over a year since I last was active on the website I am very proud to announce that this website has been totally reimagined. I hope y'all love these updates I've made as much as I do and all we have right now is just the matter of finishing it. It's hard as fuck to code. Funny fucking thing is I literally don't know how to! Ive gone through a lot through this passed year and today I've left myself little to no excuse for not improving every day I'm still on this planet.\n\nGod has been on my side and always has been and It's really just a matter of listening to the Good Orderly Direction. Music production has been slow but oh boy do I have some remixes to kick off the second official launch of Jarchive! Ive had a lot of expenses going towards my car issues and work just hasn't really allowed the time for me that I need to express myself as creativity as I've been wanting to. Just a brief depression that I won't allow to continue anymore. It's about to get real. I'm really exited to show y'all when Ive been working on.\n\n<3 JR"
+    },
+    {
+      "title": "Plans for the Week :)",
+      "date": "2025-04-15T10:44:00Z",
+      "author": "JARCHIVE",
+      "tag": "Update",
+      "number": "#001",
+      "content": "The goal for this week is to get out another mix and also a song by friday. The only thing thats really in the way from now on is school. So I whole heartedly believe Ill be able to start getting more content out for the website. After a few months we'll start posting on social media and other music sharing platforms.\n\nMe and Sam (Ditty) Have been planning something big. Something beyond our control and were excited to finally start bringing these plans into fruition its going to be a good next couple of years in terms of creativity and productivity. AMEN"
     }
   ]
 }

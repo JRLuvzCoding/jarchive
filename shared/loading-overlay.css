@@ -14,7 +14,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 99999; /* Above all content but should not interfere with floating player */
+    z-index: 100001; /* Above all content including sidebar (99999) */
     opacity: 1;
     transition: opacity 0.8s ease-out;
     pointer-events: all;
@@ -70,6 +70,11 @@
         opacity: 0;
         transform: scale(1);
     }
+}
+
+/* Hide sidebar during loading */
+body:has(#loading-overlay:not(.hidden)) .jr-side-nav {
+    display: none !important;
 }
 
 /* Ensure smooth transitions */
