@@ -1,6 +1,13 @@
 {
   "music": [
     {
+      "title": "Yo Yanathan",
+      "artist": "JARCHIVE",
+      "date": "2026-09-24T00:00:00Z",
+      "cover": "musicPage/songCovers/yo yan.jpeg",
+      "audio": "musicPage/Songs/YO Yanathan mp3.mp3"
+    },
+    {
       "title": "WARINTHEATMOSPHERE",
       "artist": "JR & FIREWOLF",
       "date": "2025-05-28T00:00:00Z",

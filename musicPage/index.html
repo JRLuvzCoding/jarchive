@@ -237,6 +237,10 @@
             padding: 1rem 1.25rem;
             margin-bottom: 0;
             background: rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
         }
 
         .section-title {
@@ -258,7 +262,7 @@
             display: grid;
             grid-template-columns: 50px 1fr auto auto;
             gap: 1rem;
-            padding: 1.125rem 1.25rem;
+            padding: 0.5rem 1.25rem;
             align-items: center;
             background: rgba(255, 255, 255, 0.02);
             transition: background 0.2s ease;
@@ -277,8 +281,8 @@
 
         /* Track Cover (Small) */
         .track-cover {
-            width: 50px;
-            height: 50px;
+            width: 34px;
+            height: 34px;
             object-fit: cover;
             cursor: pointer;
             opacity: 0.8;
@@ -299,7 +303,7 @@
             font-weight: bold;
             text-transform: uppercase;
             letter-spacing: 0.05em;
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.1rem;
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -382,7 +386,6 @@
         .music-footer {
             text-align: center;
             padding: 2rem 1rem;
-            padding-bottom: calc(2rem + 120px);
             margin-top: auto;
             font-size: 0.75rem;
             text-transform: uppercase;
@@ -698,7 +701,7 @@
     <!-- Background wrapper: fixed container with absolute layers for performance -->
     <div class="bg-wrap" aria-hidden="true">
         <div class="bg-layer" aria-hidden="true">
-            <img class="bg-img" src="../Hiya.jpg" alt="Background" draggable="false" />
+            <img class="bg-img" src="../Tr33.jpg" alt="Background" draggable="false" />
         </div>
         <div class="bg-vignette" aria-hidden="true"></div>
     </div>
@@ -723,14 +726,70 @@
         <!-- SECTION HEADER -->
         <div class="section-header">
             <h2 class="section-title">Track Archive</h2>
+            <!-- data-track holds the most recently posted song's title -->
+            <button class="latest-play-btn" data-track="Yo Yanathan" onclick="playTrack(this.getAttribute('data-track'))" title="Play latest track">
+                <i class="fas fa-play"></i> Play
+            </button>
         </div>
+
+        <!-- ARCHIVE SECTION: 2026 -->
+        <section class="archive-section">
+            <!-- Collapsible header -->
+            <button 
+                class="archive-section-header" 
+                aria-expanded="true"
+                aria-controls="section-2026"
+                onclick="toggleArchiveSection(this)">
+                <span class="archive-section-title" data-text="2026">2026</span>
+                <span class="archive-section-chevron" aria-hidden="true"></span>
+            </button>
+
+            <!-- Collapsible content -->
+            <div 
+                class="archive-section-content" 
+                id="section-2026"
+                role="region"
+                aria-labelledby="section-2026">
+                <div class="archive-section-inner">
+                    <!-- TRACK LIST -->
+                    <div class="track-list">
+
+            <!-- Track: Yo Yanathan -->
+            <div class="track-entry" data-track="Yo Yanathan">
+                <img src="songCovers/yo yan.jpeg" alt="Yo Yanathan" class="track-cover" onclick="playTrack('Yo Yanathan')">
+                <div class="track-info">
+                    <div class="track-title">
+                        <span class="now-playing-indicator" style="display: none;"></span>
+                        Yo Yanathan
+                    </div>
+                    <div class="track-artist">JARCHIVE</div>
+                </div>
+                <div class="track-meta">
+                    <div class="track-date">Sep 24, 2026</div>
+                    <div class="track-length">3:15</div>
+                </div>
+                <div class="track-actions">
+                    <button class="action-btn" onclick="playTrack('Yo Yanathan')" title="Play">
+                        <i class="fas fa-play"></i> Play
+                    </button>
+                    <a href="Songs/Yo Yanathan.wav" class="action-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- END ARCHIVE SECTION: 2026 -->
 
         <!-- ARCHIVE SECTION: 2024-2025 -->
         <section class="archive-section">
             <!-- Collapsible header -->
             <button 
                 class="archive-section-header" 
-                aria-expanded="false"
+                aria-expanded="true"
                 aria-controls="section-2024-2025"
                 onclick="toggleArchiveSection(this)">
                 <span class="archive-section-title" data-text="2024–2025">2024–2025</span>
