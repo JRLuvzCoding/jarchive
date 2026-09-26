@@ -13,10 +13,25 @@
             box-sizing: border-box;
         }
 
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
         body {
             background: #000;
             font-family: 'Courier New', Courier, monospace;
+        }
+
+        /* Isolated scroller so the document root never bounces/reveals the fixed background */
+        .scroll-view {
+            position: fixed;
+            inset: 0;
+            overflow-y: auto;
             overflow-x: hidden;
+            overscroll-behavior-y: contain;
+            -webkit-overflow-scrolling: touch;
+            z-index: 10000;
         }
 
         /* ===== Background image system (matches music page) ===== */
@@ -410,6 +425,8 @@
         <div class="tab-underline"></div>
     </nav>
 </header>
+
+<div class="scroll-view">
 
 <!-- Photo Gallery -->
 <div class="photo-gallery" id="photoGallery">
@@ -883,6 +900,9 @@
     </div>
     -->
 </div>
+
+</div>
+<!-- /.scroll-view -->
 
 <!-- Fullscreen Modal -->
 <div class="modal" id="modal">
