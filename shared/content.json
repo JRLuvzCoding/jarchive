@@ -1,6 +1,13 @@
 {
   "music": [
     {
+      "title": "HEAT$TIÇĶ.wav",
+      "artist": "JARCHIVE",
+      "date": "2026-10-14T00:00:00Z",
+      "cover": "musicPage/songCovers/HEAT$TIÇĶ.wav.JPG",
+      "audio": "musicPage/Songs/HEATSTICK 128_2026_10_2.mp3"
+    },
+    {
       "title": "Yo Yanathan",
       "artist": "JARCHIVE",
       "date": "2026-09-24T00:00:00Z",
