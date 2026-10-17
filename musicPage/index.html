@@ -754,7 +754,7 @@
         <div class="section-header">
             <h2 class="section-title">Track Archive</h2>
             <!-- data-track holds the most recently posted song's title -->
-            <button class="latest-play-btn" data-track="HEAT$TIÇĶ.wav" onclick="playTrack(this.getAttribute('data-track'))" title="Play latest track">
+            <button class="latest-play-btn" data-track="Los que están alterados" onclick="playTrack(this.getAttribute('data-track'))" title="Play latest track">
                 <i class="fas fa-play"></i> Play
             </button>
         </div>
@@ -781,6 +781,30 @@
                     <!-- TRACK LIST -->
                     <div class="track-list">
 
+            <!-- Track: Los que están alterados -->
+            <div class="track-entry" data-track="Los que están alterados">
+                <img src="songCovers/LQEA.jpg" alt="Los que están alterados" class="track-cover" onclick="playTrack('Los que están alterados')">
+                <div class="track-info">
+                    <div class="track-title">
+                        <span class="now-playing-indicator" style="display: none;"></span>
+                        Los que están alterados
+                    </div>
+                    <div class="track-artist">JARCHIVE</div>
+                </div>
+                <div class="track-meta">
+                    <div class="track-date">Oct 16, 2026</div>
+                    <div class="track-length">3:42</div>
+                </div>
+                <div class="track-actions">
+                    <button class="action-btn" onclick="playTrack('Los que están alterados')" title="Play">
+                        <i class="fas fa-play"></i> Play
+                    </button>
+                    <a href="Songs/Los%20que%20est%C3%A1n%20alterados.wav" class="action-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+
             <!-- Track: HEAT$TIÇĶ.wav -->
             <div class="track-entry" data-track="HEAT$TIÇĶ.wav">
                 <img src="songCovers/HEAT$TIÇĶ.wav.JPG" alt="HEAT$TIÇĶ.wav" class="track-cover" onclick="playTrack('HEAT$TIÇĶ.wav')">
@@ -800,6 +824,30 @@
                         <i class="fas fa-play"></i> Play
                     </button>
                     <a href="Songs/HEATSTICK 128_2026_10_2.mp3" class="action-btn" download>
+                        <i class="fas fa-download"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Track: im so dope -->
+            <div class="track-entry" data-track="im so dope">
+                <img src="songCovers/Nightcrawler.jpg" alt="im so dope" class="track-cover" onclick="playTrack('im so dope')">
+                <div class="track-info">
+                    <div class="track-title">
+                        <span class="now-playing-indicator" style="display: none;"></span>
+                        im so dope
+                    </div>
+                    <div class="track-artist">JARCHIVE</div>
+                </div>
+                <div class="track-meta">
+                    <div class="track-date">Oct 9, 2026</div>
+                    <div class="track-length">2:24</div>
+                </div>
+                <div class="track-actions">
+                    <button class="action-btn" onclick="playTrack('im so dope')" title="Play">
+                        <i class="fas fa-play"></i> Play
+                    </button>
+                    <a href="Songs/NightCrawler%20Travis%20scott%20JR%20ReMix.mp3" class="action-btn" download>
                         <i class="fas fa-download"></i>
                     </a>
                 </div>

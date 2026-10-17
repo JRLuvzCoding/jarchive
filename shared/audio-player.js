@@ -111,6 +111,24 @@ class JArchiveAudioPlayer {
         // Define the playlist with all available tracks
         this.playlist = [
             {
+                title: "im so dope",
+                artist: "JARCHIVE",
+                src: "/musicPage/Songs/NightCrawler%20Travis%20scott%20JR%20ReMix.mp3",
+                cover: "/musicPage/songCovers/Nightcrawler.jpg",
+                download: "/musicPage/Songs/NightCrawler%20Travis%20scott%20JR%20ReMix.mp3",
+                length: "2:24",
+                date: "2026-10-09"
+            },
+            {
+                title: "HEAT$TIÇĶ.wav",
+                artist: "JARCHIVE",
+                src: "/musicPage/Songs/HEATSTICK 128_2026_10_2.mp3",
+                cover: "/musicPage/songCovers/HEAT$TIÇĶ.wav.JPG",
+                download: "/musicPage/Songs/HEATSTICK 128_2026_10_2.mp3",
+                length: "3:30",
+                date: "2026-10-14"
+            },
+            {
                 title: "WARINTHEATMOSPHERE",
                 artist: "JR & FIREWOLF",
                 src: "/musicPage/Songs/WARINTHEATMOSPHERE.wav",
